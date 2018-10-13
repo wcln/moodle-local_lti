@@ -38,9 +38,11 @@ if (isset($_POST['oauth_consumer_key'])) {
   <!-- Latest compiled and minified CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- jQuery library -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://bclearningnetwork.com/lib/jquery/jquery-3.2.1.min.js"></script>
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Custom stylesheet to style this page. -->
+  <link rel="stylesheet" type="text/css" href="style.css">
 
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
@@ -50,190 +52,17 @@ if (isset($_POST['oauth_consumer_key'])) {
     });
   </script>
 
+  <!-- MathJax filter. -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
-  <title></title>
+  <!-- Custom script to support navigation between book pages and calls for iframe resizing. -->
+  <script src="navigation.js"></script>
 
-  <style>
-
-    .lti-page {
-      overflow: auto;
-    }
-
-    .lti-nav {
-      text-decoration: none;
-      display: inline-block;
-      padding: 8px 16px;
-      visibility: hidden;
-      cursor: pointer;
-    }
-
-    .lti-nav:hover {
-      background-color: #ddd;
-      color: black;
-      text-decoration: none;
-    }
-
-    .back {
-        background-color: #f1f1f1;
-        color: black;
-    }
-
-    .next {
-        background-color: #4CAF50;
-        color: white;
-    }
-
-    .round {
-        border-radius: 50%;
-    }
-
-    .container-left {
-      padding-right: 15px;
-      margin-top: -15px;
-    }
-
-    .container-left h3 {
-      color: #999;
-      font-size: 28px;
-      font-weight: 700;
-      font-family: "Open Sans", sans-serif;
-    }
-
-    #table-of-contents ul li {
-      padding: 0;
-      margin: 0;
-      list-style: none;
-      line-height: 20px;
-      margin-top: .5em;
-    }
-
-    #table-of-contents ul li a {
-      color: #555;
-      font-family: "Open Sans", sans-serif;
-      font-weight: 400;
-      font-size: 14px;
-      cursor: pointer;
-    }
-
-    #table-of-contents ul li a:hover {
-      color: #222;
-      transition: all 0.3s ease 0.1s;
-      text-decoration: none;
-      font-family: "Open Sans", sans-serif;
-    }
-
-    #table-of-contents h2 {
-      color: #666;
-      font-size: 22px;
-      font-weight: 700;
-      word-wrap: break-word;
-      font-family: "Open Sans", sans-serif;
-      margin-left: 1em;
-      background: #f2f2f2;
-      padding: 5px;
-    }
-
-    #table-of-contents {
-      padding-left: 0px;
-    }
-
-    #bcln-body {
-      visibility: hidden;
-    }
-
-  </style>
-
-  <script>
-
-    var currentPage = 1;
-    var numberOfPages = 1;
-
-    // Called on body load.
-    function initialize() {
-
-      // Add classes for styling purposes (Might be able to remove)
-      // $('#page-mod-lti-view', window.parent.document).addClass("path-mod-book");
-
-      showFirstPage();
-      $("#bcln-body").css("visibility", "visible");
-    }
-
-    function updateIframeHeight() {
-      // $('#contentframe', window.parent.document).height($('#bcln-body').outerHeight(false));
-      window.parent.postMessage($('#bcln-body').outerHeight(false), "*");
-    }
-
-    function updateTableOfContents() {
-      $(".toc-item").css("font-weight", "normal");
-      $("#toc-" + currentPage).css("font-weight", "bold");
-    }
-
-    function showFirstPage() {
-      numberOfPages = $(".lti-page").length;
-
-      $(".lti-page").css("display", "none"); // Hide all pages.
-      $("#page-1").css("display", "inline-block"); // Show the first page.
-
-      updateNavigationButtons();
-      updateTableOfContents();
-      updateIframeHeight();
-    }
-
-    function back() {
-      $(".lti-page").css("display", "none"); // Hide all pages.
-      currentPage--;
-      $("#page-" + currentPage).css("display", "inline-block"); // Show the current page.
-
-      updateNavigationButtons();
-      updateTableOfContents();
-      updateIframeHeight();
-    }
-
-    function next() {
-      $(".lti-page").css("display", "none"); // Hide all pages.
-      currentPage++;
-      $("#page-" + currentPage).css("display", "inline-block"); // Show the current page.
-
-      updateNavigationButtons();
-      updateTableOfContents();
-      updateIframeHeight();
-    }
-
-    function navigate(pageNumber) {
-      if (pageNumber > 0 && pageNumber <= numberOfPages) {
-        currentPage = pageNumber;
-        $(".lti-page").css("display", "none"); // Hide all pages.
-        $("#page-" + currentPage).css("display", "inline-block"); // Show the current page.
-      }
-
-      updateNavigationButtons();
-      updateTableOfContents();
-      updateIframeHeight();
-    }
-
-    function updateNavigationButtons() {
-      if (currentPage == 1) {
-        // Just show the next button
-        $("#nextBtn").css("visibility", "visible");
-        $("#backBtn").css("visibility", "hidden");
-      } else if (currentPage === numberOfPages) {
-        // Just show the back button
-        $("#backBtn").css("visibility", "visible");
-        $("#nextBtn").css("visibility", "hidden");
-      } else {
-        // Show both buttons
-        $("#nextBtn").css("visibility", "visible");
-        $("#backBtn").css("visibility", "visible");
-      }
-    }
-
-  </script>
+  <title>WCLN</title>
 
 </head>
 
 <body onload="initialize()">
-
   <div id="bcln-body" class="container-left">
     <div class="row">
       <?php foreach ($lessons as $lesson): ?>
