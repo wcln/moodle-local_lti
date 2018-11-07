@@ -73,7 +73,10 @@ if (isset($_POST['oauth_consumer_key'])) {
         </div>
       <?php endforeach ?>
       <aside class="col-md-3" id="table-of-contents">
-        <h2>Table of Contents</h2>
+        <div>
+          <h2>Table of Contents</h2>
+          <img src="wcln_logo.png">
+        </div>
         <ul>
           <?php foreach ($lessons as $lesson): ?>
             <li><a class="toc-item" id="toc-<?=$lesson->pagenum?>" onclick="navigate(<?=$lesson->pagenum?>)"><?=$lesson->title?></a></li>

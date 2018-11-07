@@ -17,6 +17,8 @@ function updateIframeHeight() {
 function updateTableOfContents() {
   $(".toc-item").css("font-weight", "normal");
   $("#toc-" + currentPage).css("font-weight", "bold");
+  $("#table-of-contents li").removeClass("current");
+  $("#toc-" + currentPage).parent().addClass("current");
 }
 
 function showFirstPage() {
