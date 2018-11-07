@@ -4,15 +4,13 @@ var numberOfPages = 1;
 // Called on body load.
 function initialize() {
 
-  // Add classes for styling purposes (Might be able to remove)
-  // $('#page-mod-lti-view', window.parent.document).addClass("path-mod-book");
-
   showFirstPage();
   $("#bcln-body").css("visibility", "visible");
+
+  window.addEventListener("resize", updateIframeHeight);
 }
 
 function updateIframeHeight() {
-  // $('#contentframe', window.parent.document).height($('#bcln-body').outerHeight(false));
   window.parent.postMessage($('#bcln-body').outerHeight(false), "*");
 }
 
