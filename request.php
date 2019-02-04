@@ -6,15 +6,16 @@ require_once(__DIR__ . '/../../config.php'); // standard config file
 if (isset($_POST['oauth_consumer_key'])) {
   if ($_POST['oauth_consumer_key'] === "consumerkey") {
 
-    // Ensure a book ID has been provided.
-    if (isset($_POST['custom_book_id'])) {
-      $book_id = $_POST['custom_book_id'];
+    // Ensure a course module id has been provided.
+    if (isset($_POST['custom_id'])) {
+      $id = $_POST['custom_id'];
 
-      // Query the database for the book, using the book id.
-      $book = $DB->get_record_sql('SELECT id, name FROM {book} WHERE id = ?', array($book_id));
+      $cm = get_coursemodule_from_id('book', $id, 0, false, MUST_EXIST);
+      $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
+      $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
       // Query the database for all lessons in the book, using the book id.
-      $lessons = $DB->get_records_sql('SELECT id, pagenum, title, content FROM {book_chapters} WHERE bookid=? ORDER BY pagenum ASC', array($book_id));
+      $lessons = $DB->get_records_sql('SELECT id, pagenum, title, content FROM {book_chapters} WHERE bookid=? ORDER BY pagenum ASC', array($book->id));
 
       // Replace characters to enable MathJax to filter WIRIS XML.
       foreach ($lessons as $lesson) {
