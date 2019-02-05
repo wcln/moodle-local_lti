@@ -9,4 +9,27 @@ if (!$cm = get_coursemodule_from_id('page', $id)) {
  }
 $page = $DB->get_record('page', array('id'=>$cm->instance), '*', MUST_EXIST);
 
-echo $page->content;
+
+?>
+<html>
+<head>
+  <!-- jQuery library -->
+  <script src="https://bclearningnetwork.com/lib/jquery/jquery-3.2.1.min.js"></script>
+  <script>
+
+  function init() {
+    window.addEventListener("resize", updateIframeHeight);
+    updateIframeHeight();
+  }
+
+
+  function updateIframeHeight() {
+    window.parent.postMessage($('body').outerHeight(false) + 10, "*");
+  }
+
+  </script>
+</head>
+<body onload="init()">
+<?php echo $page->content; ?>
+</body>
+</html>
