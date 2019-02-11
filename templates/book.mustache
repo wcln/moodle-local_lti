@@ -1,1 +1,65 @@
-<h1>Test book</h1>
+<html>
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://bclearningnetwork.com/lib/jquery/jquery-3.2.1.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- Custom stylesheet to style this page. -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      MathML: {
+        extensions: ["content-mathml.js"]
+      }
+    });
+  </script>
+
+  <!-- MathJax filter. -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+
+  <!-- Custom script to support navigation between book pages and calls for iframe resizing. -->
+  <script src="js/navigation.js"></script>
+
+  <title>WCLN</title>
+
+</head>
+
+<body onload="initialize()">
+  <div id="bcln-body" class="container-left">
+    <div class="row">
+      {{#lessons}}
+        <div class="col-md-9 lti-page" id="page-{{pagenum}}">
+          <h3>{{title}}</h3>
+          <hr>
+          <div id="content">{{{content}}}</div>
+        </div>
+      {{/lessons}}
+      <aside class="col-md-3" id="table-of-contents">
+        <div>
+          <h2>Table of Contents</h2>
+          <img src="images/wcln_logo_light.png">
+        </div>
+        <ul>
+          {{#lessons}}
+            <li><a class="toc-item" id="toc-{{pagenum}}" onclick="navigate(<?=$lesson->pagenum?>)">{{title}}</a></li>
+          {{/lessons}}
+        </ul>
+      </aside>
+    </div>
+    <div class="row">
+      <div class="col-md-3">
+        <!--<img src="images/wcln_logo.png" alt="logo">-->
+      </div>
+      <div class="col-md-6 text-center">
+      </div>
+      <div class="col-md-3 text-right">
+        <a class="back round lti-nav" id="backBtn" onclick="back()">&#8249;</a>
+        <a class="next round lti-nav" id="nextBtn" onclick="next()">&#8250;</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
