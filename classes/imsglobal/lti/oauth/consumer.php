@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to represent an %OAuth Consumer
@@ -9,7 +9,7 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
-class OAuthConsumer {
+class consumer {
 
     public $key;
     public $secret;
@@ -21,7 +21,6 @@ class OAuthConsumer {
     }
 
     function __toString() {
-        return "OAuthConsumer[key=$this->key,secret=$this->secret]";
+        return "consumer[key=$this->key,secret=$this->secret]";
     }
-
 }

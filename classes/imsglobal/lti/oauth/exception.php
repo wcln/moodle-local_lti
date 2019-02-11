@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to represent an %OAuth Exception
@@ -9,6 +9,6 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
-class OAuthException extends \Exception {
+class exception extends \Exception {
   // pass
 }

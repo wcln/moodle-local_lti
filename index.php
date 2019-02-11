@@ -1,6 +1,6 @@
 <?php
 
-use \local_lti\IMSGlobal\LTI\OAuth;
+use \local_lti\imsglobal\lti\oauth;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -65,11 +65,11 @@ function check_if_valid_launch_request() {
   // Check the OAuth credentials (nonce, timestamp and signature)
   if ($ok) {
     try {
-      $store = new OAuth\OAuthDataStore($_POST['oauth_consumer_key'], $tool_consumer_secrets[$_POST['oauth_consumer_key']]);
-      $server = new OAuth\OAuthServer($store);
-      $method = new OAuth\OAuthSignatureMethod_HMAC_SHA1();
+      $store = new oauth\datastore($_POST['oauth_consumer_key'], $tool_consumer_secrets[$_POST['oauth_consumer_key']]);
+      $server = new oauth\server($store);
+      $method = new oauth\signature_method_HMAC_SHA1();
       $server->add_signature_method($method);
-      $request = OAuth\OAuthRequest::from_request();
+      $request = oauth\request::from_request();
       $server->verify_request($request);
     } catch (Exception $e) {
       $ok = false;

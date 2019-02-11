@@ -1,26 +1,25 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
- * Class to represent an %OAuth HMAC_SHA256 signature method
+ * Class to represent an %OAuth HMAC_SHA1 signature method
  *
- * @author  Stephen P Vickers <svickers@imsglobal.org>
- * @copyright  IMS Global Learning Consortium Inc
- * @date  2016
- * @version 2015-11-30
+ * @copyright  Andy Smith
+ * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
 /**
- * The HMAC-SHA256 signature method uses the HMAC-SHA256 signature algorithm as defined in [RFC6234]
+ * The HMAC-SHA1 signature method uses the HMAC-SHA1 signature algorithm as defined in [RFC2104]
  * where the Signature Base String is the text and the key is the concatenated values (each first
  * encoded per Parameter Encoding) of the Consumer Secret and Token Secret, separated by an '&'
  * character (ASCII code 38) even if empty.
+ *   - Chapter 9.2 ("HMAC-SHA1")
  */
-class OAuthSignatureMethod_HMAC_SHA256 extends OAuthSignatureMethod {
+class signature_method_HMAC_SHA1 extends signature_method {
 
     function get_name() {
-        return "HMAC-SHA256";
+        return "HMAC-SHA1";
     }
 
     public function build_signature($request, $consumer, $token) {
@@ -33,10 +32,10 @@ class OAuthSignatureMethod_HMAC_SHA256 extends OAuthSignatureMethod {
           ($token) ? $token->secret : ""
         );
 
-        $key_parts = OAuthUtil::urlencode_rfc3986($key_parts);
+        $key_parts = util::urlencode_rfc3986($key_parts);
         $key = implode('&', $key_parts);
 
-        return base64_encode(hash_hmac('sha256', $base_string, $key, true));
+        return base64_encode(hash_hmac('sha1', $base_string, $key, true));
 
     }
 

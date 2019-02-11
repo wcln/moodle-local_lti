@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to represent an %OAuth Request
@@ -9,7 +9,7 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
-class OAuthRequest {
+class request {
 
     protected $parameters;
     protected $http_method;
@@ -22,7 +22,7 @@ class OAuthRequest {
     function __construct($http_method, $http_url, $parameters = null) {
 
         $parameters = ($parameters) ? $parameters : array();
-        $parameters = array_merge( OAuthUtil::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
+        $parameters = array_merge( util::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
         $this->parameters = $parameters;
         $this->http_method = $http_method;
         $this->http_url = $http_url;
@@ -51,11 +51,11 @@ class OAuthRequest {
       // parsed parameter-list
       if (!$parameters) {
           // Find request headers
-          $request_headers = OAuthUtil::get_headers();
+          $request_headers = util::get_headers();
 
           // Parse the query-string to find GET parameters
           if (isset($_SERVER['QUERY_STRING'])) {
-              $parameters = OAuthUtil::parse_parameters($_SERVER['QUERY_STRING']);
+              $parameters = util::parse_parameters($_SERVER['QUERY_STRING']);
           } else {
               $parameters = array();
           }
@@ -65,20 +65,20 @@ class OAuthRequest {
           if ($http_method == "POST"
               &&  isset($request_headers['Content-Type'])
               && strstr($request_headers['Content-Type'], 'application/x-www-form-urlencoded')) {
-              $post_data = OAuthUtil::parse_parameters(file_get_contents(self::$POST_INPUT));
+              $post_data = util::parse_parameters(file_get_contents(self::$POST_INPUT));
               $parameters = array_merge($parameters, $post_data);
           }
 
           // We have a Authorization-header with OAuth data. Parse the header
           // and add those overriding any duplicates from GET or POST
           if (isset($request_headers['Authorization']) && substr($request_headers['Authorization'], 0, 6) == 'OAuth ') {
-              $header_parameters = OAuthUtil::split_header($request_headers['Authorization']);
+              $header_parameters = util::split_header($request_headers['Authorization']);
               $parameters = array_merge($parameters, $header_parameters);
           }
 
       }
 
-      return new OAuthRequest($http_method, $http_url, $parameters);
+      return new request($http_method, $http_url, $parameters);
     }
 
     /**
@@ -87,16 +87,16 @@ class OAuthRequest {
     public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters = null) {
 
         $parameters = ($parameters) ?  $parameters : array();
-        $defaults = array('oauth_version' => OAuthRequest::$version,
-                          'oauth_nonce' => OAuthRequest::generate_nonce(),
-                          'oauth_timestamp' => OAuthRequest::generate_timestamp(),
+        $defaults = array('oauth_version' => request::$version,
+                          'oauth_nonce' => request::generate_nonce(),
+                          'oauth_timestamp' => request::generate_timestamp(),
                           'oauth_consumer_key' => $consumer->key);
         if ($token)
             $defaults['oauth_token'] = $token->key;
 
         $parameters = array_merge($defaults, $parameters);
 
-        return new OAuthRequest($http_method, $http_url, $parameters);
+        return new request($http_method, $http_url, $parameters);
 
     }
 
@@ -143,7 +143,7 @@ class OAuthRequest {
             unset($params['oauth_signature']);
         }
 
-        return OAuthUtil::build_http_query($params);
+        return util::build_http_query($params);
 
     }
 
@@ -161,7 +161,7 @@ class OAuthRequest {
             $this->get_signable_parameters()
         );
 
-        $parts = OAuthUtil::urlencode_rfc3986($parts);
+        $parts = util::urlencode_rfc3986($parts);
 
         return implode('&', $parts);
 
@@ -215,7 +215,7 @@ class OAuthRequest {
      * builds the data one would send in a POST request
      */
     public function to_postdata() {
-        return OAuthUtil::build_http_query($this->parameters);
+        return util::build_http_query($this->parameters);
     }
 
     /**
@@ -225,7 +225,7 @@ class OAuthRequest {
 
         $first = true;
         if($realm) {
-            $out = 'Authorization: OAuth realm="' . OAuthUtil::urlencode_rfc3986($realm) . '"';
+            $out = 'Authorization: OAuth realm="' . util::urlencode_rfc3986($realm) . '"';
             $first = false;
         } else
             $out = 'Authorization: OAuth';
@@ -234,12 +234,12 @@ class OAuthRequest {
         foreach ($this->parameters as $k => $v) {
             if (substr($k, 0, 5) != "oauth") continue;
             if (is_array($v)) {
-              throw new OAuthException('Arrays not supported in headers');
+              throw new exception('Arrays not supported in headers');
             }
             $out .= ($first) ? ' ' : ',';
-            $out .= OAuthUtil::urlencode_rfc3986($k) .
+            $out .= util::urlencode_rfc3986($k) .
                     '="' .
-                    OAuthUtil::urlencode_rfc3986($v) .
+                    util::urlencode_rfc3986($v) .
                     '"';
             $first = false;
         }

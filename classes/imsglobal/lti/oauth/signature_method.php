@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to represent an %OAuth Signature Method
@@ -13,7 +13,7 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * A class for implementing a Signature Method
  * See section 9 ("Signing Requests") in the spec
  */
-abstract class OAuthSignatureMethod {
+abstract class signature_method {
     /**
      * Needs to return the name of the Signature Method (ie HMAC-SHA1)
      * @return string
@@ -23,20 +23,20 @@ abstract class OAuthSignatureMethod {
     /**
      * Build up the signature
      * NOTE: The output of this function MUST NOT be urlencoded.
-     * the encoding is handled in OAuthRequest when the final
+     * the encoding is handled in request when the final
      * request is serialized
-     * @param OAuthRequest $request
-     * @param OAuthConsumer $consumer
-     * @param OAuthToken $token
+     * @param request $request
+     * @param consumer $consumer
+     * @param token $token
      * @return string
      */
     abstract public function build_signature($request, $consumer, $token);
 
     /**
      * Verifies that a given signature is correct
-     * @param OAuthRequest $request
-     * @param OAuthConsumer $consumer
-     * @param OAuthToken $token
+     * @param request $request
+     * @param consumer $consumer
+     * @param token $token
      * @param string $signature
      * @return bool
      */

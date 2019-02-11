@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to represent an %OAuth Server
@@ -9,10 +9,10 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
-class OAuthServer {
+class server {
 
     protected $timestamp_threshold = 300; // in seconds, five minutes
-    protected $version = '1.0';             
+    protected $version = '1.0';
     protected $signature_methods = array();
 
     protected $data_store;
@@ -100,7 +100,7 @@ class OAuthServer {
             $version = '1.0';
         }
         if ($version !== $this->version) {
-            throw new OAuthException("OAuth version '$version' not supported");
+            throw new exception("OAuth version '$version' not supported");
         }
 
         return $version;
@@ -112,18 +112,18 @@ class OAuthServer {
      */
     private function get_signature_method($request) {
 
-        $signature_method = $request instanceof OAuthRequest
+        $signature_method = $request instanceof request
             ? $request->get_parameter('oauth_signature_method') : NULL;
 
         if (!$signature_method) {
             // According to chapter 7 ("Accessing Protected Ressources") the signature-method
             // parameter is required, and we can't just fallback to PLAINTEXT
-            throw new OAuthException('No signature method parameter. This parameter is required');
+            throw new exception('No signature method parameter. This parameter is required');
         }
 
         if (!in_array($signature_method,
                       array_keys($this->signature_methods))) {
-            throw new OAuthException(
+            throw new exception(
               "Signature method '$signature_method' not supported " .
               'try one of the following: ' .
               implode(', ', array_keys($this->signature_methods))
@@ -139,16 +139,16 @@ class OAuthServer {
      */
     private function get_consumer($request) {
 
-        $consumer_key = $request instanceof OAuthRequest
+        $consumer_key = $request instanceof request
             ? $request->get_parameter('oauth_consumer_key') : NULL;
 
         if (!$consumer_key) {
-            throw new OAuthException('Invalid consumer key');
+            throw new exception('Invalid consumer key');
         }
 
         $consumer = $this->data_store->lookup_consumer($consumer_key);
         if (!$consumer) {
-            throw new OAuthException('Invalid consumer');
+            throw new exception('Invalid consumer');
         }
 
         return $consumer;
@@ -160,12 +160,12 @@ class OAuthServer {
      */
     private function get_token($request, $consumer, $token_type="access") {
 
-        $token_field = $request instanceof OAuthRequest
+        $token_field = $request instanceof request
              ? $request->get_parameter('oauth_token') : NULL;
 
         $token = $this->data_store->lookup_token($consumer, $token_type, $token_field);
         if (!$token) {
-            throw new OAuthException("Invalid $token_type token: $token_field");
+            throw new exception("Invalid $token_type token: $token_field");
         }
 
         return $token;
@@ -179,10 +179,10 @@ class OAuthServer {
     private function check_signature($request, $consumer, $token) {
 
         // this should probably be in a different method
-        $timestamp = $request instanceof OAuthRequest
+        $timestamp = $request instanceof request
             ? $request->get_parameter('oauth_timestamp')
             : NULL;
-        $nonce = $request instanceof OAuthRequest
+        $nonce = $request instanceof request
             ? $request->get_parameter('oauth_nonce')
             : NULL;
 
@@ -195,7 +195,7 @@ class OAuthServer {
         $valid_sig = $signature_method->check_signature($request, $consumer, $token, $signature);
 
         if (!$valid_sig) {
-            throw new OAuthException('Invalid signature');
+            throw new exception('Invalid signature');
         }
     }
 
@@ -204,12 +204,12 @@ class OAuthServer {
      */
     private function check_timestamp($timestamp) {
         if(!$timestamp)
-            throw new OAuthException('Missing timestamp parameter. The parameter is required');
+            throw new exception('Missing timestamp parameter. The parameter is required');
 
         // verify that timestamp is recentish
         $now = time();
         if (abs($now - $timestamp) > $this->timestamp_threshold) {
-            throw new OAuthException("Expired timestamp, yours $timestamp, ours $now");
+            throw new exception("Expired timestamp, yours $timestamp, ours $now");
         }
 
     }
@@ -220,12 +220,12 @@ class OAuthServer {
     private function check_nonce($consumer, $token, $nonce, $timestamp) {
 
         if(!$nonce)
-          throw new OAuthException('Missing nonce parameter. The parameter is required');
+          throw new exception('Missing nonce parameter. The parameter is required');
 
         // verify that the nonce is uniqueish
         $found = $this->data_store->lookup_nonce($consumer, $token, $nonce, $timestamp);
         if ($found) {
-            throw new OAuthException("Nonce already used: $nonce");
+            throw new exception("Nonce already used: $nonce");
         }
 
     }

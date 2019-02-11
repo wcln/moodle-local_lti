@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to represent an %OAuth Data Store
@@ -9,7 +9,7 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
-class OAuthDataStore {
+class datastore {
   private $consumer_key = NULL;
   private $consumer_secret = NULL;
 
@@ -22,13 +22,13 @@ class OAuthDataStore {
 
   function lookup_consumer($consumer_key) {
 
-    return new OAuthConsumer($this->consumer_key, $this->consumer_secret);
+    return new consumer($this->consumer_key, $this->consumer_secret);
 
   }
 
   function lookup_token($consumer, $token_type, $token) {
 
-    return new OAuthToken($consumer, '');
+    return new token($consumer, '');
 
   }
 

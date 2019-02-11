@@ -1,6 +1,6 @@
 <?php
 
-namespace local_lti\IMSGlobal\LTI\OAuth;
+namespace local_lti\imsglobal\lti\oauth;
 
 /**
  * Class to provide %OAuth utility methods
@@ -9,12 +9,12 @@ namespace local_lti\IMSGlobal\LTI\OAuth;
  * @version 2008-08-04
  * @license https://opensource.org/licenses/MIT The MIT License
  */
-class OAuthUtil {
+class util {
 
     public static function urlencode_rfc3986($input) {
 
         if (is_array($input)) {
-            return array_map(array('IMSGlobal\LTI\OAuth\OAuthUtil', 'urlencode_rfc3986'), $input);
+            return array_map(array('local_lti\imsglobal\lti\oauth\util', 'urlencode_rfc3986'), $input);
         } else if (is_scalar($input)) {
             return str_replace('+', ' ', str_replace('%7E', '~', rawurlencode($input)));
         } else {
@@ -39,7 +39,7 @@ class OAuthUtil {
         $params = array();
         if (preg_match_all('/('.($only_allow_oauth_parameters ? 'oauth_' : '').'[a-z_-]*)=(:?"([^"]*)"|([^,]*))/', $header, $matches)) {
             foreach ($matches[1] as $i => $h) {
-                $params[$h] = OAuthUtil::urldecode_rfc3986(empty($matches[3][$i]) ? $matches[4][$i] : $matches[3][$i]);
+                $params[$h] = util::urldecode_rfc3986(empty($matches[3][$i]) ? $matches[4][$i] : $matches[3][$i]);
             }
             if (isset($params['realm'])) {
                 unset($params['realm']);
@@ -129,8 +129,8 @@ class OAuthUtil {
         if (!$params) return '';
 
         // Urlencode both keys and values
-        $keys = OAuthUtil::urlencode_rfc3986(array_keys($params));
-        $values = OAuthUtil::urlencode_rfc3986(array_values($params));
+        $keys = util::urlencode_rfc3986(array_keys($params));
+        $values = util::urlencode_rfc3986(array_values($params));
         $params = array_combine($keys, $values);
 
         // Parameters are sorted by name, using lexicographical byte value ordering.
