@@ -2,4 +2,4 @@
 
 This project creates an LTI provider framework to be hosted on WCLN. Books are provided via LTI to school districts.  
 
-https://bclearningnetwork.com
+https://wcln.ca
