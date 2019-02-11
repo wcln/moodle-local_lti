@@ -7,32 +7,35 @@ if (isset($_POST['oauth_consumer_key'])) {
   if ($_POST['oauth_consumer_key'] === "consumerkey") {
 
     // Ensure a course module id has been provided.
-    if (isset($_POST['custom_id']) || isset($_GET['book_id'])) {
-      if (isset($_GET['book_id'])) {
-        $id = $_GET['book_id'];
-      } else {
+    $id = null;
+    if ($_POST['tool_consumer_info_product_family_code'] === "moodle") {
+      if (isset($_POST['custom_id'])) {
         $id = $_POST['custom_id'];
       }
-
-      $cm = get_coursemodule_from_id('book', $id, 0, false, MUST_EXIST);
-      $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
-      $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
-
-      // Query the database for all lessons in the book, using the book id.
-      $lessons = $DB->get_records_sql('SELECT id, pagenum, title, content FROM {book_chapters} WHERE bookid=? ORDER BY pagenum ASC', array($book->id));
-
-      // Replace characters to enable MathJax to filter WIRIS XML.
-      foreach ($lessons as $lesson) {
-        $lesson->content = str_replace('«', '<', $lesson->content);
-        $lesson->content = str_replace('»', '>', $lesson->content);
-        $lesson->content = str_replace('§', '&', $lesson->content);
-        $lesson->content = str_replace('¨', '"', $lesson->content);
-        $lesson->content = str_replace('´', "'", $lesson->content);
+    } else if ($_POST['tool_consumer_info_product_family_code'] === "canvas") {
+      if (isset($_GET['book_id'])) {
+        $id = $_GET['book_id'];
       }
+    }
 
+    $cm = get_coursemodule_from_id('book', $id, 0, false, MUST_EXIST);
+    $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
+    $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
+
+    // Query the database for all lessons in the book, using the book id.
+    $lessons = $DB->get_records_sql('SELECT id, pagenum, title, content FROM {book_chapters} WHERE bookid=? ORDER BY pagenum ASC', array($book->id));
+
+    // Replace characters to enable MathJax to filter WIRIS XML.
+    foreach ($lessons as $lesson) {
+      $lesson->content = str_replace('«', '<', $lesson->content);
+      $lesson->content = str_replace('»', '>', $lesson->content);
+      $lesson->content = str_replace('§', '&', $lesson->content);
+      $lesson->content = str_replace('¨', '"', $lesson->content);
+      $lesson->content = str_replace('´', "'", $lesson->content);
     }
   }
 }
+
 
 
 // Build HTML page
