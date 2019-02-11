@@ -7,8 +7,12 @@ if (isset($_POST['oauth_consumer_key'])) {
   if ($_POST['oauth_consumer_key'] === "consumerkey") {
 
     // Ensure a course module id has been provided.
-    if (isset($_POST['custom_id'])) {
-      $id = $_POST['custom_id'];
+    if (isset($_POST['custom_id']) || isset($_GET['book_id'])) {
+      if (isset($_GET['book_id'])) {
+        $id = $_GET['book_id'];
+      } else {
+        $id = $_POST['custom_id'];
+      }
 
       $cm = get_coursemodule_from_id('book', $id, 0, false, MUST_EXIST);
       $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
