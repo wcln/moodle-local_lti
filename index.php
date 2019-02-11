@@ -1,14 +1,30 @@
 <?php
 
+use \local_lti\IMSGlobal\LTI\OAuth;
+
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+
+require_once(__DIR__ . '/../../config.php');
+
 $ok = check_if_launch_request();
 
 if ($ok) {
-  $ok = check_required_parameters();
+
+  $ok = check_if_valid_launch_request();
 
   if ($ok) {
-    echo 'Good to go, here is your book.';
+    $ok = check_required_parameters();
+
+    if ($ok) {
+      // Render book from template.
+      echo 'Good to go, here is your book.';
+    } else {
+      echo 'Missing required parameters!';
+    }
   } else {
-    echo 'Missing required parameters!';
+    echo 'Not valid.';
   }
 
 } else {
@@ -34,6 +50,32 @@ function check_if_launch_request() {
 
   // Check a resource link ID exists
   $ok = $ok && !empty($_POST['resource_link_id']);
+
+  return $ok;
+}
+
+function check_if_valid_launch_request() {
+  $ok = true;
+
+  $tool_consumer_secrets = array('wcln' => 'testsecret');
+
+  // Check the consumer key is recognised
+  $ok = $ok && array_key_exists($_POST['oauth_consumer_key'], $tool_consumer_secrets);
+
+  // Check the OAuth credentials (nonce, timestamp and signature)
+  if ($ok) {
+    try {
+      $store = new OAuth\OAuthDataStore($_POST['oauth_consumer_key'], $tool_consumer_secrets[$_POST['oauth_consumer_key']]);
+      $server = new OAuth\OAuthServer($store);
+      $method = new OAuth\OAuthSignatureMethod_HMAC_SHA1();
+      $server->add_signature_method($method);
+      $request = OAuth\OAuthRequest::from_request();
+      $server->verify_request($request);
+    } catch (Exception $e) {
+      $ok = false;
+      echo $e;
+    }
+  }
 
   return $ok;
 }
