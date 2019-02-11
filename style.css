@@ -86,10 +86,10 @@ aside#table-of-contents {
   background-image: linear-gradient(to bottom right, #fcfcfc, #f6f6f6);
   width: 24%;
   margin-top: 25px;
-  box-shadow: 5px 10px #c9c9c9;
+  /* box-shadow: 5px 10px #c9c9c9; */
   border: 1px solid #969696;
   min-width: 270px;
-  border-radius: 2px;
+  /* border-radius: 2px; */
 }
 
 #table-of-contents > div {

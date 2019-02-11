@@ -83,7 +83,7 @@ if (isset($_POST['oauth_consumer_key'])) {
       <aside class="col-md-3" id="table-of-contents">
         <div>
           <h2>Table of Contents</h2>
-          <img src="wcln_logo_light.png">
+          <img src="images/wcln_logo_light.png">
         </div>
         <ul>
           <?php foreach ($lessons as $lesson): ?>
