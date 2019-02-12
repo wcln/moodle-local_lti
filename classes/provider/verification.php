@@ -45,8 +45,8 @@ class verification {
   private static function verify_valid_launch_request() {
     $ok = true;
 
-    // TODO: create lti database table and retrieve array of consumer keys and secrets.
-    $tool_consumer_secrets = array('wcln' => 'testsecret');
+    // Retrieve array of consumer keys and secrets.
+    $tool_consumer_secrets = verification::get_enabled_tool_consumer_secrets();
 
     // Check the consumer key is recognised
     $ok = $ok && array_key_exists($_POST['oauth_consumer_key'], $tool_consumer_secrets);
@@ -79,6 +79,28 @@ class verification {
     $ok = $ok && (!empty($_POST['custom_id']) || !empty($_GET['id']));
 
     return $ok;
+  }
+
+  private static function get_all_tool_consumer_secrets() {
+    global $DB;
+
+    $tool_consumer_secrets = $DB->get_records_menu('local_lti_consumer', null, '', 'consumer_key, secret');
+    return $tool_consumer_secrets;
+  }
+
+  private static function get_enabled_tool_consumer_secrets() {
+    global $DB;
+
+    $now = date("Y-m-d H:i:s");
+
+    $sql = 'SELECT consumer_key, secret
+            FROM {local_lti_consumer}
+            WHERE enabled = 1
+            AND (enable_from < ? OR enable_from IS NULL)
+            AND (enable_until > ? OR enable_until IS NULL)';
+
+    $tool_consumer_secrets = $DB->get_records_sql_menu($sql, array($now, $now));
+    return $tool_consumer_secrets;
   }
 
 }
