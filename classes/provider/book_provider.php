@@ -2,6 +2,7 @@
 
 namespace local_lti\provider;
 use \local_lti\imsglobal\lti\oauth;
+use local_lti\provider\error;
 
 class book_provider {
 
@@ -10,9 +11,15 @@ class book_provider {
 
     $id = book_provider::get_course_module_id();
 
-    $cm = get_coursemodule_from_id('book', $id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
-    $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
+    try {
+      $cm = get_coursemodule_from_id('book', $id, 0, false, MUST_EXIST);
+      $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
+      $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
+    } catch(\Exception $e) {
+      error::render(get_string('error_book_id', 'local_lti'));
+      return null;
+    }
+
 
     return $book->id;
   }
@@ -39,7 +46,11 @@ class book_provider {
     $renderer = $PAGE->get_renderer('local_lti');
 
     // Render the book.
-    $book = new \local_lti\output\book(book_provider::get_book_id());
-    echo $renderer->render($book);
+    if ($book_id = book_provider::get_book_id()) {
+      $book = new \local_lti\output\book($book_id);
+      echo $renderer->render($book);
+      return true;
+    }
+    return false;
   }
 }

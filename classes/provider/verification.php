@@ -2,6 +2,7 @@
 
 namespace local_lti\provider;
 use \local_lti\imsglobal\lti\oauth;
+use local_lti\provider\error;
 
 class verification {
 
@@ -11,13 +12,13 @@ class verification {
         if (verification::verify_required_parameters()) {
           return true;
         } else {
-          echo "Error: Missing required parameters!";
+          error::render(get_string('error_missing_required_params', 'local_lti'));
         }
       } else {
-        echo "Error: Authentication failed! Not a valid launch request.";
+        error::render(get_string('error_auth_failed', 'local_lti'));
       }
     } else {
-      echo "Error: Not an LTI launch request.";
+      error::render(get_string('error_launch_request', 'local_lti'));
     }
   }
 
@@ -62,7 +63,6 @@ class verification {
         $server->verify_request($request);
       } catch (Exception $e) {
         $ok = false;
-        echo $e; // temp.
       }
     }
 

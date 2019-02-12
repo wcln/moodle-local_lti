@@ -29,7 +29,11 @@ switch ($request) {
 
     // Check if the request is valid.
     if (verification::verify_request()) {
-      book_provider::render();
+      try {
+        book_provider::render();
+      } catch(Exception $e) {
+        error::render(get_string('error_rendering_book', 'local_lti', $e->getMessage()));
+      }
     }
     break;
 
@@ -38,11 +42,15 @@ switch ($request) {
 
     // Check if the request is valid.
     if (verification::verify_request()) {
-      page_provider::render();
+      try {
+        page_provider::render();
+      } catch(Exception $e) {
+        error::render(get_string('error_rendering_page', 'local_lti', $e->getMessage()));
+      }
     }
     break;
 
   default:
-    error::render('Invalid LTI type. Try lti.wcln.ca/book or lti.wcln.ca/page');
+    error::render(get_string('error_invalid_type', 'local_lti'));
     break;
 }
