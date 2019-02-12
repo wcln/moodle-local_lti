@@ -18,12 +18,9 @@ $PAGE->set_context(context_system::instance());
 // Get the plugin renderer.
 $renderer = $PAGE->get_renderer('local_lti');
 
-echo 'test';
-
-die();
-
 // Retrieve redirect URL for routing.
-$request = $_SERVER['REDIRECT_URL'];
+// $request = $_SERVER['REDIRECT_URL'];
+$request = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/')); // Temp... waiting for sub domain. Uncomment above once set up.
 switch ($request) {
 
   // Consumer is requesting an LTI book.

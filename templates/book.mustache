@@ -7,6 +7,9 @@
   <!-- Latest compiled JavaScript -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
+  <!-- Custom CSS to style this book. -->
+  <link rel="stylesheet" href="../style/book.css">
+
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       MathML: {
@@ -19,7 +22,7 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
   <!-- Custom script to support navigation between book pages and calls for iframe resizing. -->
-  <script src="js/book_navigation.js"></script>
+  <script src="../js/book_navigation.js"></script>
 
   <title>WCLN</title>
 
@@ -38,11 +41,11 @@
       <aside class="col-md-3" id="table-of-contents">
         <div>
           <h2>Table of Contents</h2>
-          <img src="images/wcln_logo_light.png">
+          <img src="../images/wcln_logo_light.png">
         </div>
         <ul>
           {{#lessons}}
-            <li><a class="toc-item" id="toc-{{pagenum}}" onclick="navigate(<?=$lesson->pagenum?>)">{{title}}</a></li>
+            <li><a class="toc-item" id="toc-{{pagenum}}" onclick="navigate({{pagenum}})">{{title}}</a></li>
           {{/lessons}}
         </ul>
       </aside>
