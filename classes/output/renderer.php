@@ -13,4 +13,9 @@ class renderer extends plugin_renderer_base {
         return parent::render_from_template('local_lti/book', $data);
     }
 
+    public function render_page($page) {
+        $data = $page->export_for_template($this);
+        return parent::render_from_template('local_lti/page', $data);
+    }
+
 }
