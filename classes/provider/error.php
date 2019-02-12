@@ -4,7 +4,7 @@ namespace local_lti\provider;
 
 class error {
 
-  public static function display($message) {
+  public static function render($message) {
     global $PAGE;
 
     // Get the plugin renderer.

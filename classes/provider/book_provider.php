@@ -5,7 +5,7 @@ use \local_lti\imsglobal\lti\oauth;
 
 class book_provider {
 
-  public static function get_book_id() {
+  private static function get_book_id() {
     global $DB;
 
     $id = book_provider::get_course_module_id();
@@ -30,5 +30,16 @@ class book_provider {
     }
 
     return $id;
+  }
+
+  public static function render() {
+    global $PAGE;
+
+    // Get the plugin renderer.
+    $renderer = $PAGE->get_renderer('local_lti');
+
+    // Render the book.
+    $book = new \local_lti\output\book(book_provider::get_book_id());
+    echo $renderer->render($book);
   }
 }

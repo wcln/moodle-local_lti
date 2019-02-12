@@ -5,7 +5,7 @@ use \local_lti\imsglobal\lti\oauth;
 
 class page_provider {
 
-  public static function get_page_id() {
+  private static function get_page_id() {
     $request = oauth\request::from_request();
 
     $id = $request->get_parameter('custom_id');
@@ -15,5 +15,16 @@ class page_provider {
      }
 
      return $cm->instance;
+  }
+
+  public static function render() {
+    global $PAGE;
+
+    // Get the plugin renderer.
+    $renderer = $PAGE->get_renderer('local_lti');
+
+    // Render the page.
+    $page = new \local_lti\output\page(page_provider::get_page_id());
+    echo $renderer->render($page);
   }
 }

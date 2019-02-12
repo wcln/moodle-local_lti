@@ -22,7 +22,6 @@ $renderer = $PAGE->get_renderer('local_lti');
 // Retrieve redirect URL for routing.
 // $request = $_SERVER['REDIRECT_URL'];
 $request = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/')); // Temp... waiting for sub domain. Uncomment above once set up.
-$request = "test";
 switch ($request) {
 
   // Consumer is requesting an LTI book.
@@ -30,12 +29,8 @@ switch ($request) {
 
     // Check if the request is valid.
     if (verification::verify_request()) {
-
-      // Render the book.
-      $book = new \local_lti\output\book(book_provider::get_book_id());
-      echo $renderer->render($book);
+      book_provider::render();
     }
-
     break;
 
   // Consumer is requesting an LTI page.
@@ -43,15 +38,11 @@ switch ($request) {
 
     // Check if the request is valid.
     if (verification::verify_request()) {
-
-      // Render the page.
-      $page = new \local_lti\output\page(page_provider::get_page_id());
-      echo $renderer->render($page);
+      page_provider::render();
     }
-
     break;
 
   default:
-    error::display('Invalid LTI type. Try lti.wcln.ca/book or lti.wcln.ca/page');
+    error::render('Invalid LTI type. Try lti.wcln.ca/book or lti.wcln.ca/page');
     break;
 }
