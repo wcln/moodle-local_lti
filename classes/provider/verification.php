@@ -45,6 +45,7 @@ class verification {
   private static function verify_valid_launch_request() {
     $ok = true;
 
+    // TODO: create lti database table and retrieve array of consumer keys and secrets.
     $tool_consumer_secrets = array('wcln' => 'testsecret');
 
     // Check the consumer key is recognised
@@ -61,7 +62,7 @@ class verification {
         $server->verify_request($request);
       } catch (Exception $e) {
         $ok = false;
-        echo $e;
+        echo $e; // temp.
       }
     }
 
@@ -75,7 +76,7 @@ class verification {
     $ok = $ok && !empty($_POST['tool_consumer_info_product_family_code']);
 
     // Check that a book ID is set either through GET or POST.
-    $ok = $ok && (!empty($_POST['custom_id']) || !empty($_GET['book_id']));
+    $ok = $ok && (!empty($_POST['custom_id']) || !empty($_GET['id']));
 
     return $ok;
   }
