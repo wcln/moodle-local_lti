@@ -3,6 +3,7 @@
 use local_lti\provider\verification;
 use local_lti\provider\book_provider;
 use local_lti\provider\page_provider;
+use local_lti\provider\error;
 
 // Temp.
 ini_set('display_errors', 1);
@@ -21,6 +22,7 @@ $renderer = $PAGE->get_renderer('local_lti');
 // Retrieve redirect URL for routing.
 // $request = $_SERVER['REDIRECT_URL'];
 $request = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/')); // Temp... waiting for sub domain. Uncomment above once set up.
+$request = "test";
 switch ($request) {
 
   // Consumer is requesting an LTI book.
@@ -50,6 +52,6 @@ switch ($request) {
     break;
 
   default:
-    echo 'Invalid LTI type. Try lti.wcln.ca/book or lti.wcln.ca/page';
+    error::display('Invalid LTI type. Try lti.wcln.ca/book or lti.wcln.ca/page');
     break;
 }
