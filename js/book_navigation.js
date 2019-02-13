@@ -72,15 +72,15 @@ function navigate(pageNumber) {
 function updateNavigationButtons() {
   if (currentPage == 1) {
     // Just show the next button
-    $("#nextBtn").prop("disabled", false);
-    $("#backBtn").prop("disabled", true);
+    $(".next-btn").css("visibility", "visible");
+    $(".back-btn").css("visibility", "hidden");
   } else if (currentPage === numberOfPages) {
     // Just show the back button
-    $("#nextBtn").prop("disabled", true);
-    $("#backBtn").prop("disabled", false);
+    $(".next-btn").css("visibility", "hidden");
+    $(".back-btn").css("visibility", "visible");
   } else {
     // Show both buttons.
-    $("#nextBtn").prop("disabled", false);
-    $("#backBtn").prop("disabled", false);
+    $(".next-btn").css("visibility", "visible");
+    $(".back-btn").css("visibility", "visible");
   }
 }

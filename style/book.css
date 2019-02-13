@@ -61,3 +61,30 @@ body {
   margin-top: 4em;
   padding: 1em;
 }
+
+.local_lti_book .next-btn img, .local_lti_book .back-btn img {
+  height: 25px;
+}
+
+.local_lti_book .next-btn:hover, .local_lti_book .back-btn:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.local_lti_book .next-btn {
+  margin-left: .5em;
+}
+
+.local_lti_book .back-btn {
+  margin-right: .5em;
+}
+
+.local_lti_book .next-btn, .local_lti_book .back-btn {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.local_lti_book .custom-navigation {
+  display: flex;
+  align-items: center;
+}

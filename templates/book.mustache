@@ -44,8 +44,8 @@
            <ul class="navbar-nav mr-auto">
              <!-- Force below navbar to right -->
            </ul>
-           <ul class="navbar-nav">
-             <button class="btn btn-secondary" type="button">Back</button>
+           <ul class="navbar-nav custom-navigation">
+             <a class="back-btn" onclick="back({{pagenum}})"><img src="images/back_btn.png"/></a>
              <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                  Table of Contents
@@ -56,7 +56,7 @@
                  {{/lessons}}
                </div>
              </li>
-             <button class="btn btn-primary" type="button">Next</button>
+             <a class="next-btn" onclick="next({{pagenum}})"><img src="images/next_btn.png"/></a>
            </ul>
          </div>
          </nav>
