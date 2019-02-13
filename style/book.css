@@ -15,6 +15,11 @@ body {
   height: 30px;
 }
 
+.local_lti_book .navbar {
+  padding-top: .3em;
+  padding-bottom: .3em;
+}
+
 /* Center logo and brand text. */
 .local_lti_book .navbar-brand {
   display: flex;
