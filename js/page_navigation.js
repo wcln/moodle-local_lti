@@ -5,5 +5,13 @@ function init() {
 
 
 function updateIframeHeight() {
-  window.parent.postMessage($('body').outerHeight(false) + 10, "*");
+  // Calculate height of current page content.
+  let height = $('#page-' + currentPage).outerHeight(false);
+
+  // Moodle.
+  // TODO check if moodle or canvas.
+  window.parent.postMessage(height, "*");
+
+  // Canvas.
+  window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
 }
