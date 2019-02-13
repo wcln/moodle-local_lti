@@ -5,6 +5,7 @@ $string['pluginname'] = "WCLN LTI Provider";
 
 // Errors.
 $string['error_heading'] = 'LTI Error';
+$string['error_footer'] = 'Contact a course administrator, teacher or wcln.ca to fix this issue.';
 $string['error_invalid_type'] = 'Invalid LTI type. Try lti.wcln.ca/book or lti.wcln.ca/page.';
 $string['error_missing_required_params'] = 'Missing required parameters!';
 $string['error_auth_failed'] = 'Authentication failed! Not a valid launch request.';

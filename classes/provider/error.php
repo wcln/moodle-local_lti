@@ -15,5 +15,4 @@ class error {
     echo $renderer->render($error);
 
   }
-
 }

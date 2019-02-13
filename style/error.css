@@ -1,0 +1,26 @@
+.local_lti_error {
+  font-family: 'Century Gothic', 'Open Sans', Arial;
+}
+
+.local_lti_error img {
+  height: 35px;
+  margin-left: .7em;
+}
+
+.local_lti_error .header {
+  position: relative;
+  height: 70px;
+  background-color: #b2b2b2;
+}
+
+.local_lti_error .content {
+  margin-left: .2em;
+  margin-top: 1em;
+}
+
+.local_lti_error h1 {
+  display: inline-block;
+  margin-left: .2em;
+  position: relative;
+  top: -6px;
+}
