@@ -1,31 +1,63 @@
-.lti-page {
+
+/* Ensure the LTI page takes up the entire width. */
+.local_lti_book .lti-page {
   overflow: auto;
   width: 100%;
 }
 
+/* Hide the body until everything is loaded. */
 body {
   visibility: hidden;
 }
 
-.navbar-brand img {
+/* Logo. */
+.local_lti_book .navbar-brand img {
   height: 30px;
 }
 
-.navbar-brand .title {
-  color: #fff;
-  margin-left: .3em;
+/* Center logo and brand text. */
+.local_lti_book .navbar-brand {
+  display: flex;
+  align-items: center;
 }
 
-.dropdown-item {
+/* Set size and colour of brand title text. */
+.local_lti_book .navbar-brand .title {
+  color: #fff;
+  margin-left: .7em;
+  font-size: 1.5rem;
+}
+
+/* Make the current page blue in the dropdown. */
+.local_lti_book .dropdown-item.active {
+  color: #fff;
+  background-color: #008ee2;
+}
+
+/* Make sure current page style stays the same when it is clicked. */
+.local_lti_book .dropdown-item.active:active {
+  color: #fff;
+  background-color: #008ee2;
+}
+
+/* Override some CSS, ensure drop down items are not styled when clicked. */
+.local_lti_book .dropdown-item:active {
+  color: black;
+  background-color: inherit;
+}
+
+/* Make sure the text color stays the same when the active dropdown is hovered. */
+.local_lti_book .dropdown-item.active:hover {
+  color: #fff;
+}
+
+/* Show a pointer cursor when a dropdown item is hovered. */
+.local_lti_book .dropdown-item {
   cursor: pointer;
 }
 
-.content {
-  margin: 5em 1em 1em 1em;
+/* Place margin and padding around page content to prevent header covering it. */
+.local_lti_book .content {
+  margin-top: 4em;
+  padding: 1em;
 }
-
-/* TODO only want to do this if Moodle. */
-/* .dropdown-menu {
-  max-height: 450px;
-  overflow-y: scroll;
-} */

@@ -1,12 +1,19 @@
+// The page we are currently on (starts at 1).
 var currentPage = 1;
+
+// The number of pages.
 var numberOfPages = 1;
 
 // Called on body load.
 function initialize() {
 
+  // Show the first page.
   showFirstPage();
+
+  // Show the body.
   $("body").css("visibility", "visible");
 
+  // Udate iframe height when the window is resized.
   window.addEventListener("resize", updateIframeHeight);
 }
 
@@ -16,74 +23,64 @@ function updateIframeHeight() {
   let height = $('#page-' + currentPage).outerHeight(false);
 
   // Moodle.
+  // TODO check if moodle or canvas.
   // window.parent.postMessage(height, "*");
 
   // Canvas.
   window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
 }
 
-function updateTableOfContents() {
-  $(".toc-item").css("font-weight", "normal");
-  $("#toc-" + currentPage).css("font-weight", "bold");
-  $("#table-of-contents li").removeClass("current");
-  $("#toc-" + currentPage).parent().addClass("current");
-}
-
 function showFirstPage() {
   numberOfPages = $(".lti-page").length;
-
-  $(".lti-page").css("display", "none"); // Hide all pages.
-  $("#page-1").css("display", "inline-block"); // Show the first page.
-
-  updateNavigationButtons();
-  updateTableOfContents();
-  updateIframeHeight();
+  navigate(1);
 }
 
-function back() {
-  $(".lti-page").css("display", "none"); // Hide all pages.
-  currentPage--;
-  $("#page-" + currentPage).css("display", "inline-block"); // Show the current page.
-
-  updateNavigationButtons();
-  updateTableOfContents();
-  updateIframeHeight();
+function back(pageNumber) {
+  navigate(--pageNumber);
 }
 
-function next() {
-  $(".lti-page").css("display", "none"); // Hide all pages.
-  currentPage++;
-  $("#page-" + currentPage).css("display", "inline-block"); // Show the current page.
-
-  updateNavigationButtons();
-  updateTableOfContents();
-  updateIframeHeight();
+function next(pageNumber) {
+  navigate(++pageNumber);
 }
 
 function navigate(pageNumber) {
   if (pageNumber > 0 && pageNumber <= numberOfPages) {
+
+    // Update the current page.
     currentPage = pageNumber;
-    $(".lti-page").css("display", "none"); // Hide all pages.
-    $("#page-" + currentPage).css("display", "inline-block"); // Show the current page.
+
+    // Hide all pages.
+    $(".lti-page").css("display", "none");
+
+    // Show the current page.
+    $("#page-" + currentPage).css("display", "inline-block");
+
+    // Remove the active class from all pages in TOC.
+    $(".dropdown-item").removeClass("active");
+
+    // Add the active class to the current page in TOC.
+    $(".dropdown-" + currentPage).addClass("active");
   }
 
+  // Show/hide next/back buttons.
   updateNavigationButtons();
-  updateTableOfContents();
+
+  // Set the height of the iframe to the height of the new page.
   updateIframeHeight();
 }
 
 function updateNavigationButtons() {
   if (currentPage == 1) {
     // Just show the next button
-    $("#nextBtn").css("visibility", "visible");
-    $("#backBtn").css("visibility", "hidden");
+    $("#nextBtn").prop("disabled", false);
+    $("#backBtn").prop("disabled", true);
   } else if (currentPage === numberOfPages) {
     // Just show the back button
-    $("#backBtn").css("visibility", "visible");
-    $("#nextBtn").css("visibility", "hidden");
+    $("#nextBtn").prop("disabled", true);
+    $("#backBtn").prop("disabled", false);
   } else {
-    // Show both buttons
-    $("#nextBtn").css("visibility", "visible");
-    $("#backBtn").css("visibility", "visible");
+    // Show both buttons.
+    $("#nextBtn").prop("disabled", false);
+    $("#backBtn").prop("disabled", false);
   }
 }
