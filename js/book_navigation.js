@@ -5,13 +5,21 @@ var numberOfPages = 1;
 function initialize() {
 
   showFirstPage();
-  $("#wcln-body").css("visibility", "visible");
+  $("body").css("visibility", "visible");
 
   window.addEventListener("resize", updateIframeHeight);
 }
 
 function updateIframeHeight() {
-  window.parent.postMessage($('#wcln-body').outerHeight(false), "*");
+
+  // Calculate height of current page content.
+  let height = $('#page-' + currentPage).outerHeight(false);
+
+  // Moodle.
+  // window.parent.postMessage(height, "*");
+
+  // Canvas.
+  window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
 }
 
 function updateTableOfContents() {

@@ -33,7 +33,7 @@ class book_provider {
     if ($product_family_code === "moodle") {
       $id = $request->get_parameter('custom_id');
     } else if ($product_family_code === "canvas") {
-      $id = required_param('book_id', PARAM_INT);
+      $id = required_param('id', PARAM_INT);
     }
 
     return $id;
