@@ -62,29 +62,40 @@ body {
   padding: 1em;
 }
 
+/* Next/back button images. */
 .local_lti_book .next-btn img, .local_lti_book .back-btn img {
   height: 25px;
 }
 
+/* Next/back button hovers. */
 .local_lti_book .next-btn:hover, .local_lti_book .back-btn:hover {
   opacity: 1;
   cursor: pointer;
 }
 
+/* Next button. */
 .local_lti_book .next-btn {
   margin-left: .5em;
 }
 
+/* Back button. */
 .local_lti_book .back-btn {
   margin-right: .5em;
 }
 
+/* Next and back button properties. */
 .local_lti_book .next-btn, .local_lti_book .back-btn {
   cursor: pointer;
   opacity: 0.8;
 }
 
+/* Center custom navigation. */
 .local_lti_book .custom-navigation {
   display: flex;
   align-items: center;
+}
+
+/* Add a scroll bar to the TOC dropdown if the height is too large. */
+.local_lti_book .dropdown-menu {
+  overflow-y: auto;
 }

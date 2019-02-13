@@ -60,6 +60,13 @@ function navigate(pageNumber) {
 
     // Add the active class to the current page in TOC.
     $(".dropdown-" + currentPage).addClass("active");
+
+    // Update the max-height of the dropdown.
+    let maxHeight = ($('#page-' + currentPage).outerHeight(false) - 100);
+    if (maxHeight < 0) {
+      maxHeight = 100;
+    }
+    $("#page-" + currentPage + " .dropdown-menu").css("max-height", maxHeight + "px");
   }
 
   // Show/hide next/back buttons.
