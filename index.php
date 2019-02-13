@@ -42,11 +42,11 @@ switch ($request) {
 
     // Check if the request is valid.
     if (verification::verify_request()) {
-      // try {
+      try {
         page_provider::render();
-      // } catch(Exception $e) {
-      //   error::render(get_string('error_rendering_page', 'local_lti', $e->getMessage()));
-      // }
+      } catch(Exception $e) {
+        error::render(get_string('error_rendering_page', 'local_lti', $e->getMessage()));
+      }
     }
     break;
 

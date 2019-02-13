@@ -10,9 +10,12 @@ class page_provider {
 
     $id = $request->get_parameter('custom_id');
 
-    if (!$cm = get_coursemodule_from_id('page', $id)) {
-         print_error('invalidcoursemodule');
-     }
+    try {
+      $cm = get_coursemodule_from_id('page', $id);
+    } catch(Exception $e) {
+      error::render(get_string('error_page_id', 'local_lti'));
+      return null;
+    }
 
      return $cm->instance;
   }
@@ -23,8 +26,15 @@ class page_provider {
     // Get the plugin renderer.
     $renderer = $PAGE->get_renderer('local_lti');
 
-    // Render the page.
-    $page = new \local_lti\output\page(page_provider::get_page_id());
-    echo $renderer->render($page);
+    if ($page_id = page_provider::get_page_id()) {
+      // Render the page.
+      $page = new \local_lti\output\page($page_id);
+      echo $renderer->render($page);
+      return true;
+    } else {
+      return false;
+    }
+
+
   }
 }
