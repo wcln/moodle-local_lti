@@ -10,12 +10,10 @@ class page_provider {
 
     $id = $request->get_parameter('custom_id');
 
-    try {
-      $cm = get_coursemodule_from_id('page', $id);
-    } catch(Exception $e) {
-      error::render(get_string('error_page_id', 'local_lti'));
-      return null;
-    }
+    if (!$cm = get_coursemodule_from_id('page', $id)) {
+       error::render(get_string('error_page_id', 'local_lti'));
+       return null;
+     }
 
      return $cm->instance;
   }
