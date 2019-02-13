@@ -21,11 +21,13 @@ $renderer = $PAGE->get_renderer('local_lti');
 
 // Retrieve redirect URL for routing.
 // $request = $_SERVER['REDIRECT_URL'];
-$request = substr($_SERVER['REQUEST_URI'], strrpos($_SERVER['REQUEST_URI'], '/')); // Temp... waiting for sub domain. Uncomment above once set up.
-switch ($request) {
+
+// $request = required_param('type', PARAM_TEXT);
+
+switch ('book') {
 
   // Consumer is requesting an LTI book.
-  case '/book':
+  case 'book':
 
     // Check if the request is valid.
     if (verification::verify_request()) {
@@ -38,7 +40,7 @@ switch ($request) {
     break;
 
   // Consumer is requesting an LTI page.
-  case '/page':
+  case 'page':
 
     // Check if the request is valid.
     if (verification::verify_request()) {

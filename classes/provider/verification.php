@@ -61,7 +61,7 @@ class verification {
         $server->add_signature_method($method);
         $request = oauth\request::from_request();
         $server->verify_request($request);
-      } catch (Exception $e) {
+      } catch (\Exception $e) {
         $ok = false;
       }
     }
