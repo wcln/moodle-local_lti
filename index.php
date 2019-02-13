@@ -22,37 +22,40 @@ $renderer = $PAGE->get_renderer('local_lti');
 // Retrieve redirect URL for routing.
 // $request = $_SERVER['REDIRECT_URL'];
 
-// $request = required_param('type', PARAM_TEXT);
+try {
+  $request = required_param('type', PARAM_TEXT);
+  switch ($request) {
 
-switch ('book') {
+    // Consumer is requesting an LTI book.
+    case 'book':
 
-  // Consumer is requesting an LTI book.
-  case 'book':
-
-    // Check if the request is valid.
-    if (verification::verify_request()) {
-      try {
-        book_provider::render();
-      } catch(Exception $e) {
-        error::render(get_string('error_rendering_book', 'local_lti', $e->getMessage()));
+      // Check if the request is valid.
+      if (verification::verify_request()) {
+        try {
+          book_provider::render();
+        } catch(Exception $e) {
+          error::render(get_string('error_rendering_book', 'local_lti', $e->getMessage()));
+        }
       }
-    }
-    break;
+      break;
 
-  // Consumer is requesting an LTI page.
-  case 'page':
+    // Consumer is requesting an LTI page.
+    case 'page':
 
-    // Check if the request is valid.
-    if (verification::verify_request()) {
-      try {
-        page_provider::render();
-      } catch(Exception $e) {
-        error::render(get_string('error_rendering_page', 'local_lti', $e->getMessage()));
+      // Check if the request is valid.
+      if (verification::verify_request()) {
+        try {
+          page_provider::render();
+        } catch(Exception $e) {
+          error::render(get_string('error_rendering_page', 'local_lti', $e->getMessage()));
+        }
       }
-    }
-    break;
+      break;
 
-  default:
-    error::render(get_string('error_invalid_type', 'local_lti'));
-    break;
+    default:
+      error::render(get_string('error_invalid_type', 'local_lti'));
+      break;
+  }
+} catch(Exception $e) {
+  error::render(get_string('error_missing_type', 'local_lti'));
 }
