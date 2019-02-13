@@ -71,7 +71,7 @@ if (isset($_POST['oauth_consumer_key'])) {
 </head>
 
 <body onload="initialize()">
-  <div id="bcln-body" class="container-left">
+  <div id="wcln-body" class="container-left">
     <div class="row">
       <?php foreach ($lessons as $lesson): ?>
         <div class="col-md-9 lti-page" id="page-<?=$lesson->pagenum?>">

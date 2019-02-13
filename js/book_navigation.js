@@ -5,13 +5,13 @@ var numberOfPages = 1;
 function initialize() {
 
   showFirstPage();
-  $("#bcln-body").css("visibility", "visible");
+  $("#wcln-body").css("visibility", "visible");
 
   window.addEventListener("resize", updateIframeHeight);
 }
 
 function updateIframeHeight() {
-  window.parent.postMessage($('#bcln-body').outerHeight(false), "*");
+  window.parent.postMessage($('#wcln-body').outerHeight(false), "*");
 }
 
 function updateTableOfContents() {
