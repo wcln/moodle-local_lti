@@ -24,7 +24,7 @@ function updateIframeHeight() {
 
   // Moodle.
   // TODO check if moodle or canvas.
-  // window.parent.postMessage(height, "*");
+  window.parent.postMessage(height, "*");
 
   // Canvas.
   window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
