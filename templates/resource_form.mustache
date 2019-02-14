@@ -1,0 +1,35 @@
+<html>
+<head>
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
+  <!-- jQuery library -->
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+
+  <!-- Custom CSS to style this book. -->
+  <link rel="stylesheet" href="style/resource_form.css">
+</head>
+<body>
+  <div class="local_lti_resource_form">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+     <a class="navbar-brand">
+       <img src="images/wcln_logo_light.png">
+       <span class="title">{{# str }} wcln_resource_link, local_lti {{/ str }}</span>
+     </a>
+     </nav>
+   </div>
+
+   <p>{{# str }} resource_setup, local_lti {{/ str }}</p>
+
+   <form>
+    <div class="form-group">
+      <label for="contentId">Content ID</label>
+      <input type="text" required class="form-control" id="contentId" aria-describedby="contentHelp" placeholder="Enter content ID">
+      <small id="contentHelp" class="form-text text-muted">Enter the ID of a WCLN Book or WCLN Page.</small>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+</body>
+ </html>
