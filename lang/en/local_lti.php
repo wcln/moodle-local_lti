@@ -20,6 +20,7 @@ $string['error_missing_type'] = 'LTI type parameter is missing from the launch U
 $string['error_not_shared'] = 'This resource is currently disabled.';
 $string['error_verification'] = 'The request could not be verified.';
 $string['error_session_not_found'] = 'The previous session could not be recovered. Unable to link resource without the request. Try reloading this page.';
+$string['error_retrieving_book_page'] = 'An error occurred while attempting to retrieve the book page from the database.';
 
 // Resource Link.
 $string['resource_setup'] = 'A book ID or page ID has not yet been set for this resource. Enter an ID below to finish configuring this resource. If you are unsure what ID to enter, contact wcln.ca.';

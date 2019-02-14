@@ -39,8 +39,6 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
 
     // Load user.
     $this->user = new user(parent::get_parameter('roles'));
-
-    $_SESSION['lti_request'] = $this;
   }
 
   public function verify() {

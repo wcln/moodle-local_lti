@@ -3,6 +3,12 @@
 use local_lti\provider\request;
 use local_lti\provider\error;
 
+// Cancel any existing session.
+session_start();
+$_SESSION = array();
+session_destroy();
+session_start();
+
 // Catch all exceptions and render them using a custom template.
 try {
   // Require standard Moodle configuration file.
@@ -13,6 +19,9 @@ try {
 
   // Get the page renderer.
   $renderer = $PAGE->get_renderer('local_lti');
+
+  // Check for a page number.
+  $pagenum = optional_param('page', null, PARAM_INT);
 
   // Check if content id was set.
   if ($content_id = optional_param('content_id', false, PARAM_INT)) {
@@ -39,8 +48,17 @@ try {
   // Verify the request.
   if ($request->verify()) {
 
+    // Store the request if it is verified.
+    $_SESSION['lti_request'] = $request;
+
     // Get the requested resource.
     $resource = $request->get_resource();
+
+    // Check for a page number.
+    if ($pagenum = optional_param('pagenum', false, PARAM_INT)) {
+      // Set the page number of the resource to retrieve.
+      $resource->set_pagenum($pagenum);
+    }
 
     // Check if the resource is linked in the lti database already.
     if ($resource->is_linked()) {

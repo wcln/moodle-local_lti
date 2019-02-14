@@ -29,6 +29,9 @@ class resource {
   /** @var object A reference to the request object. */
   private $request;
 
+  /** @var int The page number of the resource to retrieve. */
+  private $pagenum = null;
+
   public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
     $this->title = $title;
@@ -155,6 +158,10 @@ class resource {
     }
   }
 
+  public function set_pagenum($pagenum) {
+    $this->pagenum = $pagenum;
+  }
+
   /**
   *
   */
@@ -178,7 +185,7 @@ class resource {
           $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
           // Render book.
-          $book = new \local_lti\output\book($book->id);
+          $book = new \local_lti\output\book($book->id, $this->pagenum);
           echo $renderer->render($book);
           break;
 
