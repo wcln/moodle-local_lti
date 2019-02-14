@@ -1,11 +1,7 @@
 <html>
 <head>
-  <!-- Latest compiled and minified CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/css/bootstrap.min.css">
-  <!-- jQuery library -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-  <!-- Latest compiled JavaScript -->
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
+
+{{> local_lti/header }}
 
   <!-- Custom CSS to style this book. -->
   <link rel="stylesheet" href="style/book.css">
@@ -24,7 +20,7 @@
   <!-- Custom script to support navigation between book pages and calls for iframe resizing. -->
   <script src="js/book_navigation.js"></script>
 
-  <title>WCLN</title>
+  <title>{{# str }} brand_short, local_lti {{/ str }}</title>
 
 </head>
 
@@ -48,7 +44,7 @@
              <a class="back-btn" onclick="back({{pagenum}})"><img src="images/back_btn.png"/></a>
              <li class="nav-item dropdown">
                <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 Table of Contents
+                 {{# str }} table_of_contents, local_lti {{/ str }}
                </a>
                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                  {{#lessons}}

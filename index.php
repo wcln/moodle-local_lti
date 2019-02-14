@@ -1,14 +1,7 @@
 <?php
 
-use local_lti\provider\verification;
-use local_lti\provider\book_provider;
-use local_lti\provider\page_provider;
-use local_lti\provider\error;
-
-// Temp.
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+use local_lti\provider\request;
+use local_lti\provider\resource;
 
 // Require standard Moodle configuration file.
 require_once(__DIR__ . '/../../config.php');
@@ -16,46 +9,58 @@ require_once(__DIR__ . '/../../config.php');
 // Set page context.
 $PAGE->set_context(context_system::instance());
 
-// Get the plugin renderer.
+// Get the page renderer.
 $renderer = $PAGE->get_renderer('local_lti');
 
-// Retrieve redirect URL for routing.
-// $request = $_SERVER['REDIRECT_URL'];
+// Check if content id was set.
+if ($content_id = optional_param('content_id', false, PARAM_INT)) {
 
-try {
-  $request = required_param('type', PARAM_TEXT);
-  switch ($request) {
+  // Retrieve previous request.
+  $request = $_SESSION['lti_request'];
 
-    // Consumer is requesting an LTI book.
-    case 'book':
-
-      // Check if the request is valid.
-      if (verification::verify_request()) {
-        try {
-          book_provider::render();
-        } catch(Exception $e) {
-          error::render(get_string('error_rendering_book', 'local_lti', $e->getMessage()));
-        }
-      }
-      break;
-
-    // Consumer is requesting an LTI page.
-    case 'page':
-
-      // Check if the request is valid.
-      if (verification::verify_request()) {
-        try {
-          page_provider::render();
-        } catch(Exception $e) {
-          error::render(get_string('error_rendering_page', 'local_lti', $e->getMessage()));
-        }
-      }
-      break;
-
-    default:
-      error::render(get_string('error_invalid_type', 'local_lti'));
-      break;
+  // Verify the request.
+  // Otherwise anyone could create a resource link using the above optional parameter.
+  if ($request->verify()) {
+    // Create a resource link using the content id.
+    $request->get_resource()->create_link($content_id);
   }
-} catch(Exception $e) {
-  error::render(get_string('error_missing_type', 'local_lti'));
+
+} else {
+  // Initialize the request.
+  $request = new request();
+}
+
+// Verify the request.
+if ($request->verify()) {
+
+  // Get the requested resource.
+  $resource = $request->get_resource();
+
+  // Check if the resource is linked in the lti database already.
+  if ($resource->is_linked()) {
+
+    // Check if the resource is enabled.
+    if ($resource->is_share_approved()) {
+
+      // Render the resource.
+      $resource->render();
+
+    } else {
+      throw new Exception('not shared');
+    }
+
+  } else if ($request->get_user()->is_teacher() || $request->get_user()->is_content_developer()) {
+
+    // Render form for teacher/admin to enter content ID.
+    echo $renderer->render_resource_form(null);
+
+  } else {
+
+    // Render 'Not set up yet' template.
+    echo $renderer->render_resource_not_setup(null);
+
+  }
+} else {
+  // Render the verification error.
+  throw new Exception('verification error');
 }

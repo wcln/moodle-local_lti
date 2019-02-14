@@ -2,6 +2,8 @@
 
 // General.
 $string['pluginname'] = "WCLN LTI Provider";
+$string['brand_heading'] = 'Western Canadian Learning Network';
+$string['brand_short'] = 'WCLN';
 
 // Errors.
 $string['error_heading'] = 'LTI Error';
@@ -15,3 +17,12 @@ $string['error_rendering_page'] = 'An error occurred while rendering the LTI pag
 $string['error_book_id'] = 'An error occurred while attempting to retrieve the book id. Check that the id you are providing is correct.';
 $string['error_page_id'] = 'An error occurred while attempting to retrieve the page id. Check that the id you are providing is correct.';
 $string['error_missing_type'] = 'LTI type parameter is missing from the launch URL. Try ?type=book or ?type=page.';
+
+// Resource Link.
+$string['resource_setup'] = 'A book ID or page ID has not yet been set for this resource. Enter an ID below to finish configuring this resource. If you are unsure what ID to enter, contact wcln.ca.';
+$string['resource_link'] = 'Resource Link';
+$string['resource_not_setup_heading'] = 'LTI Resource Not Configured';
+$string['resource_not_setup_description'] = 'Contact a course teacher or administrator to set up this LTI resource.';
+
+// Book.
+$string['table_of_contents'] = 'Table of Contents';

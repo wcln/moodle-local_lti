@@ -1,0 +1,30 @@
+<html>
+<head>
+{{> local_lti/header }}
+
+  <!-- Custom CSS to style this book. -->
+  <link rel="stylesheet" href="style/resource_form.css">
+</head>
+<body>
+  <div class="local_lti_resource_form">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+     <a class="navbar-brand">
+       <img src="images/wcln_logo_light.png">
+       <span class="title">{{# str }} brand_heading, local_lti {{/ str }}</span>
+     </a>
+     </nav>
+     <div class="content">
+       <h2>{{# str }} resource_link, local_lti {{/ str }}</h2>
+       <p>{{# str }} resource_setup, local_lti {{/ str }}</p>
+       <form action="index.php" method="post">
+        <div class="form-group">
+          <label for="contentId">Content ID</label>
+          <input name="content_id" type="text" required class="form-control" id="contentId" aria-describedby="contentHelp" placeholder="Enter content ID">
+          <small id="contentHelp" class="form-text text-muted">Enter the ID of a WCLN Book or WCLN Page.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+ </div>
+</body>
+ </html>

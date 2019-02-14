@@ -23,4 +23,14 @@ class renderer extends plugin_renderer_base {
         return parent::render_from_template('local_lti/error', $data);
     }
 
+    public function render_resource_form($page) {
+      // No data required.
+      return parent::render_from_template('local_lti/resource_form', null);
+    }
+
+    public function render_resource_not_setup($page) {
+      // No data required.
+      return parent::render_from_template('local_lti/resource_not_setup', null);
+    }
+
 }
