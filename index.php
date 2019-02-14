@@ -20,9 +20,6 @@ try {
   // Get the page renderer.
   $renderer = $PAGE->get_renderer('local_lti');
 
-  // Check for a page number.
-  $pagenum = optional_param('page', null, PARAM_INT);
-
   // Check if content id was set.
   if ($content_id = optional_param('content_id', false, PARAM_INT)) {
 
