@@ -24,41 +24,39 @@
 
 <body onload="initialize()">
   <div class="local_lti_book">
-    {{#lessons}}
-      <div class="lti-page" id="page-{{pagenum}}">
-        <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
-         <a class="navbar-brand">
-           <img src="images/wcln_logo_light.png">
-           <span class="title">{{title}}</span>
-         </a>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-             <span class="navbar-toggler-icon"></span>
-         </button>
-         <div id="navbarNavDropdown" class="navbar-collapse collapse">
-           <ul class="navbar-nav mr-auto">
-             <!-- Force below navbar to right -->
-           </ul>
-           <ul class="navbar-nav custom-navigation">
-             <a class="back-btn" onclick="back({{pagenum}})"><img src="images/back_btn.png"/></a>
-             <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 {{# str }} table_of_contents, local_lti {{/ str }}
-               </a>
-               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                 {{#lessons}}
-                  <a class="dropdown-item dropdown-{{pagenum}}" onclick="navigate({{pagenum}})">{{title}}</a>
-                 {{/lessons}}
-               </div>
-             </li>
-             <a class="next-btn" onclick="next({{pagenum}})"><img src="images/next_btn.png"/></a>
-           </ul>
-         </div>
-         </nav>
-         <div class="content">
-           {{{content}}}
-         </div>
+    <div class="lti-page" id="page-{{pagenum}}">
+      <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+       <a class="navbar-brand">
+         <img src="images/wcln_logo_light.png">
+         <span class="title">{{title}}</span>
+       </a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+       </button>
+       <div id="navbarNavDropdown" class="navbar-collapse collapse">
+         <ul class="navbar-nav mr-auto">
+           <!-- Force below navbar to right -->
+         </ul>
+         <ul class="navbar-nav custom-navigation">
+           <a class="back-btn" onclick="back({{pagenum}})"><img src="images/back_btn.png"/></a>
+           <li class="nav-item dropdown">
+             <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               {{# str }} table_of_contents, local_lti {{/ str }}
+             </a>
+             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+               {{#pages}}
+                <a class="dropdown-item dropdown-{{pagenum}}" onclick="navigate({{pagenum}})">{{title}}</a>
+               {{/pages}}
+             </div>
+           </li>
+           <a class="next-btn" onclick="next({{pagenum}})"><img src="images/next_btn.png"/></a>
+         </ul>
        </div>
-    {{/lessons}}
+       </nav>
+       <div class="content">
+         {{{content}}}
+       </div>
+     </div>
   </div>
 </body>
 </html>
