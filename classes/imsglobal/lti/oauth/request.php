@@ -19,21 +19,7 @@ class request {
     public static $version = '1.0';
     public static $POST_INPUT = 'php://input';
 
-    function __construct($http_method, $http_url, $parameters = null) {
-
-        $parameters = ($parameters) ? $parameters : array();
-        $parameters = array_merge( util::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
-        $this->parameters = $parameters;
-        $this->http_method = $http_method;
-        $this->http_url = $http_url;
-
-    }
-
-
-    /**
-     * attempt to build up a request from what was passed to the server
-     */
-    public static function from_request($http_method = null, $http_url = null, $parameters = null) {
+    function __construct() {
 
       $scheme = (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
                 ? 'http'
@@ -78,26 +64,21 @@ class request {
 
       }
 
-      return new request($http_method, $http_url, $parameters);
+      $parameters = ($parameters) ? $parameters : array();
+      $parameters = array_merge( util::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
+      $this->parameters = $parameters;
+      $this->http_method = $http_method;
+      $this->http_url = $http_url;
     }
 
     /**
-     * pretty much a helper function to set up the request
+     * attempt to build up a request from what was passed to the server
      */
-    public static function from_consumer_and_token($consumer, $token, $http_method, $http_url, $parameters = null) {
+    public static function from_request($http_method = null, $http_url = null, $parameters = null) {
 
-        $parameters = ($parameters) ?  $parameters : array();
-        $defaults = array('oauth_version' => request::$version,
-                          'oauth_nonce' => request::generate_nonce(),
-                          'oauth_timestamp' => request::generate_timestamp(),
-                          'oauth_consumer_key' => $consumer->key);
-        if ($token)
-            $defaults['oauth_token'] = $token->key;
 
-        $parameters = array_merge($defaults, $parameters);
 
-        return new request($http_method, $http_url, $parameters);
-
+      return new request($http_method, $http_url, $parameters);
     }
 
     public function set_parameter($name, $value, $allow_duplicates = true) {

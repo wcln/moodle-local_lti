@@ -17,5 +17,6 @@ $string['error_page_id'] = 'An error occurred while attempting to retrieve the p
 $string['error_missing_type'] = 'LTI type parameter is missing from the launch URL. Try ?type=book or ?type=page.';
 
 // Resource Link.
-$string['wcln_resource_link'] = 'Western Canadian Learning Network Resource Link';
+$string['wcln_heading'] = 'Western Canadian Learning Network';
 $string['resource_setup'] = 'A book ID or page ID has not yet been set for this resource. Enter an ID below to finish configuring this resource. If you are unsure what ID to enter, contact wcln.ca.';
+$string['resource_link'] = 'Resource Link';
