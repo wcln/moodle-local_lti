@@ -1,7 +1,6 @@
 <?php
 
 namespace local_lti\provider;
-use local_lti\provider\error;
 use local_lti\provider\util;
 use local_lti\provider\resource;
 use local_lti\provider\user;
@@ -50,13 +49,13 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
         if ($this->verify_required_parameters()) {
           return true;
         } else {
-          error::render(get_string('error_missing_required_params', 'local_lti'));
+          throw new \Exception(get_string('error_missing_required_params', 'local_lti'));
         }
       } else {
-        error::render(get_string('error_auth_failed', 'local_lti'));
+        throw new \Exception(get_string('error_auth_failed', 'local_lti'));
       }
     } else {
-      error::render(get_string('error_launch_request', 'local_lti'));
+      throw new \Exception(get_string('error_launch_request', 'local_lti'));
     }
   }
 

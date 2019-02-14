@@ -17,6 +17,8 @@ $string['error_rendering_page'] = 'An error occurred while rendering the LTI pag
 $string['error_book_id'] = 'An error occurred while attempting to retrieve the book id. Check that the id you are providing is correct.';
 $string['error_page_id'] = 'An error occurred while attempting to retrieve the page id. Check that the id you are providing is correct.';
 $string['error_missing_type'] = 'LTI type parameter is missing from the launch URL. Try ?type=book or ?type=page.';
+$string['error_not_shared'] = 'This resource is currently disabled.';
+$string['error_verification'] = 'The request could not be verified.';
 
 // Resource Link.
 $string['resource_setup'] = 'A book ID or page ID has not yet been set for this resource. Enter an ID below to finish configuring this resource. If you are unsure what ID to enter, contact wcln.ca.';
