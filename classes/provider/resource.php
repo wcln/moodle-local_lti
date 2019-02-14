@@ -2,6 +2,15 @@
 
 namespace local_lti\provider;
 
+/**
+ * LTI Resource
+ *
+ * Represents the LTI resource which was requested.
+ *
+ * @package    local_lti
+ * @copyright  2019 Colin Bernard
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class resource {
 
   private $resource_link_id;
@@ -99,7 +108,7 @@ class resource {
     }
   }
 
-  /*
+  /**
    * Get the book/page ID of this resource.
    */
   private function get_content_id() {
@@ -110,9 +119,11 @@ class resource {
 
   }
 
+  /**
+  *
+  */
   public function render() {
-    global $PAGE;
-    global $DB; // TODO, move DB calls to separate class specific to different lti types.
+    global $PAGE, $DB; // TODO, move DB calls to separate class specific to different lti types.
 
     $content_id = $this->get_content_id();
 

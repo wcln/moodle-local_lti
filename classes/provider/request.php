@@ -7,6 +7,15 @@ use local_lti\provider\resource;
 use local_lti\provider\user;
 use local_lti\imsglobal\lti\oauth;
 
+/**
+ * LTI Request
+ *
+ * Represents the LTI request.
+ *
+ * @package    local_lti
+ * @copyright  2019 Colin Bernard
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class request extends \local_lti\imsglobal\lti\oauth\request {
 
   private $resource;

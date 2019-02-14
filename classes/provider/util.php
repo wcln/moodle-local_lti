@@ -2,6 +2,15 @@
 
 namespace local_lti\provider;
 
+/**
+ * Provider Utilities.
+ *
+ * Provides functions to be used by other Provider classes.
+ *
+ * @package    local_lti
+ * @copyright  2019 Colin Bernard
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class util {
   public static function get_all_tool_consumer_secrets() {
     global $DB;

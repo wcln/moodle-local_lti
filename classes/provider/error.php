@@ -2,6 +2,15 @@
 
 namespace local_lti\provider;
 
+/**
+ * Error
+ *
+ * Represents a custom LTI provider error.
+ *
+ * @package    local_lti
+ * @copyright  2019 Colin Bernard
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
 class error {
 
   public static function render($message) {
