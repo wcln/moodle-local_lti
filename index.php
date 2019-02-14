@@ -18,7 +18,11 @@ try {
   if ($content_id = optional_param('content_id', false, PARAM_INT)) {
 
     // Retrieve previous request.
-    $request = $_SESSION['lti_request'];
+    if (isset($_SESSION['lti_request'])) {
+        $request = $_SESSION['lti_request'];
+    } else {
+      throw new Exception(get_string('error_session_not_found', 'local_lti'));
+    }
 
     // Verify the request.
     // Otherwise anyone could create a resource link using the above optional parameter.
