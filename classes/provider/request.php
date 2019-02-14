@@ -34,7 +34,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
       parent::get_parameter('resource_link_id'),
       parent::get_parameter('resource_link_title'),
       util::get_type_id(request::get_resource_type()),
-      util::get_consumer_id(parent::get_parameter('oauth_consumer_key'))
+      util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
+      $this
     );
 
     // Load user.
@@ -112,6 +113,13 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     $ok = $ok && !is_null(parent::get_parameter('tool_consumer_info_product_family_code'));
 
     return $ok;
+  }
+
+  public function is_custom_parameter_set() {
+    if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
+      return true;
+    }
+    return false;
   }
 
   public function get_user() {
