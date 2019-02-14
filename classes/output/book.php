@@ -56,12 +56,10 @@ class book implements renderable, templatable {
       $lesson->content = str_replace('¨', '"', $lesson->content);
       $lesson->content = str_replace('´', "'", $lesson->content);
 
-      // Convert to a friendly format for template.
-      $data->lesson = [
-        'title' => $lesson->title,
-        'content' => $lesson->content,
-        'pagenum' => $lesson->pagenum
-      ];
+      // Set data properties.
+      $data->title = $lesson->title;
+      $data->content = $lesson->content;
+      $data->pagenum = $this->pagenum;
 
       // Return the data object.
       return $data;
