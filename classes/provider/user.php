@@ -13,6 +13,7 @@ namespace local_lti\provider;
  */
 class user {
 
+  /** @var string LTI roles on the consumer site. */
   private $roles;
 
   public function __construct($roles) {

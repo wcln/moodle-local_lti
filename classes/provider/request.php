@@ -18,7 +18,10 @@ use local_lti\imsglobal\lti\oauth;
  */
 class request extends \local_lti\imsglobal\lti\oauth\request {
 
+  /** @var object The resource that was requested.  */
   private $resource;
+
+  /** @var object The TC user. */
   private $user;
 
   public function __construct() {

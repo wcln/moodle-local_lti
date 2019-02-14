@@ -13,9 +13,16 @@ namespace local_lti\provider;
  */
 class resource {
 
+  /** @var string An identifier that the consumer gurantees will be unique. */
   private $resource_link_id;
+
+  /** @var string The title of the resource. */
   private $title;
+
+  /** @var int The type of the resource requested. Ex: Book or Page. */
   private $type;
+
+  /** @var int The ID of the tool consumer. This is NOT the consumer key. */
   private $consumer_id;
 
   public function __construct($resource_link_id, $title, $type, $consumer_id) {
