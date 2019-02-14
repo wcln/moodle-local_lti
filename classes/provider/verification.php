@@ -75,9 +75,6 @@ class verification {
     // Check for a consumer product family code (Ex. Moodle, Canvas).
     $ok = $ok && !empty($_POST['tool_consumer_info_product_family_code']);
 
-    // Check that a book ID is set either through GET or POST.
-    $ok = $ok && (!empty($_POST['custom_id']) || !empty($_GET['id']));
-
     return $ok;
   }
 
