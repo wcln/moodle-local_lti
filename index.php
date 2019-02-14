@@ -14,14 +14,17 @@ if ($content_id = optional_param('content_id', false, PARAM_INT)) {
   // Retrieve previous request.
   $request = $_SESSION['lti_request'];
 
-  // Create a resource link using the content id.
-  $request->get_resource()->create_link($content_id);
+  // Verify the request.
+  // Otherwise anyone could create a resource link using the above optional parameter.
+  if ($request->verify()) {
+    // Create a resource link using the content id.
+    $request->get_resource()->create_link($content_id);
+  }
 
 } else {
   // Initialize the request.
   $request = new request();
 }
-
 
 // Verify the request.
 if ($request->verify()) {
@@ -50,16 +53,13 @@ if ($request->verify()) {
 
   } else {
 
+    // TODO
     // Render 'Not set up yet' template.
     // $renderer = $PAGE->get_renderer('local_lti');
     // $not_setup = new \local_lti\output\not_setup(null);
     // echo $renderer->render($not_setup);
 
   }
-} else if (false) { // TODO if resource form was submitted.
-
-  // create_link.
-
 } else {
   // Render the verification error.
   throw new Exception('verification error');
