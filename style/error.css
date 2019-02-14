@@ -1,26 +1,36 @@
-.local_lti_error {
-  font-family: 'Century Gothic', 'Open Sans', Arial;
+.local_lti_error .navbar-brand img {
+  height: 30px;
 }
 
-.local_lti_error img {
-  height: 35px;
+/* Set size and colour of brand title text. */
+.local_lti_error .navbar-brand .title {
+  color: #fff;
   margin-left: .7em;
+  font-size: 1.5rem;
 }
-
-.local_lti_error .header {
-  position: relative;
-  height: 70px;
-  background-color: #b2b2b2;
+/* Center logo and brand text. */
+.local_lti_error .navbar-brand {
+  display: flex;
+  align-items: center;
 }
 
 .local_lti_error .content {
-  margin-left: .2em;
-  margin-top: 1em;
+  margin: 4em auto;
+  padding: 1em;
+  max-width: 700px;
 }
 
-.local_lti_error h1 {
-  display: inline-block;
-  margin-left: .2em;
-  position: relative;
-  top: -6px;
+.local_lti_error .content .error_heading h2 {
+  display: inline;
+  margin-left: .3em;
+}
+
+.local_lti_error .error_heading img {
+  height: 40px;
+}
+
+.local_lti_error .error_heading {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1em;
 }

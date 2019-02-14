@@ -183,7 +183,7 @@ class resource {
           break;
 
         } catch(\Exception $e) {
-          throw new \Exception('error retrieving book id.');
+          throw new \Exception(get_string('error_book_id', 'local_lti'));
         }
 
 
@@ -199,7 +199,7 @@ class resource {
         break;
 
       default:
-        throw new \Exception('not a valid type');
+        throw new \Exception(get_string('error_invalid_type', 'local_lti'));
     }
   }
 }
