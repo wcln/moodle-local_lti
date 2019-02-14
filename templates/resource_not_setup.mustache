@@ -8,10 +8,10 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.0/js/bootstrap.min.js"></script>
 
   <!-- Custom CSS to style this book. -->
-  <link rel="stylesheet" href="style/resource_form.css">
+  <link rel="stylesheet" href="style/resource_not_setup.css">
 </head>
 <body>
-  <div class="local_lti_resource_form">
+  <div class="local_lti_resource_not_setup">
     <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
      <a class="navbar-brand">
        <img src="images/wcln_logo_light.png">
@@ -19,17 +19,9 @@
      </a>
      </nav>
      <div class="content">
-       <h2>{{# str }} resource_link, local_lti {{/ str }}</h2>
-       <p>{{# str }} resource_setup, local_lti {{/ str }}</p>
-       <form action="index.php" method="post">
-        <div class="form-group">
-          <label for="contentId">Content ID</label>
-          <input name="content_id" type="text" required class="form-control" id="contentId" aria-describedby="contentHelp" placeholder="Enter content ID">
-          <small id="contentHelp" class="form-text text-muted">Enter the ID of a WCLN Book or WCLN Page.</small>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+       <h2>{{# str }} resource_not_setup_heading, local_lti {{/ str }}</h2>
+       <p>{{# str }} resource_not_setup_description, local_lti {{/ str }}</p>
     </div>
  </div>
 </body>
- </html>
+</html>

@@ -9,6 +9,10 @@ require_once(__DIR__ . '/../../config.php');
 // Set page context.
 $PAGE->set_context(context_system::instance());
 
+// Get the page renderer.
+$renderer = $PAGE->get_renderer('local_lti');
+
+// Check if content id was set.
 if ($content_id = optional_param('content_id', false, PARAM_INT)) {
 
   // Retrieve previous request.
@@ -48,16 +52,12 @@ if ($request->verify()) {
   } else if ($request->get_user()->is_teacher() || $request->get_user()->is_content_developer()) {
 
     // Render form for teacher/admin to enter content ID.
-    $renderer = $PAGE->get_renderer('local_lti');
     echo $renderer->render_resource_form(null);
 
   } else {
 
-    // TODO
     // Render 'Not set up yet' template.
-    // $renderer = $PAGE->get_renderer('local_lti');
-    // $not_setup = new \local_lti\output\not_setup(null);
-    // echo $renderer->render($not_setup);
+    echo $renderer->render_resource_not_setup(null);
 
   }
 } else {
