@@ -3,6 +3,7 @@
 // General.
 $string['pluginname'] = "WCLN LTI Provider";
 $string['brand_heading'] = 'Western Canadian Learning Network';
+$string['brand_short'] = 'WCLN';
 
 // Errors.
 $string['error_heading'] = 'LTI Error';
@@ -22,3 +23,6 @@ $string['resource_setup'] = 'A book ID or page ID has not yet been set for this 
 $string['resource_link'] = 'Resource Link';
 $string['resource_not_setup_heading'] = 'LTI Resource Not Configured';
 $string['resource_not_setup_description'] = 'Contact a course teacher or administrator to set up this LTI resource.';
+
+// Book.
+$string['table_of_contents'] = 'Table of Contents';
