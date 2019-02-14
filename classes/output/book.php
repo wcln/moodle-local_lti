@@ -37,13 +37,19 @@ class book implements renderable, templatable {
       // Data class to be sent to template.
       $data = new stdClass();
 
-      // Retrieve lesson from the database.
       try {
+        // Retrieve the lesson to display.
         $lesson = $DB->get_record_sql('SELECT id, pagenum, title, content
                                              FROM {book_chapters}
                                              WHERE bookid=?
                                              AND pagenum=?
                                              ORDER BY pagenum ASC', array($this->book_id, $this->pagenum));
+        // Retrieve pages... Needed for table of contents.
+        $pages = $DB->get_records_sql('SELECT id, pagenum, title,
+                                             FROM {book_chapters}
+                                             WHERE bookid=?
+                                             ORDER BY pagenum ASC', array($this->book_id));
+
       } catch(\Exception $e) {
         // Re-throw exception with custom message.
         throw new \Exception(get_string('error_retrieving_book_page', 'local_lti'));
@@ -60,6 +66,15 @@ class book implements renderable, templatable {
       $data->title = $lesson->title;
       $data->content = $lesson->content;
       $data->pagenum = $this->pagenum;
+
+      // Set pages. Needed for table of contents.
+      $data->pages = []
+      for ($pages as $page) {
+        $data->pages[] = [
+          'title' => $page->title,
+          'pagenum' => $page->pagenum
+        ];
+      }
 
       // Return the data object.
       return $data;
