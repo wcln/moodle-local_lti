@@ -11,8 +11,6 @@ function updateIframeHeight() {
   // Calculate height of current page content.
   let height = $('html').outerHeight(false);
 
-  console.log(height);
-
   // Moodle.
   // TODO check if moodle or canvas.
   window.parent.postMessage(height, "*");
