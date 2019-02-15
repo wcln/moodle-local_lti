@@ -26,7 +26,7 @@
 
 </head>
 
-<body onload="initialize()">
+<body onload="initialize({{pagenum}}, {{total_pages}})">
   {{> local_lti/loading_bar }}
   <div class="local_lti_book">
     <div class="lti-page" id="page-{{pagenum}}">
@@ -43,7 +43,7 @@
            <!-- Force below navbar to right -->
          </ul>
          <ul class="navbar-nav custom-navigation">
-           <a class="back-btn" onclick="back({{pagenum}})"><img src="images/back_btn.png"/></a>
+           <a class="back-btn" href="index.php?type=book&pagenum={{last_page}}&sessid={{session_id}}"><img src="images/back_btn.png"/></a>
            <li class="nav-item dropdown">
              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                {{# str }} table_of_contents, local_lti {{/ str }}
@@ -54,31 +54,32 @@
                {{/pages}}
              </div>
            </li>
-           <a class="next-btn" onclick="next({{pagenum}})"><img src="images/next_btn.png"/></a>
+           <a class="next-btn" href="index.php?type=book&pagenum={{next_page}}&sessid={{session_id}}"><img src="images/next_btn.png"/></a>
          </ul>
        </div>
-       <script>
-
-
-          $('#page-{{pagenum}}').ready(function() {
-            let iframes_to_load = $('#page-{{pagenum}} iframe');
-            let number_loaded = 0;
-            if (iframes_to_load.length == 0) {
-              updateLoadingBar({{total_pages}});
-            } else {
-              $('#page-{{pagenum}} iframe').each(function() {
-                $(this).on('load', function() {
-                  number_loaded++;
-                  if (iframes_to_load.length == number_loaded) {
-                    updateLoadingBar({{total_pages}});
-                  }
-                })
-              });
-            }
+     </nav>
+     <div class="content">
+        {{{content}}}
+     </div>
+   </div>
+   <script>
+      $('#page-{{pagenum}}').ready(function() {
+        let iframes_to_load = $('#page-{{pagenum}} iframe');
+        let number_loaded = 0;
+        if (iframes_to_load.length == 0) {
+          updateLoadingBar({{total_pages}});
+        } else {
+          $('#page-{{pagenum}} iframe').each(function() {
+            $(this).on('load', function() {
+              number_loaded++;
+              if (iframes_to_load.length == number_loaded) {
+                updateLoadingBar({{total_pages}});
+              }
+            })
           });
-
-       </script>
-    {{/lessons}}
+        }
+      });
+   </script>
   </div>
 </body>
 </html>

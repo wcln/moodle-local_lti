@@ -70,6 +70,8 @@ class book implements renderable, templatable {
       $data->title = $lesson->title;
       $data->content = $lesson->content;
       $data->pagenum = $this->pagenum;
+      $data->last_page = $this->pagenum - 1;
+      $data->next_page = $this->pagenum + 1;
       $data->session_id = $this->session_id;
 
       // Set pages. Needed for table of contents.

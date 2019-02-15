@@ -5,7 +5,11 @@ var currentPage = 1;
 var numberOfPages = 1;
 
 // Called on body load.
-function initialize() {
+function initialize(page, pageCount) {
+
+  currentPage = page;
+
+  numberOfPages = pageCount;
 
   setTimeout(function() {
     // Show the body.
@@ -14,8 +18,8 @@ function initialize() {
     // Remove loading bar.
     $('.local_lti_loading_bar').css("display", "none");
 
-    // Show the first page.
-    showFirstPage();
+    // Show the page.
+    showPage();
 
     // Udate iframe height when the window is resized.
     window.addEventListener("resize", updateIframeHeight);
@@ -26,50 +30,26 @@ function initialize() {
 function updateIframeHeight() {
 
   // Calculate height of current page content.
-  let height = $('#page-' + currentPage).outerHeight(false);
+  let height = $('.local_lti_book').outerHeight(false);
 
   // Send message to LMS to resize the iframe.
   window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
 }
 
-function showFirstPage() {
-  numberOfPages = $(".lti-page").length;
-  navigate(1);
-}
+function showPage() {
 
-function back(pageNumber) {
-  navigate(--pageNumber);
-}
+  // Remove the active class from all pages in TOC.
+  $(".dropdown-item").removeClass("active");
 
-function next(pageNumber) {
-  navigate(++pageNumber);
-}
+  // Add the active class to the current page in TOC.
+  $(".dropdown-" + currentPage).addClass("active");
 
-function navigate(pageNumber) {
-  if (pageNumber > 0 && pageNumber <= numberOfPages) {
-
-    // Update the current page.
-    currentPage = pageNumber;
-
-    // Hide all pages.
-    //$(".lti-page").css("display", "none");
-
-    // Show the current page.
-    $("#page-" + currentPage).css("display", "inline-block");
-
-    // Remove the active class from all pages in TOC.
-    $(".dropdown-item").removeClass("active");
-
-    // Add the active class to the current page in TOC.
-    $(".dropdown-" + currentPage).addClass("active");
-
-    // Update the max-height of the dropdown.
-    let maxHeight = ($('#page-' + currentPage).outerHeight(false) - 100);
-    if (maxHeight < 0) {
-      maxHeight = 100;
-    }
-    $("#page-" + currentPage + " .dropdown-menu").css("max-height", maxHeight + "px");
+  // Update the max-height of the dropdown.
+  let maxHeight = ($('#page-' + currentPage).outerHeight(false) - 100);
+  if (maxHeight < 0) {
+    maxHeight = 100;
   }
+  $("#page-" + currentPage + " .dropdown-menu").css("max-height", maxHeight + "px");
 
   // Show/hide next/back buttons.
   updateNavigationButtons();
@@ -79,6 +59,7 @@ function navigate(pageNumber) {
 
   // Scroll to the top of the page.
   window.parent.postMessage(JSON.stringify({subject: 'lti.scrollToTop'}), '*');
+
 }
 
 function updateNavigationButtons() {
