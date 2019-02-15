@@ -76,6 +76,9 @@ function navigate(pageNumber) {
 
   // Set the height of the iframe to the height of the new page.
   updateIframeHeight();
+
+  // Scroll to the top of the page.
+  window.parent.postMessage(JSON.stringify({subject: 'lti.scrollToTop'}), '*');
 }
 
 function updateNavigationButtons() {
