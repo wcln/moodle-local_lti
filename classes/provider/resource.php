@@ -184,16 +184,19 @@ class resource {
           $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
           $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
-          // Render book.
-          $book = new \local_lti\output\book($book->id, $this->pagenum);
-          echo $renderer->render($book);
-          break;
+        } catch (\Exception $e) {
 
-        } catch(\Exception $e) {
           throw new \Exception(get_string('error_book_id', 'local_lti'));
         }
 
-
+        try {
+          // Render book.
+          $book = new \local_lti\output\book($book->id, $this->pagenum);
+          echo $renderer->render($book);
+        } catch (\Exception $e) {
+          throw $e;
+        }
+        break;
 
       case 'page':
 
