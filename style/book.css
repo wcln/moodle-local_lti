@@ -104,3 +104,8 @@ body {
 .local_lti_book .dropdown-menu {
   overflow-y: auto;
 }
+
+/* Ensure the cursor is a pointer for the Table of Contents dropdown. */
+.local_lti_book a.dropdown-toggle {
+  cursor: pointer;
+}
