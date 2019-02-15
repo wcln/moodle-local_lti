@@ -3,6 +3,10 @@
   padding-bottom: .3em;
 }
 
+.local_lti_page {
+  display: none;
+}
+
 .local_lti_page .navbar-brand img {
   height: 30px;
 }
