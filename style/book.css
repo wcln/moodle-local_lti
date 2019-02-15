@@ -15,6 +15,7 @@
   height: 30px;
 }
 
+/* Make the navbar thinner. */
 .local_lti_book .navbar {
   padding-top: .3em;
   padding-bottom: .3em;

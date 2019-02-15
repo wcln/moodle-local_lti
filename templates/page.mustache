@@ -1,11 +1,21 @@
 
   {{> local_lti/header }}
 
-  <!-- jQuery library -->
-  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
   <script src="js/page_navigation.js"></script>
+  <!-- Custom CSS to style this book. -->
+  <link rel="stylesheet" href="style/page.css">
 </head>
 <body onload="init()">
-  {{{content}}}
+  <div class="local_lti_page">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+     <a class="navbar-brand">
+       <img src="images/wcln_logo_light.png">
+       <span class="title">{{title}}</span>
+     </a>
+     </nav>
+     <div class="content">
+       {{{content}}}
+    </div>
+  </div>
 </body>
 </html>
