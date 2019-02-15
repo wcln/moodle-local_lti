@@ -7,14 +7,9 @@ var numberOfPages = 1;
 // Called on body load.
 function initialize() {
 
-<<<<<<< HEAD
-  // Show the first page.
-  //showFirstPage();
-=======
   setTimeout(function() {
     // Show the body.
     $(".local_lti_book").fadeIn(800);
->>>>>>> build-2
 
     // Remove loading bar.
     $('.local_lti_loading_bar').css("display", "none");
