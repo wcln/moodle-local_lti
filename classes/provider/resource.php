@@ -153,7 +153,7 @@ class resource {
       }
 
       // Return the custom parameter.
-      return $this->request->get_parameter('id');
+      return $this->request->get_parameter('custom_id');
     }
   }
 
@@ -189,8 +189,11 @@ class resource {
         }
 
         try {
+          // Get the launch id.
+          $launch_id = json_decode($this->request->get_parameter('lis_result_sourcedid'))->data->launchid;
+
           // Render book.
-          $book = new \local_lti\output\book($book->id, $this->pagenum);
+          $book = new \local_lti\output\book($book->id, $launch_id, $this->pagenum);
           echo $renderer->render($book);
         } catch (\Exception $e) {
           throw $e;

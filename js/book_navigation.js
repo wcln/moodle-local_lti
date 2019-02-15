@@ -8,7 +8,7 @@ var numberOfPages = 1;
 function initialize() {
 
   // Show the first page.
-  showFirstPage();
+  //showFirstPage();
 
   // Show the body.
   $("body").css("visibility", "visible");
@@ -50,7 +50,7 @@ function navigate(pageNumber) {
     currentPage = pageNumber;
 
     // Hide all pages.
-    $(".lti-page").css("display", "none");
+    //$(".lti-page").css("display", "none");
 
     // Show the current page.
     $("#page-" + currentPage).css("display", "inline-block");

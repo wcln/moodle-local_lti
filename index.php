@@ -3,13 +3,6 @@
 use local_lti\provider\request;
 use local_lti\provider\error;
 
-// Cancel any existing session.
-session_start();
-$_SESSION = array();
-session_destroy();
-session_start();
-
-
 // Catch all exceptions and render them using a custom template.
 try {
   // Require standard Moodle configuration file.
@@ -21,18 +14,21 @@ try {
   // Get the page renderer.
   $renderer = $PAGE->get_renderer('local_lti');
 
-  // Check if we have an existing request.
-  if (isset($_SESSION['lti_request'])) {
+  // Check if we have an existing session.
+  if ($session_id = optional_param('sessid', false, PARAM_INT)) {
+    if (isset($_SESSION["lti_request_$session_id"])) {
+      // Load the existing request (we know it has already been verified).
+      $request = $_SESSION["lti_request_$session_id"];
 
-    // Load the existing request (we know it has already been verified).
-    $request = $_SESSION['lti_request'];
+      // Check if content id was set.
+      if ($content_id = optional_param('content_id', false, PARAM_INT)) {
 
-    // Check if content id was set.
-    if ($content_id = optional_param('content_id', false, PARAM_INT)) {
+        // Create a resource link using the content id.
+        $request->get_resource()->create_link($content_id);
 
-      // Create a resource link using the content id.
-      $request->get_resource()->create_link($content_id);
-
+      }
+    } else {
+      throw new Exception('Session expired.');
     }
   } else {
     // Initialize the request.
@@ -43,7 +39,7 @@ try {
     $request->verify();
 
     // Store the request if it is verified.
-    $_SESSION['lti_request'] = $request;
+    $_SESSION['lti_request_' . json_decode($request->get_parameter('lis_result_sourcedid'))->data->launchid] = $request;
   }
 
   // Get the requested resource.
@@ -62,7 +58,6 @@ try {
   //   if ($resource->is_share_approved()) {
 
       // Render the resource.
-      var_dump($request);
       $resource->render();
 
   //   } else {

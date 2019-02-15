@@ -15,8 +15,12 @@ class book implements renderable, templatable {
     /** @var int The page of the Moodle book to render. */
     var $pagenum = null;
 
-    public function __construct($book_id, $pagenum = null) {
+    /** @var string The current ID of the LTI session. Used to change pages without reverifying. */
+    var $session_id = null;
+
+    public function __construct($book_id, $session_id, $pagenum = null) {
       $this->book_id = $book_id;
+      $this->session_id = $session_id;
 
       // If no page number is provided, use the first page.
       if (is_null($pagenum)) {
@@ -66,13 +70,15 @@ class book implements renderable, templatable {
       $data->title = $lesson->title;
       $data->content = $lesson->content;
       $data->pagenum = $this->pagenum;
+      $data->session_id = $this->session_id;
 
       // Set pages. Needed for table of contents.
       $data->pages = [];
       foreach ($pages as $page) {
         $data->pages[] = [
           'title' => $page->title,
-          'pagenum' => $page->pagenum
+          'pagenum' => $page->pagenum,
+          'sesssion_id' => $this->session_id
         ];
       }
 

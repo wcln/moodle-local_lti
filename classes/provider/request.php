@@ -113,7 +113,7 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
   }
 
   public function is_custom_parameter_set() {
-    if ($this->get_parameter('id') || optional_param('id', false, PARAM_INT)) {
+    if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
       return true;
     }
     return false;
