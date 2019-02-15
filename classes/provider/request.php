@@ -1,7 +1,6 @@
 <?php
 
 namespace local_lti\provider;
-use local_lti\provider\error;
 use local_lti\provider\util;
 use local_lti\provider\resource;
 use local_lti\provider\user;
@@ -34,7 +33,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
       parent::get_parameter('resource_link_id'),
       parent::get_parameter('resource_link_title'),
       util::get_type_id(request::get_resource_type()),
-      util::get_consumer_id(parent::get_parameter('oauth_consumer_key'))
+      util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
+      $this
     );
 
     // Load user.
@@ -49,13 +49,13 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
         if ($this->verify_required_parameters()) {
           return true;
         } else {
-          error::render(get_string('error_missing_required_params', 'local_lti'));
+          throw new \Exception(get_string('error_missing_required_params', 'local_lti'));
         }
       } else {
-        error::render(get_string('error_auth_failed', 'local_lti'));
+        throw new \Exception(get_string('error_auth_failed', 'local_lti'));
       }
     } else {
-      error::render(get_string('error_launch_request', 'local_lti'));
+      throw new \Exception(get_string('error_launch_request', 'local_lti'));
     }
   }
 
@@ -112,6 +112,13 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     $ok = $ok && !is_null(parent::get_parameter('tool_consumer_info_product_family_code'));
 
     return $ok;
+  }
+
+  public function is_custom_parameter_set() {
+    if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
+      return true;
+    }
+    return false;
   }
 
   public function get_user() {

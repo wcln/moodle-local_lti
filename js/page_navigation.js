@@ -1,4 +1,7 @@
 function init() {
+
+  $('.local_lti_page').fadeIn(800);
+
   window.addEventListener("resize", updateIframeHeight);
   updateIframeHeight();
 }
@@ -6,7 +9,9 @@ function init() {
 
 function updateIframeHeight() {
   // Calculate height of current page content.
-  let height = $('#page-' + currentPage).outerHeight(false);
+  let height = $('html').outerHeight(false);
+
+  console.log(height);
 
   // Moodle.
   // TODO check if moodle or canvas.

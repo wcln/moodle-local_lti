@@ -26,7 +26,9 @@ class page implements renderable, templatable {
 
       // Data class to be sent to template.
       $data = new stdClass();
-      $data->content = $DB->get_record('page', array('id' => $this->page_id), '*', MUST_EXIST)->content;
+      $page = $DB->get_record('page', array('id' => $this->page_id), 'id, name, content', MUST_EXIST);
+      $data->content = $page->content;
+      $data->title = $page->name;
       return $data;
     }
 }

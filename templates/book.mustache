@@ -1,7 +1,9 @@
-<html>
-<head>
 
-{{> local_lti/header }}
+  {{> local_lti/header }}
+
+  <!-- Loading bar. -->
+  <link rel="stylesheet" href="style/loading_bar.css">
+  <script src="js/loading_bar.js"></script>
 
   <!-- Custom CSS to style this book. -->
   <link rel="stylesheet" href="style/book.css">
@@ -25,6 +27,7 @@
 </head>
 
 <body onload="initialize()">
+  {{> local_lti/loading_bar }}
   <div class="local_lti_book">
     {{#lessons}}
       <div class="lti-page" id="page-{{pagenum}}">
@@ -60,6 +63,27 @@
            {{{content}}}
          </div>
        </div>
+       <script>
+
+
+          $('#page-{{pagenum}}').ready(function() {
+            let iframes_to_load = $('#page-{{pagenum}} iframe');
+            let number_loaded = 0;
+            if (iframes_to_load.length == 0) {
+              updateLoadingBar({{total_pages}});
+            } else {
+              $('#page-{{pagenum}} iframe').each(function() {
+                $(this).on('load', function() {
+                  number_loaded++;
+                  if (iframes_to_load.length == number_loaded) {
+                    updateLoadingBar({{total_pages}});
+                  }
+                })
+              });
+            }
+          });
+
+       </script>
     {{/lessons}}
   </div>
 </body>

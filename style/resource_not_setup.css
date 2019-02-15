@@ -23,3 +23,8 @@
 .local_lti_resource_not_setup #contentId {
   width: 50%;
 }
+
+.local_lti_resource_not_setup .navbar {
+  padding-top: .3em;
+  padding-bottom: .3em;
+}

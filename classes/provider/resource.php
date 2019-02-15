@@ -1,6 +1,7 @@
 <?php
 
 namespace local_lti\provider;
+use local_lti\provider\request;
 
 /**
  * LTI Resource
@@ -25,11 +26,15 @@ class resource {
   /** @var int The ID of the tool consumer. This is NOT the consumer key. */
   private $consumer_id;
 
-  public function __construct($resource_link_id, $title, $type, $consumer_id) {
+  /** @var object A reference to the request object. */
+  private $request;
+
+  public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
     $this->title = $title;
     $this->type = $type;
     $this->consumer_id = $consumer_id;
+    $this->request = $request;
   }
 
   /*
@@ -38,6 +43,11 @@ class resource {
    */
   public function is_linked() {
     global $DB;
+
+    // If an ID has been passed in as a custom parameter, ignore resource linking.
+    if ($this->request->is_custom_parameter_set()) {
+      return true;
+    }
 
     $sql = 'SELECT {local_lti_resource_link}.id
             FROM {local_lti_resource_link}, {local_lti_consumer}
@@ -50,6 +60,11 @@ class resource {
   }
 
   public function is_share_approved() {
+
+    // If an ID has been passed in as a custom parameter, ignore resource linking.
+    if ($this->request->is_custom_parameter_set()) {
+      return true;
+    }
 
     $record = $this->get_record_from_database();
 
@@ -120,10 +135,24 @@ class resource {
    */
   private function get_content_id() {
 
-    // Return the record content id.
-    $record = $this->get_record_from_database();
-    return $record->content_id;
+    // Check if an ID was supplied as a custom parameter.
+    if (!$this->request->is_custom_parameter_set()) {
 
+      // Return the record content id.
+      $record = $this->get_record_from_database();
+      return $record->content_id;
+
+    } else {
+
+      // Check if request is coming from Canvas LMS.
+      if ($this->request->get_parameter('tool_consumer_info_product_family_code') === "canvas") {
+        // Return the ID optional parameter (appened to launch URL).
+        return optional_param('id', null, PARAM_INT);
+      }
+
+      // Return the custom parameter.
+      return $this->request->get_parameter('custom_id');
+    }
   }
 
   /**
@@ -132,6 +161,7 @@ class resource {
   public function render() {
     global $PAGE, $DB; // TODO, move DB calls to separate class specific to different lti types.
 
+    // Retrieve the requested content ID.
     $content_id = $this->get_content_id();
 
     // Get the plugin renderer.
@@ -153,7 +183,7 @@ class resource {
           break;
 
         } catch(\Exception $e) {
-          throw new \Exception('error retrieving book id.');
+          throw new \Exception(get_string('error_book_id', 'local_lti'));
         }
 
 
@@ -169,7 +199,7 @@ class resource {
         break;
 
       default:
-        throw new \Exception('not a valid type');
+        throw new \Exception(get_string('error_invalid_type', 'local_lti'));
     }
   }
 }

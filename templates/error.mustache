@@ -1,12 +1,25 @@
-<div class="local_lti_error">
+
+  {{> local_lti/header }}
   <!-- Custom CSS to style this error. -->
   <link rel="stylesheet" href="style/error.css">
-  <div class="header">
-    <img src="images/error.png"/>
-    <h1>{{# str }} error_heading, local_lti {{/ str }}</h1>
-  </div>
-  <div class="content"
-    <p>{{message}}</p>
-    <p>{{# str }}error_footer, local_lti {{/ str }}</p>
+</head>
+<body>
+  <div class="local_lti_error">
+    <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+     <a class="navbar-brand">
+       <img src="images/wcln_logo_light.png">
+       <span class="title">{{# str }} brand_heading, local_lti {{/ str }}</span>
+     </a>
+     </nav>
+    <div class="content">
+      <div class="error_heading">
+        <img src="images/error.png"/>
+        <h2>{{# str }} error_heading, local_lti {{/ str }}</h2>
+      </div>
+      <p>{{message}}</p>
+      <p>{{# str }}error_footer, local_lti {{/ str }}</p>
+    </div>
   </div>
 </div>
+</body>
+</html>
