@@ -34,3 +34,8 @@
   align-items: center;
   margin-bottom: 1em;
 }
+
+.local_lti_error .navbar {
+  padding-top: .3em;
+  padding-bottom: .3em;
+}

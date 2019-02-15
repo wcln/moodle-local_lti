@@ -7,14 +7,25 @@ var numberOfPages = 1;
 // Called on body load.
 function initialize() {
 
+<<<<<<< HEAD
   // Show the first page.
   //showFirstPage();
+=======
+  setTimeout(function() {
+    // Show the body.
+    $(".local_lti_book").fadeIn(800);
+>>>>>>> build-2
 
-  // Show the body.
-  $("body").css("visibility", "visible");
+    // Remove loading bar.
+    $('.local_lti_loading_bar').css("display", "none");
 
-  // Udate iframe height when the window is resized.
-  window.addEventListener("resize", updateIframeHeight);
+    // Show the first page.
+    showFirstPage();
+
+    // Udate iframe height when the window is resized.
+    window.addEventListener("resize", updateIframeHeight);
+
+  }, 400);
 }
 
 function updateIframeHeight() {
@@ -22,11 +33,7 @@ function updateIframeHeight() {
   // Calculate height of current page content.
   let height = $('#page-' + currentPage).outerHeight(false);
 
-  // Moodle.
-  // TODO check if moodle or canvas.
-  window.parent.postMessage(height, "*");
-
-  // Canvas.
+  // Send message to LMS to resize the iframe.
   window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
 }
 
@@ -74,6 +81,9 @@ function navigate(pageNumber) {
 
   // Set the height of the iframe to the height of the new page.
   updateIframeHeight();
+
+  // Scroll to the top of the page.
+  window.parent.postMessage(JSON.stringify({subject: 'lti.scrollToTop'}), '*');
 }
 
 function updateNavigationButtons() {
