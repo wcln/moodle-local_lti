@@ -5,9 +5,9 @@
   width: 100%;
 }
 
-/* Hide the body until everything is loaded. */
-body {
-  visibility: hidden;
+/* Hide the book until everything is loaded. */
+.local_lti_book {
+  display: none;
 }
 
 /* Logo. */
