@@ -11,20 +11,20 @@ function initialize(page, pageCount) {
 
   numberOfPages = pageCount;
 
-  setTimeout(function() {
-    // Show the body.
-    $(".local_lti_book").fadeIn(800);
+  // Show the body.
+  $(".local_lti_book").fadeIn(600);
 
-    // Remove loading bar.
-    $('.local_lti_loading_bar').css("display", "none");
+  // Remove loading bar.
+  $('.local_lti_loading_bar').css("display", "none");
 
-    // Show the page.
-    showPage();
+  // Show the page.
+  showPage();
 
-    // Udate iframe height when the window is resized.
-    window.addEventListener("resize", updateIframeHeight);
+  // Update iframe height when the window is resized.
+  window.addEventListener("resize", updateIframeHeight);
 
-  }, 400);
+  window.setInterval(updateIframeHeight, 200);
+
 }
 
 function updateIframeHeight() {
@@ -34,6 +34,7 @@ function updateIframeHeight() {
 
   // Send message to LMS to resize the iframe.
   window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
+
 }
 
 function showPage() {
