@@ -140,7 +140,6 @@ class resource {
 
     // Check if an ID was supplied as a custom parameter.
     if (!$this->request->is_custom_parameter_set()) {
-
       // Return the record content id.
       $record = $this->get_record_from_database();
       return $record->content_id;
@@ -154,7 +153,7 @@ class resource {
       }
 
       // Return the custom parameter.
-      return $this->request->get_parameter('custom_id');
+      return $this->request->get_parameter('id');
     }
   }
 
