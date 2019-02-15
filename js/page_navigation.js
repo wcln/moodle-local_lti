@@ -1,4 +1,7 @@
 function init() {
+
+  $('.local_lti_page').fadeIn(800);
+
   window.addEventListener("resize", updateIframeHeight);
   updateIframeHeight();
 }
