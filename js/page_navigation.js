@@ -6,7 +6,7 @@ function init() {
 
 function updateIframeHeight() {
   // Calculate height of current page content.
-  let height = $('#page-' + currentPage).outerHeight(false);
+  let height = $('body').outerHeight(false);
 
   // Moodle.
   // TODO check if moodle or canvas.

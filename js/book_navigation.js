@@ -7,14 +7,20 @@ var numberOfPages = 1;
 // Called on body load.
 function initialize() {
 
-  // Show the first page.
-  showFirstPage();
+  setTimeout(function() {
+    // Show the body.
+    $(".local_lti_book").fadeIn(800);
 
-  // Show the body.
-  $("body").css("visibility", "visible");
+    // Remove loading bar.
+    $('.local_lti_loading_bar').css("display", "none");
 
-  // Udate iframe height when the window is resized.
-  window.addEventListener("resize", updateIframeHeight);
+    // Show the first page.
+    showFirstPage();
+
+    // Udate iframe height when the window is resized.
+    window.addEventListener("resize", updateIframeHeight);
+
+  }, 400);
 }
 
 function updateIframeHeight() {
