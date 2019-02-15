@@ -29,3 +29,6 @@ $string['resource_not_setup_description'] = 'Contact a course teacher or adminis
 
 // Book.
 $string['table_of_contents'] = 'Table of Contents';
+
+// Loading bar.
+$string['loading'] = 'Loading...';
