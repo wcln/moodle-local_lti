@@ -52,29 +52,29 @@ try {
   }
 
   // Check if the resource is linked in the lti database already.
-  // if ($resource->is_linked()) {
-  //
-  //   // Check if the resource is enabled.
-  //   if ($resource->is_share_approved()) {
+  if ($resource->is_linked()) {
+
+    // Check if the resource is enabled.
+    if ($resource->is_share_approved()) {
 
       // Render the resource.
       $resource->render();
 
-  //   } else {
-  //     throw new Exception(get_string('error_not_shared', 'local_lti'));
-  //   }
-  //
-  // } else if ($request->get_user()->is_teacher() || $request->get_user()->is_content_developer()) {
-  //
-  //   // Render form for teacher/admin to enter content ID.
-  //   echo $renderer->render_resource_form(null);
-  //
-  // } else {
-  //
-  //   // Render 'Not set up yet' template.
-  //   echo $renderer->render_resource_not_setup(null);
-  //
-  // }
+    } else {
+      throw new Exception(get_string('error_not_shared', 'local_lti'));
+    }
+
+  } else if ($request->get_user()->is_teacher() || $request->get_user()->is_content_developer()) {
+
+    // Render form for teacher/admin to enter content ID.
+    echo $renderer->render_resource_form(null);
+
+  } else {
+
+    // Render 'Not set up yet' template.
+    echo $renderer->render_resource_not_setup(null);
+
+  }
 
 } catch (Exception $e) {
   // Catch all exceptions and render them using a custom template.
