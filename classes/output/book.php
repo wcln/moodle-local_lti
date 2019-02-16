@@ -85,7 +85,7 @@ class book implements renderable, templatable {
       }
 
       // The total count of pages. Used for the loading bar.
-      $data->total_pages = count($data->lessons);
+      $data->total_pages = count($data->pages);
 
       // Return the data object.
       return $data;
