@@ -28,11 +28,7 @@ function updateIframeHeight() {
   // Calculate height of current page content.
   let height = $('#page-' + currentPage).outerHeight(false);
 
-  // Moodle.
-  // TODO check if moodle or canvas.
-  window.parent.postMessage(height, "*");
-
-  // Canvas.
+  // Send message to LMS to resize the iframe.
   window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height}), '*');
 }
 
@@ -80,6 +76,9 @@ function navigate(pageNumber) {
 
   // Set the height of the iframe to the height of the new page.
   updateIframeHeight();
+
+  // Scroll to the top of the page.
+  window.parent.postMessage(JSON.stringify({subject: 'lti.scrollToTop'}), '*');
 }
 
 function updateNavigationButtons() {
