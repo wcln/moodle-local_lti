@@ -17,8 +17,8 @@
 
 /* Make the navbar thinner. */
 .local_lti_book .navbar {
-  padding-top: .3em;
-  padding-bottom: .3em;
+  padding-top: 0em;
+  padding-bottom: 0em;
 }
 
 /* Center logo and brand text. */
@@ -104,4 +104,9 @@
 /* Add a scroll bar to the TOC dropdown if the height is too large. */
 .local_lti_book .dropdown-menu {
   overflow-y: auto;
+}
+
+/* Ensure the cursor is a pointer for the Table of Contents dropdown. */
+.local_lti_book a.dropdown-toggle {
+  cursor: pointer;
 }

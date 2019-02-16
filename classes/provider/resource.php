@@ -29,6 +29,9 @@ class resource {
   /** @var object A reference to the request object. */
   private $request;
 
+  /** @var int The page number of the resource to retrieve. */
+  private $pagenum = null;
+
   public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
     $this->title = $title;
@@ -137,7 +140,6 @@ class resource {
 
     // Check if an ID was supplied as a custom parameter.
     if (!$this->request->is_custom_parameter_set()) {
-
       // Return the record content id.
       $record = $this->get_record_from_database();
       return $record->content_id;
@@ -153,6 +155,10 @@ class resource {
       // Return the custom parameter.
       return $this->request->get_parameter('custom_id');
     }
+  }
+
+  public function set_pagenum($pagenum) {
+    $this->pagenum = $pagenum;
   }
 
   /**
@@ -177,16 +183,22 @@ class resource {
           $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
           $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
-          // Render book.
-          $book = new \local_lti\output\book($book->id);
-          echo $renderer->render($book);
-          break;
+        } catch (\Exception $e) {
 
-        } catch(\Exception $e) {
           throw new \Exception(get_string('error_book_id', 'local_lti'));
         }
 
+        try {
+          // Get the launch id.
+          $launch_id = json_decode($this->request->get_parameter('lis_result_sourcedid'))->data->launchid;
 
+          // Render book.
+          $book = new \local_lti\output\book($book->id, $launch_id, $this->pagenum);
+          echo $renderer->render($book);
+        } catch (\Exception $e) {
+          throw $e;
+        }
+        break;
 
       case 'page':
 

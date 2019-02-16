@@ -26,65 +26,60 @@
 
 </head>
 
-<body onload="initialize()">
-  {{> local_lti/loading_bar }}
+<body onload="initialize({{pagenum}}, {{total_pages}})">
+  <!-- {{> local_lti/loading_bar }} -->
   <div class="local_lti_book">
-    {{#lessons}}
-      <div class="lti-page" id="page-{{pagenum}}">
-        <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
-         <a class="navbar-brand">
-           <img src="images/wcln_logo_light.png">
-           <span class="title">{{title}}</span>
-         </a>
-         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-             <span class="navbar-toggler-icon"></span>
-         </button>
-         <div id="navbarNavDropdown" class="navbar-collapse collapse">
-           <ul class="navbar-nav mr-auto">
-             <!-- Force below navbar to right -->
-           </ul>
-           <ul class="navbar-nav custom-navigation">
-             <a class="back-btn" onclick="back({{pagenum}})"><img src="images/back_btn.png"/></a>
-             <li class="nav-item dropdown">
-               <a class="nav-link dropdown-toggle" href="http://example.com" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                 {{# str }} table_of_contents, local_lti {{/ str }}
-               </a>
-               <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                 {{#lessons}}
-                  <a class="dropdown-item dropdown-{{pagenum}}" onclick="navigate({{pagenum}})">{{title}}</a>
-                 {{/lessons}}
-               </div>
-             </li>
-             <a class="next-btn" onclick="next({{pagenum}})"><img src="images/next_btn.png"/></a>
-           </ul>
-         </div>
-         </nav>
-         <div class="content">
-           {{{content}}}
-         </div>
+    <div class="lti-page" id="page-{{pagenum}}">
+      <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+       <a class="navbar-brand">
+         <img src="images/wcln_logo_light.png">
+         <span class="title">{{title}}</span>
+       </a>
+       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+           <span class="navbar-toggler-icon"></span>
+       </button>
+       <div id="navbarNavDropdown" class="navbar-collapse collapse">
+         <ul class="navbar-nav mr-auto">
+           <!-- Force below navbar to right -->
+         </ul>
+         <ul class="navbar-nav custom-navigation">
+           <a class="back-btn" href="index.php?type=book&pagenum={{last_page}}&sessid={{session_id}}"><img src="images/back_btn.png"/></a>
+           <li class="nav-item dropdown">
+             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+               {{# str }} table_of_contents, local_lti {{/ str }}
+             </a>
+             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+               {{#pages}}
+                <a class="dropdown-item dropdown-{{pagenum}}" href="index.php?type=book&pagenum={{pagenum}}&sessid={{session_id}}">{{title}}</a>
+               {{/pages}}
+             </div>
+           </li>
+           <a class="next-btn" href="index.php?type=book&pagenum={{next_page}}&sessid={{session_id}}"><img src="images/next_btn.png"/></a>
+         </ul>
        </div>
-       <script>
-
-
-          $('#page-{{pagenum}}').ready(function() {
-            let iframes_to_load = $('#page-{{pagenum}} iframe');
-            let number_loaded = 0;
-            if (iframes_to_load.length == 0) {
-              updateLoadingBar({{total_pages}});
-            } else {
-              $('#page-{{pagenum}} iframe').each(function() {
-                $(this).on('load', function() {
-                  number_loaded++;
-                  if (iframes_to_load.length == number_loaded) {
-                    updateLoadingBar({{total_pages}});
-                  }
-                })
-              });
-            }
+     </nav>
+     <div class="content">
+        {{{content}}}
+     </div>
+   </div>
+   <script>
+      $('#page-{{pagenum}}').ready(function() {
+        let iframes_to_load = $('#page-{{pagenum}} iframe');
+        let number_loaded = 0;
+        if (iframes_to_load.length == 0) {
+          updateLoadingBar({{total_pages}});
+        } else {
+          $('#page-{{pagenum}} iframe').each(function() {
+            $(this).on('load', function() {
+              number_loaded++;
+              if (iframes_to_load.length == number_loaded) {
+                updateLoadingBar({{total_pages}});
+              }
+            })
           });
-
-       </script>
-    {{/lessons}}
+        }
+      });
+   </script>
   </div>
 </body>
 </html>
