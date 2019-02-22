@@ -23,8 +23,11 @@ function initialize(page, pageCount) {
   // Update iframe height when the window is resized.
   window.addEventListener("resize", updateIframeHeight);
 
-  window.setInterval(updateIframeHeight, 200);
+  // Uncomment to update iframe height every 200ms.
+  //window.setInterval(updateIframeHeight, 200);
 
+  // Remove the iframe border (Moodle specific).
+  window.parent.postMessage(JSON.stringify({subject: 'lti.removeBorder'}), '*');
 }
 
 function updateIframeHeight() {
