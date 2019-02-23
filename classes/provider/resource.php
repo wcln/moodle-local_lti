@@ -138,7 +138,7 @@ class resource {
    */
   private function get_content_id() {
 
-    // Check if an ID was supplied as a custom parameter.
+    // Check if an ID was NOT supplied as a custom parameter.
     if (!$this->request->is_custom_parameter_set()) {
       // Return the record content id.
       $record = $this->get_record_from_database();
@@ -146,14 +146,26 @@ class resource {
 
     } else {
 
-      // Check if request is coming from Canvas LMS.
-      if ($this->request->get_parameter('tool_consumer_info_product_family_code') === "canvas") {
-        // Return the ID optional parameter (appened to launch URL).
-        return optional_param('id', null, PARAM_INT);
+      // Check if the request custom ID parameter is set.
+      if (!is_null($this->request->get_parameter('custom_id'))) {
+        return $this->request->get_parameter('custom_id');
+
+      // If the request is coming from Canvas.
+      } else if ($this->request->get_parameter('tool_consumer_info_product_family_code') === "canvas") {
+
+        // Get the ID parameter which was appended to the launch URL.
+        $id = optional_param('id', null, PARAM_INT);
+
+        // Set the request custom parameter. This is needed for Canvas to switch book pages.
+        // The optional param above will not be set when navigating pages, so will rely on the stored request data.
+        $this->request->set_parameter('custom_id', $id, false);
+
+        // Return the ID.
+        return $id;
       }
 
-      // Return the custom parameter.
-      return $this->request->get_parameter('custom_id');
+      // There is no ID set.
+      return null;
     }
   }
 
@@ -184,16 +196,13 @@ class resource {
           $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
         } catch (\Exception $e) {
-
           throw new \Exception(get_string('error_book_id', 'local_lti'));
         }
 
         try {
-          // Get the launch id.
-          $launch_id = json_decode($this->request->get_parameter('lis_result_sourcedid'))->data->launchid;
 
           // Render book.
-          $book = new \local_lti\output\book($book->id, $launch_id, $this->pagenum);
+          $book = new \local_lti\output\book($book->id, $this->request->get_session_id(), $this->pagenum);
           echo $renderer->render($book);
         } catch (\Exception $e) {
           throw $e;

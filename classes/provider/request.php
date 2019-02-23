@@ -23,6 +23,9 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
   /** @var object The TC user. */
   private $user;
 
+  /** @var string The random session ID. */
+  private $session_id;
+
   public function __construct() {
 
     // Construct oauth parent request.
@@ -131,4 +134,11 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     return required_param('type', PARAM_TEXT);
   }
 
+  public function get_session_id() {
+    return $this->session_id;
+  }
+
+  public function set_session_id($session_id) {
+    $this->session_id = $session_id;
+  }
 }
