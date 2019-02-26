@@ -17,9 +17,9 @@ try {
 
   // Check if we have an existing session.
   if ($session_id = optional_param('sessid', false, PARAM_TEXT)) {
-    if (isset($_SESSION["lti_request_$session_id"])) {
+    if (isset($SESSION->{"lti_request_$session_id"})) {
       // Load the existing request (we know it has already been verified).
-      $request = $_SESSION["lti_request_$session_id"];
+      $request = $SESSION->{"lti_request_$session_id"};
 
       // Check if content id was set.
       if ($content_id = optional_param('content_id', false, PARAM_INT)) {
@@ -47,7 +47,7 @@ try {
     $request->set_session_id($session_id);
 
     // Store the request in the global session variable using the random session ID.
-    $_SESSION["lti_request_$session_id"] = $request;
+    $SESSION->{"lti_request_$session_id"} = $request;
   }
 
   // Get the requested resource.

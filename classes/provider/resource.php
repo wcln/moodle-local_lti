@@ -136,7 +136,7 @@ class resource {
   /**
    * Get the book/page ID of this resource.
    */
-  private function get_content_id() {
+  public function get_content_id() {
 
     // Check if an ID was NOT supplied as a custom parameter.
     if (!$this->request->is_custom_parameter_set()) {
@@ -173,9 +173,6 @@ class resource {
     $this->pagenum = $pagenum;
   }
 
-  /**
-  *
-  */
   public function render() {
     global $PAGE, $DB; // TODO, move DB calls to separate class specific to different lti types.
 

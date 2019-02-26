@@ -66,6 +66,35 @@ function showPage() {
 
 }
 
+function navigate(page, session_id) {
+  console.log(session_id);
+  $.ajax({
+    url: "ajax.php",
+    method: "POST",
+    data: {page: page, sessid: session_id}
+  }).done(function(response) {
+
+    // Parse the JSON string into an object.
+    //response = JSON.parse(response);
+    console.log(response);
+
+    // Update current page.
+    currentPage = page;
+
+    // Load page content.
+    $('.local_lti_book .lti-page .content').html(response['content']);
+
+    // Set title.
+    $('.local_lti_book .lti-page .navbar-brand .title').html(response['title']);
+
+    // Updates iframe height and updates navigation buttons.
+    showPage();
+
+  }).fail(function() {
+    console.log('AJAX error.');
+  })
+}
+
 function updateNavigationButtons() {
   if (currentPage == 1) {
     // Just show the next button
