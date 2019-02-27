@@ -1,8 +1,18 @@
+/* Center loading text. */
 .local_lti_loader {
   text-align: center;
   font-size: 20px;
 }
 
+/* Center a logo img in the middle of the loader. */
+.local_lti_loader img {
+  height: 27px;
+  position: absolute;
+  top: 32%;
+  margin-left: -30px;
+}
+
+/* Loader circle animation. */
 .local_lti_loader .loader {
   border: 16px solid #f3f3f3; /* Light grey */
   border-top: 16px solid #D92111;
@@ -16,6 +26,12 @@
   margin: 5em auto .7em auto;
 }
 
+/* Contains the img and the loader. */
+.local_lti_loader .container {
+  position: relative;
+}
+
+/* Spins the loader circle. */
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
