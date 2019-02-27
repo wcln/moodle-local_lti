@@ -43,7 +43,7 @@
            <!-- Force below navbar to right -->
          </ul>
          <ul class="navbar-nav custom-navigation">
-           <a class="back-btn" href="index.php?type=book&pagenum={{last_page}}&sessid={{session_id}}"><img src="images/back_btn.png"/></a>
+           <a class="back-btn" onclick="previousPage('{{session_id}}')"><img src="images/back_btn.png"/></a>
            <li class="nav-item dropdown">
              <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                {{# str }} table_of_contents, local_lti {{/ str }}
@@ -54,7 +54,7 @@
                {{/pages}}
              </div>
            </li>
-           <a class="next-btn" href="index.php?type=book&pagenum={{next_page}}&sessid={{session_id}}"><img src="images/next_btn.png"/></a>
+           <a class="next-btn" onclick="nextPage('{{session_id}}')"><img src="images/next_btn.png"/></a>
          </ul>
        </div>
      </nav>

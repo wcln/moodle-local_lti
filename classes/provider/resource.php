@@ -27,7 +27,7 @@ class resource {
   protected $consumer_id;
 
   /** @var object A reference to the request object. */
-  protected $request;
+  public $request;
 
   public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
@@ -59,6 +59,10 @@ class resource {
     return $DB->record_exists_sql($sql, array($this->resource_link_id, $this->consumer_id));
   }
 
+  /**
+   * Checks if this resource is enabled.
+   * @return boolean is this resource share approved?
+   */
   public function is_share_approved() {
 
     // If an ID has been passed in as a custom parameter, ignore resource linking.
