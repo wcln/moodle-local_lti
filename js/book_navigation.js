@@ -66,11 +66,11 @@ function showPage() {
 
 }
 
-function navigate(page, session_id) {
+function navigate(page, sessionId) {
   $.ajax({
     url: "ajax.php",
     method: "POST",
-    data: {page: page, sessid: session_id}
+    data: {page: page, sessid: sessionId}
   }).done(function(response) {
 
     if (response['success'] == true) {
@@ -92,6 +92,14 @@ function navigate(page, session_id) {
   }).fail(function() {
     console.log('AJAX error.'); // TODO get_string.
   })
+}
+
+function nextPage(sessionId) {
+  navigate(currentPage + 1, sessionId);
+}
+
+function previousPage(sessionId) {
+  navigate(currentPage - 1, sessionId);
 }
 
 function updateNavigationButtons() {
