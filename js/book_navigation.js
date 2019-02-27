@@ -7,27 +7,31 @@ var numberOfPages = 1;
 // Called on body load.
 function initialize(page, pageCount) {
 
-  currentPage = page;
+  // Delay to show loading animation longer.
+  setTimeout(function() {
+    currentPage = page;
 
-  numberOfPages = pageCount;
+    numberOfPages = pageCount;
 
-  // Show the body.
-  $(".local_lti_book").fadeIn(600);
+    // Remove loading animation.
+    $('.local_lti_loader').css("display", "none");
 
-  // Remove loading bar.
-  $('.local_lti_loading_bar').css("display", "none");
+    // Show the body.
+    $(".local_lti_book").fadeIn(600);
 
-  // Show the page.
-  showPage();
+    // Show the page.
+    showPage();
 
-  // Update iframe height when the window is resized.
-  window.addEventListener("resize", updateIframeHeight);
+    // Update iframe height when the window is resized.
+    window.addEventListener("resize", updateIframeHeight);
 
-  // Uncomment to update iframe height every 200ms.
-  //window.setInterval(updateIframeHeight, 200);
+    // Uncomment to update iframe height every 200ms.
+    //window.setInterval(updateIframeHeight, 200);
 
-  // Remove the iframe border (Moodle specific).
-  window.parent.postMessage(JSON.stringify({subject: 'lti.removeBorder'}), '*');
+    // Remove the iframe border (Moodle specific).
+    window.parent.postMessage(JSON.stringify({subject: 'lti.removeBorder'}), '*');
+  }, 400);
+
 }
 
 function updateIframeHeight() {
