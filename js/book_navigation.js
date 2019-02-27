@@ -52,18 +52,18 @@ function showPage() {
   // Add the active class to the current page in TOC.
   $(".dropdown-" + currentPage).addClass("active");
 
+  // Set the height of the iframe to the height of the new page.
+  updateIframeHeight();
+
   // Update the max-height of the dropdown.
-  let maxHeight = ($('#page-' + currentPage).outerHeight(false) - 100);
+  let maxHeight = ($('.local_lti_book').outerHeight(false) - 50);
   if (maxHeight < 0) {
     maxHeight = 100;
   }
-  $("#page-" + currentPage + " .dropdown-menu").css("max-height", maxHeight + "px");
+  $(".local_lti_book .dropdown-menu").css("max-height", maxHeight + "px");
 
   // Show/hide next/back buttons.
   updateNavigationButtons();
-
-  // Set the height of the iframe to the height of the new page.
-  updateIframeHeight();
 
   // Scroll to the top of the page.
   window.parent.postMessage(JSON.stringify({subject: 'lti.scrollToTop'}), '*');
