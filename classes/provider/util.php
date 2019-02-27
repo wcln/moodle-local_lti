@@ -12,6 +12,12 @@ namespace local_lti\provider;
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class util {
+
+  /**
+   * Returns an assoc array of consumers and their secret keys.
+   * Includes enabled and disabled consumers.
+   * @return array An assoc. array of consumer => secret key.
+   */
   public static function get_all_tool_consumer_secrets() {
     global $DB;
 
@@ -19,6 +25,11 @@ class util {
     return $tool_consumer_secrets;
   }
 
+  /**
+   * Returns an assoc array of consumers and their secret keys.
+   * Only includes consumers which are enabled.
+   * @return array An assoc. array of consumer => secret key.
+   */
   public static function get_enabled_tool_consumer_secrets() {
     global $DB;
 
@@ -34,6 +45,11 @@ class util {
     return $tool_consumer_secrets;
   }
 
+  /**
+   * Returns a consumer ID.
+   * @param  string $name The consumer name.
+   * @return int      The consumer ID.
+   */
   public static function get_consumer_id($name) {
     global $DB;
 
@@ -46,6 +62,11 @@ class util {
     }
   }
 
+  /**
+   * Returns the ID of an LTI resource type given a unique name.
+   * @param  string $name The name of the LTI resource type.
+   * @return int       The ID of the LTI resource type.
+   */
   public static function get_type_id($name) {
     global $DB;
 
@@ -58,6 +79,11 @@ class util {
     }
   }
 
+  /**
+   * Returns the name of an LTI resource type given an ID.
+   * @param  int $id The ID of the LTI resource type.
+   * @return string     The name of the LTI resource type.
+   */
   public static function get_type_name($id) {
     global $DB;
 
@@ -70,4 +96,26 @@ class util {
     }
   }
 
+  /**
+   * Generates cryptographically secure pseudo-random bytes.
+   * @return string Random hexadecimal string.
+   */
+  public static function generate_random_session_id() {
+      return bin2hex(random_bytes(10));
+  }
+
+  /**
+   * Replace characters to enable MathJax to filter WIRIS XML.
+   * @param  string $content_string A string to be formatted.
+   * @return string                 The string with characters replaced. Ready to be rendered.
+   */
+  public static function format_content_for_mathjax($content_string) {
+    $content_string = str_replace('«', '<', $content_string);
+    $content_string = str_replace('»', '>', $content_string);
+    $content_string = str_replace('§', '&', $content_string);
+    $content_string = str_replace('¨', '"', $content_string);
+    $content_string = str_replace('´', "'", $content_string);
+
+    return $content_string;
+  }
 }

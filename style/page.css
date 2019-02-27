@@ -1,6 +1,7 @@
+/* Make the navbar thinner. */
 .local_lti_page .navbar {
-  padding-top: .3em;
-  padding-bottom: .3em;
+  padding-top: 0em;
+  padding-bottom: 0em;
 }
 
 .local_lti_page {

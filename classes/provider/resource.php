@@ -15,22 +15,19 @@ use local_lti\provider\request;
 class resource {
 
   /** @var string An identifier that the consumer gurantees will be unique. */
-  private $resource_link_id;
+  protected $resource_link_id;
 
   /** @var string The title of the resource. */
-  private $title;
+  protected $title;
 
   /** @var int The type of the resource requested. Ex: Book or Page. */
-  private $type;
+  protected $type;
 
   /** @var int The ID of the tool consumer. This is NOT the consumer key. */
-  private $consumer_id;
+  protected $consumer_id;
 
   /** @var object A reference to the request object. */
-  private $request;
-
-  /** @var int The page number of the resource to retrieve. */
-  private $pagenum = null;
+  protected $request;
 
   public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
@@ -136,9 +133,9 @@ class resource {
   /**
    * Get the book/page ID of this resource.
    */
-  private function get_content_id() {
+  public function get_content_id() {
 
-    // Check if an ID was supplied as a custom parameter.
+    // Check if an ID was NOT supplied as a custom parameter.
     if (!$this->request->is_custom_parameter_set()) {
       // Return the record content id.
       $record = $this->get_record_from_database();
@@ -146,72 +143,31 @@ class resource {
 
     } else {
 
-      // Check if request is coming from Canvas LMS.
-      if ($this->request->get_parameter('tool_consumer_info_product_family_code') === "canvas") {
-        // Return the ID optional parameter (appened to launch URL).
-        return optional_param('id', null, PARAM_INT);
+      // Check if the request custom ID parameter is set.
+      if (!is_null($this->request->get_parameter('custom_id'))) {
+        return $this->request->get_parameter('custom_id');
+
+      // If the request is coming from Canvas.
+      } else if ($this->request->get_parameter('tool_consumer_info_product_family_code') === "canvas") {
+
+        // Get the ID parameter which was appended to the launch URL.
+        $id = optional_param('id', null, PARAM_INT);
+
+        // Set the request custom parameter. This is needed for Canvas to switch book pages.
+        // The optional param above will not be set when navigating pages, so will rely on the stored request data.
+        $this->request->set_parameter('custom_id', $id, false);
+
+        // Return the ID.
+        return $id;
       }
 
-      // Return the custom parameter.
-      return $this->request->get_parameter('custom_id');
+      // There is no ID set.
+      return null;
     }
-  }
-
-  public function set_pagenum($pagenum) {
-    $this->pagenum = $pagenum;
   }
 
   /**
-  *
-  */
-  public function render() {
-    global $PAGE, $DB; // TODO, move DB calls to separate class specific to different lti types.
-
-    // Retrieve the requested content ID.
-    $content_id = $this->get_content_id();
-
-    // Get the plugin renderer.
-    $renderer = $PAGE->get_renderer('local_lti');
-
-    switch (util::get_type_name($this->type)) {
-      case 'book':
-
-        try {
-
-          // Retrieve book id.
-          $cm = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
-          $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
-          $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
-
-        } catch (\Exception $e) {
-
-          throw new \Exception(get_string('error_book_id', 'local_lti'));
-        }
-
-        try {
-          // Get the launch id.
-          $launch_id = json_decode($this->request->get_parameter('lis_result_sourcedid'))->data->launchid;
-
-          // Render book.
-          $book = new \local_lti\output\book($book->id, $launch_id, $this->pagenum);
-          echo $renderer->render($book);
-        } catch (\Exception $e) {
-          throw $e;
-        }
-        break;
-
-      case 'page':
-
-        // Retrieve page ID.
-        $cm = get_coursemodule_from_id('page', $content_id);
-
-        // Render page.
-        $page = new \local_lti\output\page($cm->instance);
-        echo $renderer->render($page);
-        break;
-
-      default:
-        throw new \Exception(get_string('error_invalid_type', 'local_lti'));
-    }
-  }
+   * To be overridden by resource type classes.
+   */
+  public function render() { }
 }

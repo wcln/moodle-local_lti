@@ -50,7 +50,7 @@
              </a>
              <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
                {{#pages}}
-                <a class="dropdown-item dropdown-{{pagenum}}" href="index.php?type=book&pagenum={{pagenum}}&sessid={{session_id}}">{{title}}</a>
+                <a class="dropdown-item dropdown-{{pagenum}}" onclick="navigate({{pagenum}}, '{{session_id}}')">{{title}}</a>
                {{/pages}}
              </div>
            </li>

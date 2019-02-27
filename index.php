@@ -2,6 +2,7 @@
 
 use local_lti\provider\request;
 use local_lti\provider\error;
+use local_lti\provider\util;
 
 // Catch all exceptions and render them using a custom template.
 try {
@@ -15,10 +16,11 @@ try {
   $renderer = $PAGE->get_renderer('local_lti');
 
   // Check if we have an existing session.
-  if ($session_id = optional_param('sessid', false, PARAM_INT)) {
-    if (isset($_SESSION["lti_request_$session_id"])) {
+  // Supports non-AJAX page changing.
+  if ($session_id = optional_param('sessid', false, PARAM_TEXT)) {
+    if (isset($SESSION->{"lti_request_$session_id"})) {
       // Load the existing request (we know it has already been verified).
-      $request = $_SESSION["lti_request_$session_id"];
+      $request = $SESSION->{"lti_request_$session_id"};
 
       // Check if content id was set.
       if ($content_id = optional_param('content_id', false, PARAM_INT)) {
@@ -28,7 +30,8 @@ try {
 
       }
     } else {
-      throw new Exception('Session expired.');
+      // There is a sessid parameter, but it does not exist in the global SESSION.
+      throw new Exception(get_string('error_session_expired', 'local_lti'));
     }
   } else {
     // Initialize the request.
@@ -38,14 +41,21 @@ try {
     // Will throw an exception if not verified.
     $request->verify();
 
-    // Store the request if it is verified.
-    $_SESSION['lti_request_' . json_decode($request->get_parameter('lis_result_sourcedid'))->data->launchid] = $request;
+    // Generate a random session ID.
+    $session_id = util::generate_random_session_id();
+
+    // Store the session ID in the request.
+    $request->set_session_id($session_id);
+
+    // Store the request in the global session variable using the random session ID.
+    $SESSION->{"lti_request_$session_id"} = $request;
   }
 
   // Get the requested resource.
   $resource = $request->get_resource();
 
   // Check for a page number.
+  // Supports non-AJAX page navigation.
   if ($pagenum = optional_param('pagenum', false, PARAM_INT)) {
     // Set the page number of the resource to retrieve.
     $resource->set_pagenum($pagenum);
