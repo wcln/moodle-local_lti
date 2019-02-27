@@ -9,25 +9,11 @@ use stdClass;
 
 class book implements renderable, templatable {
 
-    /** @var int The ID of the Moodle book to render. */
-    var $book_id = null;
+    /** @var object A custom book object to render. */
+    var $book = null;
 
-    /** @var int The page of the Moodle book to render. */
-    var $pagenum = null;
-
-    /** @var string The current ID of the LTI session. Used to change pages without reverifying. */
-    var $session_id = null;
-
-    public function __construct($book_id, $session_id, $pagenum = null) {
-      $this->book_id = $book_id;
-      $this->session_id = $session_id;
-
-      // If no page number is provided, use the first page.
-      if (is_null($pagenum)) {
-        $this->pagenum = 1;
-      } else {
-        $this->pagenum = $pagenum;
-      }
+    public function __construct($book) {
+      $this->book = $book;
     }
 
     /**
@@ -43,17 +29,13 @@ class book implements renderable, templatable {
 
       try {
         // Retrieve the lesson to display.
-        // TODO rewrite to use get_lesson function of resource_type/book.
-        $lesson = $DB->get_record_sql('SELECT id, pagenum, title, content
-                                       FROM {book_chapters}
-                                       WHERE bookid=?
-                                       AND pagenum=?
-                                       ORDER BY pagenum ASC', array($this->book_id, $this->pagenum));
+        $lesson = $this->book->get_lesson();
+
         // Retrieve pages... Needed for table of contents.
         $pages = $DB->get_records_sql('SELECT id, pagenum, title
                                        FROM {book_chapters}
                                        WHERE bookid=?
-                                       ORDER BY pagenum ASC', array($this->book_id));
+                                       ORDER BY pagenum ASC', array($this->book->get_book_id()));
 
       } catch(\Exception $e) {
         // Re-throw exception with custom message.
@@ -63,8 +45,8 @@ class book implements renderable, templatable {
       // Set data properties.
       $data->title = $lesson->title;
       $data->content = \local_lti\provider\util::format_content_for_mathjax($lesson->content);
-      $data->pagenum = $this->pagenum;
-      $data->session_id = $this->session_id;
+      $data->pagenum = $this->book->get_pagenum();
+      $data->session_id = $this->book->request->get_session_id();
 
       // Set pages. Needed for table of contents.
       $data->pages = [];

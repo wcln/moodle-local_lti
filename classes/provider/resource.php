@@ -27,7 +27,7 @@ class resource {
   protected $consumer_id;
 
   /** @var object A reference to the request object. */
-  protected $request;
+  public $request;
 
   public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
