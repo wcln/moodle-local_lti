@@ -73,8 +73,6 @@ function navigate(page, session_id) {
     data: {page: page, sessid: session_id}
   }).done(function(response) {
 
-    console.log(response);
-
     if (response['success'] == true) {
       // Update current page.
       currentPage = page;
