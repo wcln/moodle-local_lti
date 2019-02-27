@@ -60,13 +60,6 @@ class book implements renderable, templatable {
         throw new \Exception(get_string('error_retrieving_book_page', 'local_lti'));
       }
 
-      // Replace characters to enable MathJax to filter WIRIS XML.
-      $lesson->content = str_replace('«', '<', $lesson->content);
-      $lesson->content = str_replace('»', '>', $lesson->content);
-      $lesson->content = str_replace('§', '&', $lesson->content);
-      $lesson->content = str_replace('¨', '"', $lesson->content);
-      $lesson->content = str_replace('´', "'", $lesson->content);
-
       // Set data properties.
       $data->title = $lesson->title;
       $data->content = \local_lti\provider\util::format_content_for_mathjax($lesson->content);
