@@ -68,7 +68,7 @@ class book implements renderable, templatable {
 
       // Set data properties.
       $data->title = $lesson->title;
-      $data->content = $lesson->content;
+      $data->content = \local_lti\provider\util::format_content_for_mathjax($lesson->content);
       $data->pagenum = $this->pagenum;
       $data->last_page = $this->pagenum - 1;
       $data->next_page = $this->pagenum + 1;

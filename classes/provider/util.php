@@ -103,4 +103,19 @@ class util {
   public static function generate_random_session_id() {
       return bin2hex(random_bytes(10));
   }
+
+  /**
+   * Replace characters to enable MathJax to filter WIRIS XML.
+   * @param  string $content_string A string to be formatted.
+   * @return string                 The string with characters replaced. Ready to be rendered.
+   */
+  public static function format_content_for_mathjax($content_string) {
+    $content_string = str_replace('«', '<', $content_string);
+    $content_string = str_replace('»', '>', $content_string);
+    $content_string = str_replace('§', '&', $content_string);
+    $content_string = str_replace('¨', '"', $content_string);
+    $content_string = str_replace('´', "'", $content_string);
+
+    return $content_string;
+  }
 }

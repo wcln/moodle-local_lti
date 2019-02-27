@@ -24,7 +24,7 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = o
     $outcome->lesson = $lesson;
 
     // Set the outcome content and title to be returned.
-    $outcome->content = $lesson->content;
+    $outcome->content = \local_lti\provider\util::format_content_for_mathjax($lesson->content);
     $outcome->title = $lesson->title;
     $outcome->success = true;
 
