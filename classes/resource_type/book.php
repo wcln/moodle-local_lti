@@ -4,8 +4,14 @@ namespace local_lti\resource_type;
 use local_lti\provider\resource;
 
 /**
- * A Moodle Book.
+ * Book
+ *
+ * Represents a Moodle Book.
  * Contains custom render code.
+ *
+ * @package    local_lti
+ * @copyright  2019 Colin Bernard
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class book extends resource {
 

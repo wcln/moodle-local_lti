@@ -166,7 +166,8 @@ class resource {
     }
   }
 
-  public function render() {
-    // To be overridden by resource types.
-  }
+  /**
+   * To be overridden by resource type classes.
+   */
+  public function render() { }
 }

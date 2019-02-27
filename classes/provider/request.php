@@ -52,6 +52,12 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     $this->user = new user(parent::get_parameter('roles'));
   }
 
+  /**
+   * Verify the following:
+   *   1. This is an LTI launch request.
+   *   2. This is a VALID LTI launch request (authenticated).
+   *   3. All required parameters have been provided.
+   */
   public function verify() {
     if ($this->verify_launch_request()) {
       if ($this->verify_valid_launch_request()) {
@@ -68,6 +74,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     }
   }
 
+  /**
+   * Verify that this is an LTI launch request.
+   * @return boolean is this a launch request?
+   */
   private function verify_launch_request() {
     $ok = true;
 
@@ -89,6 +99,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     return $ok;
   }
 
+  /**
+   * Verify that this is a VALID authenticated launch request.
+   * @return boolean is this a valid launch request?
+   */
   private function verify_valid_launch_request() {
     $ok = true;
 
@@ -114,6 +128,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     return $ok;
   }
 
+  /**
+   * Verify that all required parameters are present.
+   * @return boolean are all required parameters present?
+   */
   private function verify_required_parameters() {
     $ok = true;
 
@@ -123,6 +141,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     return $ok;
   }
 
+  /**
+   * Checks if a content ID parameter is appended to the URL or sent as a custom paraneter with the request.
+   * @return boolean is the custom parameter set?
+   */
   public function is_custom_parameter_set() {
     if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
       return true;
@@ -130,22 +152,42 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     return false;
   }
 
+  /**
+   * Returns the user logged in to the consumer site.
+   * @return object Instance of provider/user class.
+   */
   public function get_user() {
     return $this->user;
   }
 
+  /**
+   * Returns the resource that was requested.
+   * @return object Instance of provider/resource class.
+   */
   public function get_resource() {
     return $this->resource;
   }
 
+  /**
+   * Returns the type of resource that was requested.
+   * @return string The type of resource that was requested.
+   */
   private static function get_resource_type() {
     return required_param('type', PARAM_TEXT);
   }
 
+  /**
+   * Returns the session ID associated with this request.
+   * @return string The random session ID.
+   */
   public function get_session_id() {
     return $this->session_id;
   }
 
+  /**
+   * Sets the session ID associated with this request.
+   * @param string $session_id Random string.
+   */
   public function set_session_id($session_id) {
     $this->session_id = $session_id;
   }
