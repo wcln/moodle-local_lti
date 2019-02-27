@@ -16,7 +16,7 @@ use local_lti\provider\resource;
 class book extends resource {
 
   /** @var int The page number of the resource to retrieve. */
-  private $pagenum = null;
+  private $pagenum = 1;
 
   /**
    * Returns the ID of this Book.
@@ -25,15 +25,20 @@ class book extends resource {
   public function get_book_id() {
     global $DB;
 
-    // Retrieve the requested content ID.
-    $content_id = $this->request->get_resource()->get_content_id();
+    try {
+      // Retrieve the requested content ID.
+      $content_id = $this->request->get_resource()->get_content_id();
 
-    // Get the book object using the course module ID.
-    $cm = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
-    $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
+      // Get the book object using the course module ID.
+      $cm = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
+      $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
+      $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
-    return $book->id;
+      return $book->id;
+      
+    } catch (\Exception $e) {
+      throw new \Exception(get_string('error_book_id', 'local_lti'));
+    }
   }
 
   /**
@@ -68,21 +73,21 @@ class book extends resource {
 
     try {
 
-      $book_id = $this->get_book_id();
-
-    } catch (\Exception $e) {
-      throw new \Exception(get_string('error_book_id', 'local_lti'));
-    }
-
-    try {
-
       // Render book.
-      $book = new \local_lti\output\book($book_id, $this->request->get_session_id(), $this->pagenum);
+      $book = new \local_lti\output\book($this);
       echo $renderer->render($book);
 
     } catch (\Exception $e) {
       throw new \Exception(get_string('error_rendering_book', 'local_lti'));
     }
+  }
+
+  /**
+   * Returns the current page number of this book.
+   * @return int Page number.
+   */
+  public function get_pagenum() {
+    return $this->pagenum;
   }
 
   /**
