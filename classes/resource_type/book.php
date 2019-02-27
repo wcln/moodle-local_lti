@@ -3,11 +3,19 @@
 namespace local_lti\resource_type;
 use local_lti\provider\resource;
 
+/**
+ * A Moodle Book.
+ * Contains custom render code.
+ */
 class book extends resource {
 
   /** @var int The page number of the resource to retrieve. */
   private $pagenum = null;
 
+  /**
+   * Returns the ID of this Book.
+   * @return int book ID.
+   */
   public function get_book_id() {
     global $DB;
 
@@ -22,6 +30,11 @@ class book extends resource {
     return $book->id;
   }
 
+  /**
+   * Returns a lesson from within this book.
+   * @param  int $pagenum Page number to return.
+   * @return object          Lesson object.
+   */
   public function get_lesson($pagenum = null) {
     global $DB;
 
@@ -38,6 +51,9 @@ class book extends resource {
     return $lesson;
   }
 
+  /**
+   * Renders the book using a template.
+   */
   public function render() {
     global $PAGE;
 
@@ -63,6 +79,11 @@ class book extends resource {
     }
   }
 
+  /**
+   * Sets the current page number of the book.
+   * Only used for non-AJAX page navigation.
+   * @param int $pagenum Page number.
+   */
   public function set_pagenum($pagenum) {
     $this->pagenum = $pagenum;
   }

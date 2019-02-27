@@ -16,6 +16,7 @@ try {
   $renderer = $PAGE->get_renderer('local_lti');
 
   // Check if we have an existing session.
+  // Supports non-AJAX page changing.
   if ($session_id = optional_param('sessid', false, PARAM_TEXT)) {
     if (isset($SESSION->{"lti_request_$session_id"})) {
       // Load the existing request (we know it has already been verified).
@@ -54,6 +55,7 @@ try {
   $resource = $request->get_resource();
 
   // Check for a page number.
+  // Supports non-AJAX page navigation.
   if ($pagenum = optional_param('pagenum', false, PARAM_INT)) {
     // Set the page number of the resource to retrieve.
     $resource->set_pagenum($pagenum);

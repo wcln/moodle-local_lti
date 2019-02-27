@@ -3,7 +3,15 @@
 namespace local_lti\resource_type;
 use local_lti\provider\resource;
 
+/**
+ * A Moodle Page.
+ * Contains custom render code.
+ */
 class page extends resource {
+
+  /**
+   * Renders the page using a template.
+   */
   public function render() {
     global $PAGE;
 
