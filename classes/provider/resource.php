@@ -15,22 +15,19 @@ use local_lti\provider\request;
 class resource {
 
   /** @var string An identifier that the consumer gurantees will be unique. */
-  private $resource_link_id;
+  protected $resource_link_id;
 
   /** @var string The title of the resource. */
-  private $title;
+  protected $title;
 
   /** @var int The type of the resource requested. Ex: Book or Page. */
-  private $type;
+  protected $type;
 
   /** @var int The ID of the tool consumer. This is NOT the consumer key. */
-  private $consumer_id;
+  protected $consumer_id;
 
   /** @var object A reference to the request object. */
-  private $request;
-
-  /** @var int The page number of the resource to retrieve. */
-  private $pagenum = null;
+  protected $request;
 
   public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
     $this->resource_link_id = $resource_link_id;
@@ -169,55 +166,7 @@ class resource {
     }
   }
 
-  public function set_pagenum($pagenum) {
-    $this->pagenum = $pagenum;
-  }
-
   public function render() {
-    global $PAGE, $DB; // TODO, move DB calls to separate class specific to different lti types.
-
-    // Retrieve the requested content ID.
-    $content_id = $this->get_content_id();
-
-    // Get the plugin renderer.
-    $renderer = $PAGE->get_renderer('local_lti');
-
-    switch (util::get_type_name($this->type)) {
-      case 'book':
-
-        try {
-
-          // Retrieve book id.
-          $cm = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
-          $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
-          $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
-
-        } catch (\Exception $e) {
-          throw new \Exception(get_string('error_book_id', 'local_lti'));
-        }
-
-        try {
-
-          // Render book.
-          $book = new \local_lti\output\book($book->id, $this->request->get_session_id(), $this->pagenum);
-          echo $renderer->render($book);
-        } catch (\Exception $e) {
-          throw $e;
-        }
-        break;
-
-      case 'page':
-
-        // Retrieve page ID.
-        $cm = get_coursemodule_from_id('page', $content_id);
-
-        // Render page.
-        $page = new \local_lti\output\page($cm->instance);
-        echo $renderer->render($page);
-        break;
-
-      default:
-        throw new \Exception(get_string('error_invalid_type', 'local_lti'));
-    }
+    // To be overridden by resource types.
   }
 }

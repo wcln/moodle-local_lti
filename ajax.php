@@ -19,31 +19,21 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = o
     // Load the existing request (we know it has already been verified).
     $request = $SESSION->{"lti_request_$session_id"};
 
-    // Retrieve the requested content ID.
-    $content_id = $request->get_resource()->get_content_id();
-
-    // Retrieve book id.
-    $cm = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
-    $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
-    $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
-
-    // Retrieve the lesson to display.
-    $lesson = $DB->get_record_sql('SELECT id, title, content
-                                   FROM {book_chapters}
-                                   WHERE bookid=?
-                                   AND pagenum=?
-                                   ORDER BY pagenum ASC', array($book->id, $pagenum));
+    // Retrieve the lesson.
+    $lesson = $request->get_resource()->get_lesson($pagenum);
+    $outcome->lesson = $lesson;
 
     // Set the outcome content and title to be returned.
     $outcome->content = $lesson->content;
     $outcome->title = $lesson->title;
+    $outcome->success = true;
 
   } else {
     $outcome->error = get_string('error_session_expired', 'local_lti');
   }
 
 } else {
-  $outcome->error = 'Missing parameters. Session ID and page number are both required to retrieve a page.';
+  $outcome->error = get_string('error_missing_required_params', 'local_lti');
 }
 
 // Ouput the outcome object as a JSON string.

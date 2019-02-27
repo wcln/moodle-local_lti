@@ -4,6 +4,8 @@ namespace local_lti\provider;
 use local_lti\provider\util;
 use local_lti\provider\resource;
 use local_lti\provider\user;
+use local_lti\resource_type\book;
+use local_lti\resource_type\page;
 use local_lti\imsglobal\lti\oauth;
 
 /**
@@ -32,13 +34,19 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     parent::__construct();
 
     // Load resource.
-    $this->resource = new resource(
-      parent::get_parameter('resource_link_id'),
-      parent::get_parameter('resource_link_title'),
-      util::get_type_id(request::get_resource_type()),
-      util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
-      $this
-    );
+    $resource_class = "\\local_lti\\resource_type\\" . request::get_resource_type();
+
+    try {
+      $this->resource = new $resource_class(
+          parent::get_parameter('resource_link_id'),
+          parent::get_parameter('resource_link_title'),
+          util::get_type_id(request::get_resource_type()),
+          util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
+          $this
+      );
+    } catch (\Exception $e) {
+      throw new \Exception(get_string('error_invalid_type', 'local_lti'));
+    }
 
     // Load user.
     $this->user = new user(parent::get_parameter('roles'));
