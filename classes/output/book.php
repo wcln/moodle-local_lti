@@ -43,6 +43,7 @@ class book implements renderable, templatable {
 
       try {
         // Retrieve the lesson to display.
+        // TODO rewrite to use get_lesson function of resource_type/book.
         $lesson = $DB->get_record_sql('SELECT id, pagenum, title, content
                                        FROM {book_chapters}
                                        WHERE bookid=?
@@ -68,7 +69,7 @@ class book implements renderable, templatable {
 
       // Set data properties.
       $data->title = $lesson->title;
-      $data->content = $lesson->content;
+      $data->content = \local_lti\provider\util::format_content_for_mathjax($lesson->content);
       $data->pagenum = $this->pagenum;
       $data->last_page = $this->pagenum - 1;
       $data->next_page = $this->pagenum + 1;

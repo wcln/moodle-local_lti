@@ -13,6 +13,10 @@ namespace local_lti\provider;
  */
 class error {
 
+  /**
+   * Renders an error message using a custom tempalte.
+   * @param  string $message The error message to show the user.
+   */
   public static function render($message) {
     global $PAGE;
 
