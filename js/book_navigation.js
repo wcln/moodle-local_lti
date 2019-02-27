@@ -7,27 +7,31 @@ var numberOfPages = 1;
 // Called on body load.
 function initialize(page, pageCount) {
 
-  currentPage = page;
+  // Delay to show loading animation longer.
+  setTimeout(function() {
+    currentPage = page;
 
-  numberOfPages = pageCount;
+    numberOfPages = pageCount;
 
-  // Show the body.
-  $(".local_lti_book").fadeIn(600);
+    // Remove loading animation.
+    $('.local_lti_loader').css("display", "none");
 
-  // Remove loading bar.
-  $('.local_lti_loading_bar').css("display", "none");
+    // Show the body.
+    $(".local_lti_book").fadeIn(600);
 
-  // Show the page.
-  showPage();
+    // Show the page.
+    showPage();
 
-  // Update iframe height when the window is resized.
-  window.addEventListener("resize", updateIframeHeight);
+    // Update iframe height when the window is resized.
+    window.addEventListener("resize", updateIframeHeight);
 
-  // Uncomment to update iframe height every 200ms.
-  //window.setInterval(updateIframeHeight, 200);
+    // Uncomment to update iframe height every 200ms.
+    //window.setInterval(updateIframeHeight, 200);
 
-  // Remove the iframe border (Moodle specific).
-  window.parent.postMessage(JSON.stringify({subject: 'lti.removeBorder'}), '*');
+    // Remove the iframe border (Moodle specific).
+    window.parent.postMessage(JSON.stringify({subject: 'lti.removeBorder'}), '*');
+  }, 400);
+
 }
 
 function updateIframeHeight() {
@@ -48,18 +52,18 @@ function showPage() {
   // Add the active class to the current page in TOC.
   $(".dropdown-" + currentPage).addClass("active");
 
+  // Set the height of the iframe to the height of the new page.
+  updateIframeHeight();
+
   // Update the max-height of the dropdown.
-  let maxHeight = ($('#page-' + currentPage).outerHeight(false) - 100);
+  let maxHeight = ($('.local_lti_book').outerHeight(false) - 50);
   if (maxHeight < 0) {
     maxHeight = 100;
   }
-  $("#page-" + currentPage + " .dropdown-menu").css("max-height", maxHeight + "px");
+  $(".local_lti_book .dropdown-menu").css("max-height", maxHeight + "px");
 
   // Show/hide next/back buttons.
   updateNavigationButtons();
-
-  // Set the height of the iframe to the height of the new page.
-  updateIframeHeight();
 
   // Scroll to the top of the page.
   window.parent.postMessage(JSON.stringify({subject: 'lti.scrollToTop'}), '*');
