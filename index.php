@@ -38,15 +38,9 @@ try {
   // Check if the resource is linked in the lti database already.
   if ($resource->is_linked()) {
 
-    // Check if the resource is enabled.
-    if ($resource->is_share_approved()) {
+    // Render the resource.
+    $resource->render();
 
-      // Render the resource.
-      $resource->render();
-
-    } else {
-      throw new Exception(get_string('error_not_shared', 'local_lti'));
-    }
 
   } else {
 

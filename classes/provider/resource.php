@@ -59,30 +59,6 @@ class resource {
     return $DB->record_exists_sql($sql, array($this->resource_link_id, $this->consumer_id));
   }
 
-  /**
-   * Checks if this resource is enabled.
-   * @return boolean is this resource share approved?
-   */
-  public function is_share_approved() {
-
-    // If an ID has been passed in as a custom parameter, ignore resource linking.
-    if ($this->request->is_custom_parameter_set()) {
-      return true;
-    }
-
-    $record = $this->get_record_from_database();
-
-    if ($record) {
-      if ($record->share_approved) {
-        return true;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
-  }
-
   private function get_record_from_database() {
     global $DB;
 

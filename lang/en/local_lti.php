@@ -17,7 +17,6 @@ $string['error_rendering_page'] = 'An error occurred while rendering the LTI pag
 $string['error_book_id'] = 'An error occurred while attempting to retrieve the book id. Check that the id you are providing is correct.';
 $string['error_page_id'] = 'An error occurred while attempting to retrieve the page id. Check that the id you are providing is correct.';
 $string['error_missing_type'] = 'LTI type parameter is missing from the launch URL. Try ?type=book or ?type=page.';
-$string['error_not_shared'] = 'This resource is currently disabled.';
 $string['error_verification'] = 'The request could not be verified.';
 $string['error_session_not_found'] = 'The previous session could not be recovered. Unable to link resource without the request. Try reloading this page.';
 $string['error_retrieving_book_page'] = 'An error occurred while attempting to retrieve the book page from the database.';
