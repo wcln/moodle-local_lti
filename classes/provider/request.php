@@ -133,8 +133,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
   private function verify_required_parameters() {
     $ok = true;
 
-    // Check for a consumer product family code (Ex. Moodle, Canvas).
-    $ok = $ok && !is_null(parent::get_parameter('tool_consumer_info_product_family_code'));
+    // Check if a custom ID parameter is set.
+    $ok = $ok && is_custom_parameter_set();
+
+    // If other parameters become required they are to be added here...
 
     return $ok;
   }
