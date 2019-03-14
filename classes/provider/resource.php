@@ -23,79 +23,94 @@ abstract class resource {
   /** @var object A reference to the request object. */
   public $request;
 
+  /** @var int The ID of the resource content that is being requested.. */
+  protected $content_id;
+
   public function __construct($type, $consumer_id, $request) {
     $this->type = $type;
     $this->consumer_id = $consumer_id;
     $this->request = $request;
+    $this->content_id = $this->get_content_id();
   }
 
-  /*
-   * Check if this resource already exists in local_lti_resource_link table.
+  /**
+   * Checks if a record exists in the resource linking database table for this resource.
+   * If it does, update it. If it does not, create it.
    */
-  public function is_linked() {
-    global $DB;
+  protected function update_link() {
 
-    $sql = 'SELECT {local_lti_resource_link}.id
-            FROM {local_lti_resource_link}, {local_lti_consumer}
-            WHERE {local_lti_resource_link}.consumer = {local_lti_consumer}.id
-            AND resource_link_id = ?
-            AND {local_lti_consumer}.id = ?
-            AND content_id IS NOT NULL';
+      // Check if record exists in local_lti_resource_link table.
+      if ($this->is_linked()) {
 
-    return $DB->record_exists_sql($sql, array($this->resource_link_id, $this->consumer_id));
+        // Update access_count and last_access fields.
+        global $DB;
+        $record = $this->get_record_from_database();
+        $record->access_count += 1;
+        $record->last_access = date("Y-m-d H:i:s"); // Now.
+        $DB->update_record('local_lti_resource_link', $record);
+
+      } else {
+
+        // Create new record in local_lti_resource_link.
+        $this->create_link();
+      }
   }
 
+  /**
+   * Check if this resource already exists in the local_lti_resource_link table.
+   * @return boolean
+   */
+  private function is_linked() {
+    $record = $this->get_record_from_database();
+    if ($record) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  /**
+   * Return the database record for this resource.
+   * @return object The database record object.
+   */
   private function get_record_from_database() {
     global $DB;
 
     // Search for the record using the record_link_id and consumer_id.
     $record = $DB->get_record('local_lti_resource_link',
       array(
-        'resource_link_id' => $this->resource_link_id,
-        'consumer' => $this->consumer_id
+        'content_id' => $this->content_id,
+        'consumer' => $this->consumer_id,
+        'type' => $this->type
       ));
 
     // Return the record.
     return $record;
-
   }
 
   /*
    * Inserts this resource into local_lti_resource_link table.
    */
-  public function create_link($content_id) {
+  public function create_link() {
     global $DB;
 
     $now = date("Y-m-d H:i:s");
 
-    $sql = 'SELECT {local_lti_resource_link}.id
-            FROM {local_lti_resource_link}, {local_lti_consumer}
-            WHERE {local_lti_resource_link}.consumer = {local_lti_consumer}.id
-            AND resource_link_id = ?
-            AND {local_lti_consumer}.name = ?';
-
-    // Check if resource ID / consumer exist in table already.
-    if ($record = $DB->get_record_sql($sql, array($this->resource_link_id, $this->consumer_id))) {
-      // Update the content id.
-      $record->content_id = $content_id;
-      $record->updated = $now;
-      $DB->update_record('local_lti_resource_link', $record);
-    } else {
-      // Insert a new record.
-      $record = new \stdClass();
-      $record->type = $this->type;
-      $record->consumer = $this->consumer_id;
-      $record->content_id = $content_id;
-      $record->created = $now;
-      $record->resource_link_id = $this->resource_link_id;
-      $DB->insert_record('local_lti_resource_link', $record);
-    }
+    // Insert a new record.
+    $record = new \stdClass();
+    $record->type = $this->type;
+    $record->consumer = $this->consumer_id;
+    $record->content_id = $this->content_id;
+    $record->access_count = 1;
+    $record->created = $now;
+    $record->last_access = $now;
+    $DB->insert_record('local_lti_resource_link', $record);
   }
 
   /**
    * Get the book/page ID of this resource.
    */
-  public function get_content_id() {
+  private function get_content_id() {
 
     // Check if the request custom ID parameter is set.
     if (!is_null($this->request->get_parameter('custom_id'))) {

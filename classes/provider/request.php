@@ -22,7 +22,7 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
   /** @var object The resource that was requested.  */
   private $resource;
 
-  /** @var object The TC user. */
+  /** @var object The Tool Consumer (TC) user. */
   private $user;
 
   /** @var string The random session ID. */
@@ -134,7 +134,7 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     $ok = true;
 
     // Check if a custom ID parameter is set.
-    $ok = $ok && is_custom_parameter_set();
+    $ok = $ok && $this->is_custom_parameter_set();
 
     // If other parameters become required they are to be added here...
 
