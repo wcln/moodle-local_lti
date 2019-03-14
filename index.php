@@ -15,51 +15,25 @@ try {
   // Get the page renderer.
   $renderer = $PAGE->get_renderer('local_lti');
 
-  // Check if we have an existing session.
-  // Supports non-AJAX page changing.
-  if ($session_id = optional_param('sessid', false, PARAM_TEXT)) {
-    if (isset($SESSION->{"lti_request_$session_id"})) {
-      // Load the existing request (we know it has already been verified).
-      $request = $SESSION->{"lti_request_$session_id"};
+  // Initialize the request.
+  $request = new request();
 
-      // Check if content id was set.
-      if ($content_id = optional_param('content_id', false, PARAM_INT)) {
+  // Verify the request.
+  // Will throw an exception if not verified.
+  $request->verify();
 
-        // Create a resource link using the content id.
-        $request->get_resource()->create_link($content_id);
+  // Generate a random session ID.
+  $session_id = util::generate_random_session_id();
 
-      }
-    } else {
-      // There is a sessid parameter, but it does not exist in the global SESSION.
-      throw new Exception(get_string('error_session_expired', 'local_lti'));
-    }
-  } else {
-    // Initialize the request.
-    $request = new request();
+  // Store the session ID in the request.
+  $request->set_session_id($session_id);
 
-    // Verify the request.
-    // Will throw an exception if not verified.
-    $request->verify();
-
-    // Generate a random session ID.
-    $session_id = util::generate_random_session_id();
-
-    // Store the session ID in the request.
-    $request->set_session_id($session_id);
-
-    // Store the request in the global session variable using the random session ID.
-    $SESSION->{"lti_request_$session_id"} = $request;
-  }
+  // Store the request in the global session variable using the random session ID.
+  // Subsequent page loading within the book will be handled via AJAX calls.
+  $SESSION->{"lti_request_$session_id"} = $request;
 
   // Get the requested resource.
   $resource = $request->get_resource();
-
-  // Check for a page number.
-  // Supports non-AJAX page navigation.
-  if ($pagenum = optional_param('pagenum', false, PARAM_INT)) {
-    // Set the page number of the resource to retrieve.
-    $resource->set_pagenum($pagenum);
-  }
 
   // Check if the resource is linked in the lti database already.
   if ($resource->is_linked()) {
@@ -73,11 +47,6 @@ try {
     } else {
       throw new Exception(get_string('error_not_shared', 'local_lti'));
     }
-
-  } else if ($request->get_user()->is_teacher() || $request->get_user()->is_content_developer()) {
-
-    // Render form for teacher/admin to enter content ID.
-    echo $renderer->render_resource_form(null);
 
   } else {
 
