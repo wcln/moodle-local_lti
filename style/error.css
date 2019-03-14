@@ -36,6 +36,6 @@
 }
 
 .local_lti_error .navbar {
-  padding-top: .3em;
-  padding-bottom: .3em;
+  padding-top: 0;
+  padding-bottom: 0;
 }
