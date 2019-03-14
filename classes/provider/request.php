@@ -145,7 +145,7 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
    * Checks if a content ID parameter is appended to the URL or sent as a custom paraneter with the request.
    * @return boolean is the custom parameter set?
    */
-  public function is_custom_parameter_set() {
+  private function is_custom_parameter_set() {
     if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
       return true;
     }
