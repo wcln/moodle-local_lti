@@ -33,13 +33,11 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     // Construct oauth parent request.
     parent::__construct();
 
-    // Load resource.
+    // Load resource depending on type.
     $resource_class = "\\local_lti\\resource_type\\" . request::get_resource_type();
 
     try {
       $this->resource = new $resource_class(
-          parent::get_parameter('resource_link_id'),
-          parent::get_parameter('resource_link_title'),
           util::get_type_id(request::get_resource_type()),
           util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
           $this

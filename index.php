@@ -35,19 +35,8 @@ try {
   // Get the requested resource.
   $resource = $request->get_resource();
 
-  // Check if the resource is linked in the lti database already.
-  if ($resource->is_linked()) {
-
-    // Render the resource.
-    $resource->render();
-
-
-  } else {
-
-    // Render 'Not set up yet' template.
-    echo $renderer->render_resource_not_setup(null);
-
-  }
+  // Render the resource.
+  $resource->render();
 
 } catch (Exception $e) {
   // Catch all exceptions and render them using a custom template.

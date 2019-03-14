@@ -12,26 +12,18 @@ use local_lti\provider\request;
  * @copyright  2019 Colin Bernard
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class resource {
+abstract class resource {
 
-  /** @var string An identifier that the consumer gurantees will be unique. */
-  protected $resource_link_id;
-
-  /** @var string The title of the resource. */
-  protected $title;
-
-  /** @var int The type of the resource requested. Ex: Book or Page. */
+  /** @var int The type of the resource requested. */
   protected $type;
 
-  /** @var int The ID of the tool consumer. This is NOT the consumer key. */
+  /** @var int The ID of the tool consumer. This is NOT the consumer key. It references the local_lti_consumer ID field. */
   protected $consumer_id;
 
   /** @var object A reference to the request object. */
   public $request;
 
-  public function __construct($resource_link_id, $title, $type, $consumer_id, $request) {
-    $this->resource_link_id = $resource_link_id;
-    $this->title = $title;
+  public function __construct($type, $consumer_id, $request) {
     $this->type = $type;
     $this->consumer_id = $consumer_id;
     $this->request = $request;
@@ -39,15 +31,9 @@ class resource {
 
   /*
    * Check if this resource already exists in local_lti_resource_link table.
-   * Checks if content id is set, if it  is shared.
    */
   public function is_linked() {
     global $DB;
-
-    // If an ID has been passed in as a custom parameter, ignore resource linking.
-    if ($this->request->is_custom_parameter_set()) {
-      return true;
-    }
 
     $sql = 'SELECT {local_lti_resource_link}.id
             FROM {local_lti_resource_link}, {local_lti_consumer}
@@ -97,14 +83,10 @@ class resource {
     } else {
       // Insert a new record.
       $record = new \stdClass();
-      $record->resource_link_id = $this->resource_link_id;
-      $record->resource_link_title = $this->title;
       $record->type = $this->type;
       $record->consumer = $this->consumer_id;
       $record->content_id = $content_id;
-      $record->share_approved = true;
       $record->created = $now;
-      $record->updated = $now;
       $record->resource_link_id = $this->resource_link_id;
       $DB->insert_record('local_lti_resource_link', $record);
     }
@@ -115,39 +97,29 @@ class resource {
    */
   public function get_content_id() {
 
-    // Check if an ID was NOT supplied as a custom parameter.
-    if (!$this->request->is_custom_parameter_set()) {
-      // Return the record content id.
-      $record = $this->get_record_from_database();
-      return $record->content_id;
+    // Check if the request custom ID parameter is set.
+    if (!is_null($this->request->get_parameter('custom_id'))) {
+      return $this->request->get_parameter('custom_id');
 
-    } else {
+    // Check for an ID parameter appended to the launch URL.
+    // Canvas LMS will work this way.
+    } else if ($id = optional_param('id', false, PARAM_INT)) {
 
-      // Check if the request custom ID parameter is set.
-      if (!is_null($this->request->get_parameter('custom_id'))) {
-        return $this->request->get_parameter('custom_id');
+      // Set the request custom parameter. This is needed for Canvas to switch book pages.
+      // The optional param above will not be set when navigating pages, so will rely on the stored request data.
+      $this->request->set_parameter('custom_id', $id, false);
 
-      // If the request is coming from Canvas.
-      } else if ($this->request->get_parameter('tool_consumer_info_product_family_code') === "canvas") {
-
-        // Get the ID parameter which was appended to the launch URL.
-        $id = optional_param('id', null, PARAM_INT);
-
-        // Set the request custom parameter. This is needed for Canvas to switch book pages.
-        // The optional param above will not be set when navigating pages, so will rely on the stored request data.
-        $this->request->set_parameter('custom_id', $id, false);
-
-        // Return the ID.
-        return $id;
-      }
-
-      // There is no ID set.
-      return null;
+      // Return the ID.
+      return $id;
     }
+
+    // There is no ID set.
+    return null;
+
   }
 
   /**
    * To be overridden by resource type classes.
    */
-  public function render() { }
+  abstract public function render();
 }
