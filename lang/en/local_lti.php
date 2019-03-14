@@ -23,11 +23,9 @@ $string['error_session_not_found'] = 'The previous session could not be recovere
 $string['error_retrieving_book_page'] = 'An error occurred while attempting to retrieve the book page from the database.';
 $string['error_session_expired'] = 'Session expired. Try reloading this page.';
 
-// Resource Link.
-$string['resource_setup'] = 'A book ID or page ID has not yet been set for this resource. Enter an ID below to finish configuring this resource. If you are unsure what ID to enter, contact wcln.ca.';
-$string['resource_link'] = 'Resource Link';
+// Resource not configured.
 $string['resource_not_setup_heading'] = 'LTI Resource Not Configured';
-$string['resource_not_setup_description'] = 'Contact a course teacher or administrator to set up this LTI resource.';
+$string['resource_not_setup_description'] = 'A book ID or page ID custom parameter has not been configured for this resource. Contact a course teacher or administrator to set up this LTI resource.';
 
 // Book.
 $string['table_of_contents'] = 'Table of Contents';
