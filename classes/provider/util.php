@@ -53,7 +53,7 @@ class util {
   public static function get_consumer_id($name) {
     global $DB;
 
-    $record = $DB->get_record('local_lti_consumer', array('name' => $name), 'id');
+    $record = $DB->get_record('local_lti_consumer', array('consumer_key' => $name), 'id');
 
     if ($record) {
       return $record->id;

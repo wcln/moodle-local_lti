@@ -26,16 +26,14 @@ class book extends resource {
     global $DB;
 
     try {
-      // Retrieve the requested content ID.
-      $content_id = $this->request->get_resource()->get_content_id();
 
       // Get the book object using the course module ID.
-      $cm = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
+      $cm = get_coursemodule_from_id('book', $this->content_id, 0, false, MUST_EXIST);
       $course = $DB->get_record('course', array('id'=>$cm->course), '*', MUST_EXIST);
       $book = $DB->get_record('book', array('id'=>$cm->instance), '*', MUST_EXIST);
 
       return $book->id;
-      
+
     } catch (\Exception $e) {
       throw new \Exception(get_string('error_book_id', 'local_lti'));
     }
@@ -67,6 +65,9 @@ class book extends resource {
    */
   public function render() {
     global $PAGE;
+
+    // Ensure this resource exists in the local_lti_resource_link table, and update it.
+    parent::update_link();
 
     // Get the plugin renderer.
     $renderer = $PAGE->get_renderer('local_lti');

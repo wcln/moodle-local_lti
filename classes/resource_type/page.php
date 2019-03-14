@@ -21,14 +21,14 @@ class page extends resource {
   public function render() {
     global $PAGE;
 
+    // Ensure this resource exists in the local_lti_resource_link table, and update it.
+    parent::update_link();
+
     // Get the plugin renderer.
     $renderer = $PAGE->get_renderer('local_lti');
 
-    // Retrieve the requested content ID.
-    $content_id = $this->request->get_resource()->get_content_id();
-
     // Retrieve page ID.
-    $cm = get_coursemodule_from_id('page', $content_id);
+    $cm = get_coursemodule_from_id('page', $this->content_id);
 
     // Render page.
     $page = new \local_lti\output\page($cm->instance);

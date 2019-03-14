@@ -22,7 +22,7 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
   /** @var object The resource that was requested.  */
   private $resource;
 
-  /** @var object The TC user. */
+  /** @var object The Tool Consumer (TC) user. */
   private $user;
 
   /** @var string The random session ID. */
@@ -33,13 +33,11 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     // Construct oauth parent request.
     parent::__construct();
 
-    // Load resource.
+    // Load resource depending on type.
     $resource_class = "\\local_lti\\resource_type\\" . request::get_resource_type();
 
     try {
       $this->resource = new $resource_class(
-          parent::get_parameter('resource_link_id'),
-          parent::get_parameter('resource_link_title'),
           util::get_type_id(request::get_resource_type()),
           util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
           $this
@@ -135,8 +133,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
   private function verify_required_parameters() {
     $ok = true;
 
-    // Check for a consumer product family code (Ex. Moodle, Canvas).
-    $ok = $ok && !is_null(parent::get_parameter('tool_consumer_info_product_family_code'));
+    // Check if a custom ID parameter is set.
+    $ok = $ok && $this->is_custom_parameter_set();
+
+    // If other parameters become required they are to be added here...
 
     return $ok;
   }
@@ -145,7 +145,7 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
    * Checks if a content ID parameter is appended to the URL or sent as a custom paraneter with the request.
    * @return boolean is the custom parameter set?
    */
-  public function is_custom_parameter_set() {
+  private function is_custom_parameter_set() {
     if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
       return true;
     }
