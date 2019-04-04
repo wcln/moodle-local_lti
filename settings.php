@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * AJAX script to handle LTI page loading.
+ * Create a settings page for the plugin.
  *
  * @package    local_lti
  * @copyright  2019 Colin Bernard {@link https://wcln.ca}
