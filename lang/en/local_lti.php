@@ -25,6 +25,7 @@
 $string['pluginname'] = "WCLN LTI Provider";
 $string['brand_heading'] = 'Western Canadian Learning Network';
 $string['brand_short'] = 'WCLN';
+$string['update_toolurl'] = 'Update LTI toolurl Field';
 
 // Errors.
 $string['error_heading'] = 'LTI Error';

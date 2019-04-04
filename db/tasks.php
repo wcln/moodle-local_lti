@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 /**
- * Version details.
+ * Define the plugin scheduled tasks.
  *
  * @package    local_lti
  * @copyright  2019 Colin Bernard {@link https://wcln.ca}
@@ -23,9 +23,16 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-
-$plugin->version   = 2019040400; // The current plugin version (Date: YYYYMMDDXX).
-$plugin->requires  = 2016112900; // Requires this Moodle version.
-$plugin->component = 'local_lti'; // Full name of the plugin (used for diagnostics).
-$plugin->maturity = MATURITY_STABLE;
-$plugin->release = 'v0.8';
+$tasks = [
+  // Run the update toolurl task every morning at 2AM.
+  [
+      'classname' => 'local_lti\task\update_toolurl',
+      'blocking' => 0,
+      'minute' => '0',
+      'hour' => '2',
+      'day' => '*',
+      'month' => '*',
+      'dayofweek' => '*',
+      'disabled' => 0
+  ]
+];
