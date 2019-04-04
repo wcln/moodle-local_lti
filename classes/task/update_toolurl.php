@@ -40,7 +40,7 @@ class update_toolurl extends \core\task\scheduled_task {
   * @return string
   */
   public function get_name() {
-    return get_string('update_toolurl', 'local_lor');
+    return get_string('update_toolurl', 'local_lti');
   }
 
   /**
