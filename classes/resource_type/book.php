@@ -54,6 +54,14 @@ class book extends resource {
   }
 
   /**
+   * Retrieve the context module instance of this book.
+   * @return context
+   */
+  public function get_context() {
+    return \context_module::instance($this->content_id);
+  }
+
+  /**
    * Returns a lesson from within this book.
    * @param  int $pagenum Page number to return.
    * @return object          Lesson object.
@@ -65,7 +73,7 @@ class book extends resource {
       $pagenum = $this->pagenum;
     }
 
-    $lesson = $DB->get_record_sql('SELECT id, title, content
+    $lesson = $DB->get_record_sql('SELECT id, title, content, contentformat
                                    FROM {book_chapters}
                                    WHERE bookid=?
                                    AND pagenum=?

@@ -58,7 +58,7 @@ class book implements renderable, templatable {
 
       // Set data properties.
       $data->title = $lesson->title;
-      $data->content = \local_lti\provider\util::format_content_for_mathjax($lesson->content);
+      $data->content = format_text($lesson->content, $lesson->contentformat, array('noclean'=>true, 'overflowdiv'=>true, 'context'=>$this->book->get_context()));
       $data->pagenum = $this->book->get_pagenum();
       $data->session_id = $this->book->request->get_session_id();
 
