@@ -26,35 +26,44 @@ define('AJAX_SCRIPT', true);
 // Require standard Moodle configuration file.
 require_once(__DIR__ . '/../../config.php');
 
+// Used to rewrite pluginfile URLs.
+require_once($CFG->libdir .'/filelib.php');
+
 // The outcome object to be returned.
-$outcome = new stdClass;
+$outcome          = new stdClass;
 $outcome->success = false;
-$outcome->error = null;
+$outcome->error   = null;
 
 // Check if the session ID parameter was provided.
 if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = optional_param('page', false, PARAM_INT))) {
 
-  // Check if a request with this session ID exists.
-  if (isset($SESSION->{"lti_request_$session_id"})) {
+    // Check if a request with this session ID exists.
+    if (isset($SESSION->{"lti_request_$session_id"})) {
 
-    // Load the existing request (we know it has already been verified).
-    $request = $SESSION->{"lti_request_$session_id"};
+        // Load the existing request (we know it has already been verified).
+        $request = $SESSION->{"lti_request_$session_id"};
 
-    // Retrieve the lesson.
-    $lesson = $request->get_resource()->get_lesson($pagenum);
-    $outcome->lesson = $lesson;
+        // Retrieve the book and lesson.
+        $book            = $request->get_resource();
+        $lesson          = $book->get_lesson($pagenum);
+        $outcome->lesson = $lesson;
 
-    // Set the outcome content and title to be returned.
-    $outcome->content = format_text($lesson->content, $lesson->contentformat, array('noclean'=>true, 'overflowdiv'=>true, 'context'=>$request->get_resource()->get_context()));
-    $outcome->title = $lesson->title;
-    $outcome->success = true;
+        // Set the outcome content and title to be returned.
+        $chaptertext      = file_rewrite_pluginfile_urls($lesson->content, 'pluginfile.php', $book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
+        $outcome->content = format_text($chaptertext, $lesson->contentformat, array(
+            'noclean'     => true,
+            'overflowdiv' => true,
+            'context'     => $request->get_resource()->get_context(),
+        ));
+        $outcome->title   = $lesson->title;
+        $outcome->success = true;
 
-  } else {
-    $outcome->error = get_string('error_session_expired', 'local_lti');
-  }
+    } else {
+        $outcome->error = get_string('error_session_expired', 'local_lti');
+    }
 
 } else {
-  $outcome->error = get_string('error_missing_required_params', 'local_lti');
+    $outcome->error = get_string('error_missing_required_params', 'local_lti');
 }
 
 // Ouput the outcome object as a JSON string.
