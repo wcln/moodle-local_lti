@@ -49,7 +49,7 @@ if ($hassiteconfig) {
   ));
 
   $settings->add( new admin_setting_configtext(
-     'local_lti/book_toolid',
+     'local_lti/book_typeid',
      'Book Tool ID',
      'The tool ID of the WCLN Book preconfigured tool.',
      19,
@@ -57,7 +57,7 @@ if ($hassiteconfig) {
   ));
 
   $settings->add( new admin_setting_configtext(
-     'local_lti/page_toolid',
+     'local_lti/page_typeid',
      'Page Tool ID',
      'The tool ID of the WCLN Page preconfigured tool.',
      20,
