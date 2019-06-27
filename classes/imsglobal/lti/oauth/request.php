@@ -38,18 +38,18 @@ class request {
         $scheme      = ( ! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
             ? 'http'
             : 'https';
-        $http_url    = ($http_url) ? $http_url : $scheme .
+        $http_url    = ($this->http_url) ? $this->http_url : $scheme .
             '://' . $_SERVER['SERVER_NAME'] .
             ':' .
             $_SERVER['SERVER_PORT'] .
             $_SERVER['REQUEST_URI'];
-        $http_method = ($http_method) ? $http_method : $_SERVER['REQUEST_METHOD'];
+        $http_method = ($this->http_method) ? $this->http_method : $_SERVER['REQUEST_METHOD'];
 
         // We weren't handed any parameters, so let's find the ones relevant to
         // this request.
         // If you run XML-RPC or similar you should use this to provide your own
         // parsed parameter-list
-        if ( ! $parameters) {
+        if ( ! $this->parameters) {
             // Find request headers
             $request_headers = util::get_headers();
 
@@ -225,7 +225,6 @@ class request {
         } else
             $out = 'Authorization: OAuth';
 
-        $total = array();
         foreach ($this->parameters as $k => $v) {
             if (substr($k, 0, 5) != "oauth") continue;
             if (is_array($v)) {

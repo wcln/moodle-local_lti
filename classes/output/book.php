@@ -85,7 +85,7 @@ class book implements renderable, templatable {
             $data->pages[] = [
                 'title'       => $page->title,
                 'pagenum'     => $page->pagenum,
-                'sesssion_id' => $this->session_id,
+                'sesssion_id' => $data->session_id,
             ];
         }
 
