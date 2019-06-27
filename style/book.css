@@ -25,133 +25,133 @@
 
 /* Ensure the LTI page takes up the entire width. */
 .local_lti_book .lti-page {
-  overflow: auto;
-  width: 100%;
+    overflow: auto;
+    width: 100%;
 }
 
 /* Hide the book until everything is loaded. */
 .local_lti_book {
-  display: none;
+    display: none;
 }
 
 /* Logo. */
 .local_lti_book .navbar-brand img {
-  height: 30px;
+    height: 30px;
 }
 
 /* Make the navbar thinner. */
 .local_lti_book .navbar {
-  padding-top: 0em;
-  padding-bottom: 0em;
+    padding-top: 0em;
+    padding-bottom: 0em;
 }
 
 /* Center logo and brand text. */
 .local_lti_book .navbar-brand {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 /* Set size and colour of brand title text. */
 .local_lti_book .navbar-brand .title {
-  color: #fff;
-  margin-left: .7em;
-  font-size: 1.5rem;
+    color: #fff;
+    margin-left: .7em;
+    font-size: 1.5rem;
 }
 
 /* Make the current page blue in the dropdown. */
 .local_lti_book .dropdown-item.active {
-  color: #fff;
-  background-color: #008ee2;
+    color: #fff;
+    background-color: #008ee2;
 }
 
 /* Make sure current page style stays the same when it is clicked. */
 .local_lti_book .dropdown-item.active:active {
-  color: #fff;
-  background-color: #008ee2;
+    color: #fff;
+    background-color: #008ee2;
 }
 
 /* Override some CSS, ensure drop down items are not styled when clicked. */
 .local_lti_book .dropdown-item:active {
-  color: black;
-  background-color: inherit;
+    color: black;
+    background-color: inherit;
 }
 
 /* Make sure the text color stays the same when the active dropdown is hovered. */
 .local_lti_book .dropdown-item.active:hover {
-  color: #fff;
+    color: #fff;
 }
 
 /* Show a pointer cursor when a dropdown item is hovered. */
 .local_lti_book .dropdown-item {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /* Place margin and padding around page content to prevent header covering it. */
 .local_lti_book .content {
-  margin-top: 4em;
-  padding: 1em;
+    margin-top: 4em;
+    padding: 1em;
 }
 
 /* Next/back button images. */
 .local_lti_book .next-btn img, .local_lti_book .back-btn img {
-  height: 25px;
+    height: 25px;
 }
 
 /* Next/back button hovers. */
 .local_lti_book .next-btn:hover, .local_lti_book .back-btn:hover {
-  opacity: 1;
-  cursor: pointer;
+    opacity: 1;
+    cursor: pointer;
 }
 
 /* Next button. */
 .local_lti_book .next-btn {
-  margin-left: .5em;
+    margin-left: .5em;
 }
 
 /* Back button. */
 .local_lti_book .back-btn {
-  margin-right: .5em;
+    margin-right: .5em;
 }
 
 /* Next and back button properties. */
 .local_lti_book .next-btn, .local_lti_book .back-btn {
-  cursor: pointer;
-  opacity: 0.8;
+    cursor: pointer;
+    opacity: 0.8;
 }
 
 /* Center custom navigation. */
 .local_lti_book .custom-navigation {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 /* Add a scroll bar to the TOC dropdown if the height is too large. */
 .local_lti_book .dropdown-menu {
-  overflow-y: auto;
+    overflow-y: auto;
 }
 
 /* Ensure the cursor is a pointer for the Table of Contents dropdown. */
 .local_lti_book a.dropdown-toggle {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 /* Special <pre> tag formatting. Often used for displaying code snippets. */
 .local_lti_book pre {
-  display: block;
-  padding: 9.5px;
-  margin: 0 0 10px;
-  font-size: 13px;
-  line-height: 20px;
-  word-break: break-all;
-  word-wrap: break-word;
-  white-space: pre;
-  white-space: pre-wrap;
-  background-color: #f5f5f5;
-  border: 1px solid #ccc;
-  border: 1px solid rgba(0, 0, 0, 0.15);
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  border-radius: 4px;
-  font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
-  color: #333;
+    display: block;
+    padding: 9.5px;
+    margin: 0 0 10px;
+    font-size: 13px;
+    line-height: 20px;
+    word-break: break-all;
+    word-wrap: break-word;
+    white-space: pre;
+    white-space: pre-wrap;
+    background-color: #f5f5f5;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+    font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
+    color: #333;
 }

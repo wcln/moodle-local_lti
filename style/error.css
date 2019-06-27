@@ -24,43 +24,44 @@
  */
 
 .local_lti_error .navbar-brand img {
-  height: 30px;
+    height: 30px;
 }
 
 /* Set size and colour of brand title text. */
 .local_lti_error .navbar-brand .title {
-  color: #fff;
-  margin-left: .7em;
-  font-size: 1.5rem;
+    color: #fff;
+    margin-left: .7em;
+    font-size: 1.5rem;
 }
+
 /* Center logo and brand text. */
 .local_lti_error .navbar-brand {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 .local_lti_error .content {
-  margin: 4em auto;
-  padding: 1em;
-  max-width: 700px;
+    margin: 4em auto;
+    padding: 1em;
+    max-width: 700px;
 }
 
 .local_lti_error .content .error_heading h2 {
-  display: inline;
-  margin-left: .3em;
+    display: inline;
+    margin-left: .3em;
 }
 
 .local_lti_error .error_heading img {
-  height: 40px;
+    height: 40px;
 }
 
 .local_lti_error .error_heading {
-  display: flex;
-  align-items: center;
-  margin-bottom: 1em;
+    display: flex;
+    align-items: center;
+    margin-bottom: 1em;
 }
 
 .local_lti_error .navbar {
-  padding-top: 0;
-  padding-bottom: 0;
+    padding-top: 0;
+    padding-bottom: 0;
 }

@@ -34,32 +34,32 @@ require_once(__DIR__ . '/../../../../config.php');
  */
 class update_toolurl extends \core\task\scheduled_task {
 
-  /**
-  * Return the task's name as shown in admin screens.
-  *
-  * @return string
-  */
-  public function get_name() {
-    return get_string('update_toolurl', 'local_lti');
-  }
+    /**
+     * Return the task's name as shown in admin screens.
+     *
+     * @return string
+     */
+    public function get_name() {
+        return get_string('update_toolurl', 'local_lti');
+    }
 
-  /**
-   * Execute the task.
-   */
-  public function execute() {
-    global $DB, $CFG;
+    /**
+     * Execute the task.
+     */
+    public function execute() {
+        global $DB, $CFG;
 
-    // Access the plugin configuration,
-    $config = get_config('local_lti');
+        // Access the plugin configuration,
+        $config = get_config('local_lti');
 
-    // Update the toolurl for books.
-    $DB->execute('UPDATE mdl_lti SET toolurl=? WHERE typeid=?', array($config->book_toolurl, $config->book_typeid));
-    mtrace("Updated toolurl for LTI Books.");
+        // Update the toolurl for books.
+        $DB->execute('UPDATE mdl_lti SET toolurl=? WHERE typeid=?', array($config->book_toolurl, $config->book_typeid));
+        mtrace("Updated toolurl for LTI Books.");
 
-    // Update the toolurl for pages.
-    $DB->execute('UPDATE mdl_lti SET toolurl=? WHERE typeid=?', array($config->page_toolurl, $config->page_typeid));
-    mtrace("Updated toolurl for LTI Pages.");
+        // Update the toolurl for pages.
+        $DB->execute('UPDATE mdl_lti SET toolurl=? WHERE typeid=?', array($config->page_toolurl, $config->page_typeid));
+        mtrace("Updated toolurl for LTI Pages.");
 
-    mtrace("Done.");
-  }
+        mtrace("Done.");
+    }
 }

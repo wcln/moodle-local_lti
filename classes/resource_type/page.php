@@ -58,6 +58,7 @@ class page extends resource {
 
     /**
      * Get context object for this page.
+     *
      * @return \context_module
      */
     public function get_context() {

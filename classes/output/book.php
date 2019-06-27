@@ -21,7 +21,7 @@ use renderer_base;
 use templatable;
 use stdClass;
 
-require_once($CFG->libdir .'/filelib.php');
+require_once($CFG->libdir . '/filelib.php');
 
 class book implements renderable, templatable {
 
@@ -66,9 +66,10 @@ class book implements renderable, templatable {
         $chaptertext = file_rewrite_pluginfile_urls($lesson->content, 'pluginfile.php', $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
 
         // Apply filters and format the chapter text.
-        $data->content = format_text($chaptertext, $lesson->contentformat, array('noclean'     => true,
-                                                                                 'overflowdiv' => true,
-                                                                                 'context'     => $this->book->get_context(),
+        $data->content = format_text($chaptertext, $lesson->contentformat, array(
+            'noclean'     => true,
+            'overflowdiv' => true,
+            'context'     => $this->book->get_context(),
         ));
 
         // Set the page number.
