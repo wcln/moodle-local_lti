@@ -92,6 +92,9 @@ class book implements renderable, templatable {
         // The total count of pages. Used for the loading bar.
         $data->total_pages = count($data->pages);
 
+        // The URL to return to the course. Will be used for the back to course button.
+        $data->back_to_course_url = $this->book->request->get_parameter('launch_presentation_return_url');
+
         // Return the data object.
         return $data;
     }

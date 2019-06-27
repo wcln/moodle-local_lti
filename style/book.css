@@ -155,3 +155,8 @@
     font-family: Monaco, Menlo, Consolas, "Courier New", monospace;
     color: #333;
 }
+
+/* Don't show the back to course button until we are on the last page. */
+.local_lti_book a.back-to-course-btn {
+    display: none;
+}

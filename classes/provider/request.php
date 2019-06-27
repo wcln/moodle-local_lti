@@ -154,6 +154,10 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
         // Check if a custom ID parameter is set.
         $ok = $ok && $this->is_custom_parameter_set();
 
+        // Check that the return URL parameter is set.
+        // This is used for the back to course button.
+        $ok = $ok && ! empty(parent::get_parameter('launch_presentation_return_url'));
+
         // If other parameters become required they are to be added here...
 
         return $ok;

@@ -132,14 +132,25 @@ function updateNavigationButtons() {
     if (currentPage == 1) {
         // Just show the next button
         $(".next-btn").css("visibility", "visible");
+        $(".next-btn").css("display", "inline");
         $(".back-btn").css("visibility", "hidden");
+
+        // Hide the back to course button.
+        $('.back-to-course-btn').css('display', 'none');
     } else if (currentPage === numberOfPages) {
         // Just show the back button
-        $(".next-btn").css("visibility", "hidden");
+        $(".next-btn").css("display", "none");
         $(".back-btn").css("visibility", "visible");
+
+        // Show the back to course button.
+        $('.back-to-course-btn').css('display', 'inline');
     } else {
         // Show both buttons.
         $(".next-btn").css("visibility", "visible");
+        $(".next-btn").css("display", "inline");
         $(".back-btn").css("visibility", "visible");
+
+        // Hide the back to course button.
+        $('.back-to-course-btn').css('display', 'none');
     }
 }
