@@ -93,8 +93,8 @@
 }
 
 /* Next/back button images. */
-.local_lti_book .next-btn img, .local_lti_book .back-btn img {
-    height: 25px;
+.local_lti_book .next-btn i, .local_lti_book .back-btn i, .local_lti_book .back-to-course-btn i {
+    color: white;
 }
 
 /* Next/back button hovers. */

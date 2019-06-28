@@ -63,7 +63,7 @@
                     <!-- Force below navbar to right -->
                 </ul>
                 <ul class="navbar-nav custom-navigation">
-                    <a class="back-btn" onclick="previousPage('{{session_id}}')"><img src="images/back_btn.png"/></a>
+                    <a class="back-btn" onclick="previousPage('{{session_id}}')"><i class="fa fa-arrow-circle-left fa-2x"></i></a>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
                            aria-haspopup="true" aria-expanded="false">
@@ -76,8 +76,8 @@
                             {{/pages}}
                         </div>
                     </li>
-                    <a class="next-btn" onclick="nextPage('{{session_id}}')"><img src="images/next_btn.png"/></a>
-                    <a class="back-to-course-btn" href="{{back_to_course_url}}"><img src="images/back_to_course_btn.png"/></a>
+                    <a class="next-btn" onclick="nextPage('{{session_id}}')"><i class="fa fa-arrow-circle-right fa-2x"></i></a>
+                    <a class="back-to-course-btn" href="{{back_to_course_url}}"><i class="fa fa-times-circle fa-2x"></i></a>
                 </ul>
             </div>
         </nav>
