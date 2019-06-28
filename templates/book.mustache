@@ -18,68 +18,73 @@
   @template local_lti/book
   LTI Book template.
 }}
-  {{> local_lti/header }}
+{{> local_lti/header }}
 
-  <!-- Loading bar. -->
-  <link rel="stylesheet" href="style/loader.css">
+<!-- Loading bar. -->
+<link rel="stylesheet" href="style/loader.css">
 
-  <!-- Custom CSS to style this book. -->
-  <link rel="stylesheet" href="style/book.css">
+<!-- Custom CSS to style this book. -->
+<link rel="stylesheet" href="style/book.css">
 
-  <script type="text/x-mathjax-config">
+<script type="text/x-mathjax-config">
     MathJax.Hub.Config({
       MathML: {
         extensions: ["content-mathml.js"]
       }
     });
-  </script>
 
-  <!-- MathJax filter. -->
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
+</script>
 
-  <!-- Custom script to support navigation between book pages and calls for iframe resizing. -->
-  <script src="js/book_navigation.js"></script>
+<!-- MathJax filter. -->
+<script src='https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-MML-AM_CHTML' async></script>
 
-  <title>{{# str }} brand_short, local_lti {{/ str }}</title>
+<!-- Custom script to support navigation between book pages and calls for iframe resizing. -->
+<script src="js/book_navigation.js"></script>
+
+<title>{{# str }} brand_short, local_lti {{/ str }}</title>
 
 </head>
 
 <body onload="initialize({{pagenum}}, {{total_pages}})">
-  {{> local_lti/loader }}
-  <div class="local_lti_book">
+{{> local_lti/loader }}
+<div class="local_lti_book">
     <div class="lti-page" id="page-{{pagenum}}">
-      <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
-       <a class="navbar-brand">
-         <img src="images/wcln_logo_light.png">
-         <span class="title">{{title}}</span>
-       </a>
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-           <span class="navbar-toggler-icon"></span>
-       </button>
-       <div id="navbarNavDropdown" class="navbar-collapse collapse">
-         <ul class="navbar-nav mr-auto">
-           <!-- Force below navbar to right -->
-         </ul>
-         <ul class="navbar-nav custom-navigation">
-           <a class="back-btn" onclick="previousPage('{{session_id}}')"><img src="images/back_btn.png"/></a>
-           <li class="nav-item dropdown">
-             <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-               {{# str }} table_of_contents, local_lti {{/ str }}
-             </a>
-             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-               {{#pages}}
-                <a class="dropdown-item dropdown-{{pagenum}}" onclick="navigate({{pagenum}}, '{{session_id}}')">{{title}}</a>
-               {{/pages}}
-             </div>
-           </li>
-           <a class="next-btn" onclick="nextPage('{{session_id}}')"><img src="images/next_btn.png"/></a>
-         </ul>
-       </div>
-     </nav>
-     <div class="content">
-        {{{content}}}
-     </div>
-   </div>
-  </div>
+        <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
+            <a class="navbar-brand">
+                <img src="images/wcln_logo_light.png">
+                <span class="title">{{title}}</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div id="navbarNavDropdown" class="navbar-collapse collapse">
+                <ul class="navbar-nav mr-auto">
+                    <!-- Force below navbar to right -->
+                </ul>
+                <ul class="navbar-nav custom-navigation">
+                    <a class="back-btn" onclick="previousPage('{{session_id}}')"><i class="fa fa-arrow-circle-left fa-2x"></i></a>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                           aria-haspopup="true" aria-expanded="false">
+                            {{# str }} table_of_contents, local_lti {{/ str }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
+                            {{#pages}}
+                                <a class="dropdown-item dropdown-{{pagenum}}"
+                                   onclick="navigate({{pagenum}}, '{{session_id}}')">{{title}}</a>
+                            {{/pages}}
+                        </div>
+                    </li>
+                    <a class="next-btn" onclick="nextPage('{{session_id}}')"><i class="fa fa-arrow-circle-right fa-2x"></i></a>
+                    <a class="back-to-course-btn" href="{{back_to_course_url}}"><i class="fa fa-times-circle fa-2x"></i></a>
+                </ul>
+            </div>
+        </nav>
+        <div class="content">
+            {{{content}}}
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -20,8 +20,8 @@ namespace local_lti\imsglobal\lti\oauth;
  * Class to represent an %OAuth Token
  *
  * @copyright  Andy Smith
- * @version 2008-08-04
- * @license https://opensource.org/licenses/MIT The MIT License
+ * @version    2008-08-04
+ * @license    https://opensource.org/licenses/MIT The MIT License
  */
 class token {
 
@@ -34,7 +34,7 @@ class token {
      * secret = the token secret
      */
     function __construct($key, $secret) {
-        $this->key = $key;
+        $this->key    = $key;
         $this->secret = $secret;
     }
 
@@ -44,9 +44,9 @@ class token {
      */
     function to_string() {
         return 'oauth_token=' .
-               util::urlencode_rfc3986($this->key) .
-               '&oauth_token_secret=' .
-               util::urlencode_rfc3986($this->secret);
+            util::urlencode_rfc3986($this->key) .
+            '&oauth_token_secret=' .
+            util::urlencode_rfc3986($this->secret);
     }
 
     function __toString() {

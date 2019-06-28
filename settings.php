@@ -28,40 +28,40 @@ $settings = null;
 // Ensure the configurations for this site are set.
 if ($hassiteconfig) {
 
-	// Create the new settings page.
-	$settings = new admin_settingpage('local_lti', get_string('pluginname', 'local_lti'));
-	$ADMIN->add('localplugins', $settings);
+    // Create the new settings page.
+    $settings = new admin_settingpage('local_lti', get_string('pluginname', 'local_lti'));
+    $ADMIN->add('localplugins', $settings);
 
-	$settings->add( new admin_setting_configtext(
-		 'local_lti/book_toolurl',
-		 'Book Tool URL',
-		 'The tool url of the WCLN Book preconfigured tool.',
-		 'https://wcln.ca/local/lti/index.php?type=book',
-		 PARAM_TEXT
-	));
+    $settings->add(new admin_setting_configtext(
+        'local_lti/book_toolurl',
+        'Book Tool URL',
+        'The tool url of the WCLN Book preconfigured tool.',
+        'https://wcln.ca/local/lti/index.php?type=book',
+        PARAM_TEXT
+    ));
 
-  $settings->add( new admin_setting_configtext(
-     'local_lti/page_toolurl',
-     'Page Tool URL',
-     'The tool url of the WCLN Page preconfigured tool.',
-     'https://wcln.ca/local/lti/index.php?type=page',
-     PARAM_TEXT
-  ));
+    $settings->add(new admin_setting_configtext(
+        'local_lti/page_toolurl',
+        'Page Tool URL',
+        'The tool url of the WCLN Page preconfigured tool.',
+        'https://wcln.ca/local/lti/index.php?type=page',
+        PARAM_TEXT
+    ));
 
-  $settings->add( new admin_setting_configtext(
-     'local_lti/book_toolid',
-     'Book Tool ID',
-     'The tool ID of the WCLN Book preconfigured tool.',
-     19,
-     PARAM_INT
-  ));
+    $settings->add(new admin_setting_configtext(
+        'local_lti/book_typeid',
+        'Book Tool ID',
+        'The tool ID of the WCLN Book preconfigured tool.',
+        19,
+        PARAM_INT
+    ));
 
-  $settings->add( new admin_setting_configtext(
-     'local_lti/page_toolid',
-     'Page Tool ID',
-     'The tool ID of the WCLN Page preconfigured tool.',
-     20,
-     PARAM_INT
-  ));
+    $settings->add(new admin_setting_configtext(
+        'local_lti/page_typeid',
+        'Page Tool ID',
+        'The tool ID of the WCLN Page preconfigured tool.',
+        20,
+        PARAM_INT
+    ));
 
 }

@@ -25,32 +25,46 @@
 
 /* Make the navbar thinner. */
 .local_lti_page .navbar {
-  padding-top: 0em;
-  padding-bottom: 0em;
+    padding-top: 0em;
+    padding-bottom: 0em;
 }
 
 .local_lti_page {
-  display: none;
+    display: none;
 }
 
 .local_lti_page .navbar-brand img {
-  height: 30px;
+    height: 30px;
 }
 
 /* Set size and colour of brand title text. */
 .local_lti_page .navbar-brand .title {
-  color: #fff;
-  margin-left: .7em;
-  font-size: 1.5rem;
+    color: #fff;
+    margin-left: .7em;
+    font-size: 1.5rem;
 }
+
 /* Center logo and brand text. */
 .local_lti_page .navbar-brand {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 
 /* Place margin and padding around page content to prevent header covering it. */
 .local_lti_page .content {
-  margin-top: 4em;
-  padding: 1em;
+    margin-top: 4em;
+    padding: 1em;
+}
+
+/* Back to course button. */
+.local_lti_page .navbar a.back-to-course-btn {
+    color: white;
+    opacity: 0.8;
+    right: 1em;
+    position: absolute;
+}
+
+/* Back to course button hover. */
+.local_lti_page .navbar a.back-to-course-btn:hover {
+    opacity: 1;
 }

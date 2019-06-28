@@ -21,13 +21,17 @@ use renderer_base;
 use templatable;
 use stdClass;
 
+require_once($CFG->libdir . '/filelib.php');
+
 class page implements renderable, templatable {
 
-    // The ID of the Moodle page to render.
-    var $page_id = null;
+    /**
+     * @var object a custom page object to render.
+     */
+    var $page = null;
 
-    public function __construct($page_id) {
-      $this->page_id = $page_id;
+    public function __construct($page) {
+        $this->page = $page;
     }
 
     /**
@@ -36,13 +40,28 @@ class page implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output) {
-      global $DB;
+        global $DB;
 
-      // Data class to be sent to template.
-      $data = new stdClass();
-      $page = $DB->get_record('page', array('id' => $this->page_id), 'id, name, content', MUST_EXIST);
-      $data->content = $page->content;
-      $data->title = $page->name;
-      return $data;
+        // Data class to be sent to template.
+        $data          = new stdClass();
+        $page          = $DB->get_record('page', array('id' => $this->page->page_id), 'id, name, content, revision, contentformat', MUST_EXIST);
+        $data->content = $page->content;
+
+        // Rewrite pluginfile URLs.
+        // Required to render database images and files.
+        $content = file_rewrite_pluginfile_urls($page->content, 'pluginfile.php', $this->page->get_context()->id, 'mod_page', 'content', $page->revision);
+
+        // Apply filters and format the chapter text.
+        $data->content = format_text($content, $page->contentformat, array(
+            'noclean'     => true,
+            'overflowdiv' => true,
+            'context'     => $this->page->get_context(),
+        ));
+
+        $data->title = $page->name;
+
+        $data->back_to_course_url = $this->page->request->get_parameter('launch_presentation_return_url');
+
+        return $data;
     }
 }
