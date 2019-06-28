@@ -60,6 +60,8 @@ class page implements renderable, templatable {
 
         $data->title = $page->name;
 
+        $data->back_to_course_url = $this->page->request->get_parameter('launch_presentation_return_url');
+
         return $data;
     }
 }
