@@ -18,23 +18,24 @@
   @template local_lti/page
   LTI Page template.
 }}
-  {{> local_lti/header }}
+{{> local_lti/header }}
 
-  <script src="js/page_navigation.js"></script>
-  <!-- Custom CSS to style this book. -->
-  <link rel="stylesheet" href="style/page.css">
+<script src="js/page_navigation.js"></script>
+<!-- Custom CSS to style this book. -->
+<link rel="stylesheet" href="style/page.css">
 </head>
 <body onload="init()">
-  <div class="local_lti_page">
+<div class="local_lti_page">
     <nav class="navbar fixed-top navbar-expand-sm navbar-dark bg-dark">
-     <a class="navbar-brand">
-       <img src="images/wcln_logo_light.png">
-       <span class="title">{{title}}</span>
-     </a>
-     </nav>
-     <div class="content">
-       {{{content}}}
+        <a class="navbar-brand">
+            <img src="images/wcln_logo_light.png">
+            <span class="title">{{title}}</span>
+        </a>
+        <a class="back-to-course-btn" href="{{back_to_course_url}}"><i class="fa fa-times-circle fa-2x"></i></a>
+    </nav>
+    <div class="content">
+        {{{content}}}
     </div>
-  </div>
+</div>
 </body>
 </html>

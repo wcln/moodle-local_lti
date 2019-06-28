@@ -21,7 +21,7 @@ use renderer_base;
 use templatable;
 use stdClass;
 
-require_once($CFG->libdir .'/filelib.php');
+require_once($CFG->libdir . '/filelib.php');
 
 class book implements renderable, templatable {
 
@@ -66,9 +66,10 @@ class book implements renderable, templatable {
         $chaptertext = file_rewrite_pluginfile_urls($lesson->content, 'pluginfile.php', $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
 
         // Apply filters and format the chapter text.
-        $data->content = format_text($chaptertext, $lesson->contentformat, array('noclean'     => true,
-                                                                                 'overflowdiv' => true,
-                                                                                 'context'     => $this->book->get_context(),
+        $data->content = format_text($chaptertext, $lesson->contentformat, array(
+            'noclean'     => true,
+            'overflowdiv' => true,
+            'context'     => $this->book->get_context(),
         ));
 
         // Set the page number.
@@ -84,12 +85,15 @@ class book implements renderable, templatable {
             $data->pages[] = [
                 'title'       => $page->title,
                 'pagenum'     => $page->pagenum,
-                'sesssion_id' => $this->session_id,
+                'sesssion_id' => $data->session_id,
             ];
         }
 
         // The total count of pages. Used for the loading bar.
         $data->total_pages = count($data->pages);
+
+        // The URL to return to the course. Will be used for the back to course button.
+        $data->back_to_course_url = $this->book->request->get_parameter('launch_presentation_return_url');
 
         // Return the data object.
         return $data;

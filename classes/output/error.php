@@ -27,7 +27,7 @@ class error implements renderable, templatable {
     var $message = null;
 
     public function __construct($message) {
-      $this->message = $message;
+        $this->message = $message;
     }
 
     /**
@@ -36,11 +36,12 @@ class error implements renderable, templatable {
      * @return stdClass
      */
     public function export_for_template(renderer_base $output) {
-      global $DB;
+        global $DB;
 
-      // Data class to be sent to template.
-      $data = new stdClass();
-      $data->message = $this->message;
-      return $data;
+        // Data class to be sent to template.
+        $data          = new stdClass();
+        $data->message = $this->message;
+
+        return $data;
     }
 }

@@ -20,8 +20,8 @@ namespace local_lti\imsglobal\lti\oauth;
  * Class to represent an %OAuth Request
  *
  * @copyright  Andy Smith
- * @version 2008-08-04
- * @license https://opensource.org/licenses/MIT The MIT License
+ * @version    2008-08-04
+ * @license    https://opensource.org/licenses/MIT The MIT License
  */
 class request {
 
@@ -35,54 +35,54 @@ class request {
 
     function __construct() {
 
-      $scheme = (!isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
-                ? 'http'
-                : 'https';
-      $http_url = ($http_url) ? $http_url : $scheme .
-                                '://' . $_SERVER['SERVER_NAME'] .
-                                ':' .
-                                $_SERVER['SERVER_PORT'] .
-                                $_SERVER['REQUEST_URI'];
-      $http_method = ($http_method) ? $http_method : $_SERVER['REQUEST_METHOD'];
+        $scheme      = ( ! isset($_SERVER['HTTPS']) || $_SERVER['HTTPS'] != "on")
+            ? 'http'
+            : 'https';
+        $http_url    = ($this->http_url) ? $this->http_url : $scheme .
+            '://' . $_SERVER['SERVER_NAME'] .
+            ':' .
+            $_SERVER['SERVER_PORT'] .
+            $_SERVER['REQUEST_URI'];
+        $http_method = ($this->http_method) ? $this->http_method : $_SERVER['REQUEST_METHOD'];
 
-      // We weren't handed any parameters, so let's find the ones relevant to
-      // this request.
-      // If you run XML-RPC or similar you should use this to provide your own
-      // parsed parameter-list
-      if (!$parameters) {
-          // Find request headers
-          $request_headers = util::get_headers();
+        // We weren't handed any parameters, so let's find the ones relevant to
+        // this request.
+        // If you run XML-RPC or similar you should use this to provide your own
+        // parsed parameter-list
+        if ( ! $this->parameters) {
+            // Find request headers
+            $request_headers = util::get_headers();
 
-          // Parse the query-string to find GET parameters
-          if (isset($_SERVER['QUERY_STRING'])) {
-              $parameters = util::parse_parameters($_SERVER['QUERY_STRING']);
-          } else {
-              $parameters = array();
-          }
+            // Parse the query-string to find GET parameters
+            if (isset($_SERVER['QUERY_STRING'])) {
+                $parameters = util::parse_parameters($_SERVER['QUERY_STRING']);
+            } else {
+                $parameters = array();
+            }
 
-          // It's a POST request of the proper content-type, so parse POST
-          // parameters and add those overriding any duplicates from GET
-          if ($http_method == "POST"
-              &&  isset($request_headers['Content-Type'])
-              && strstr($request_headers['Content-Type'], 'application/x-www-form-urlencoded')) {
-              $post_data = util::parse_parameters(file_get_contents(self::$POST_INPUT));
-              $parameters = array_merge($parameters, $post_data);
-          }
+            // It's a POST request of the proper content-type, so parse POST
+            // parameters and add those overriding any duplicates from GET
+            if ($http_method == "POST"
+                && isset($request_headers['Content-Type'])
+                && strstr($request_headers['Content-Type'], 'application/x-www-form-urlencoded')) {
+                $post_data  = util::parse_parameters(file_get_contents(self::$POST_INPUT));
+                $parameters = array_merge($parameters, $post_data);
+            }
 
-          // We have a Authorization-header with OAuth data. Parse the header
-          // and add those overriding any duplicates from GET or POST
-          if (isset($request_headers['Authorization']) && substr($request_headers['Authorization'], 0, 6) == 'OAuth ') {
-              $header_parameters = util::split_header($request_headers['Authorization']);
-              $parameters = array_merge($parameters, $header_parameters);
-          }
+            // We have a Authorization-header with OAuth data. Parse the header
+            // and add those overriding any duplicates from GET or POST
+            if (isset($request_headers['Authorization']) && substr($request_headers['Authorization'], 0, 6) == 'OAuth ') {
+                $header_parameters = util::split_header($request_headers['Authorization']);
+                $parameters        = array_merge($parameters, $header_parameters);
+            }
 
-      }
+        }
 
-      $parameters = ($parameters) ? $parameters : array();
-      $parameters = array_merge( util::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
-      $this->parameters = $parameters;
-      $this->http_method = $http_method;
-      $this->http_url = $http_url;
+        $parameters        = ($parameters) ? $parameters : array();
+        $parameters        = array_merge(util::parse_parameters(parse_url($http_url, PHP_URL_QUERY)), $parameters);
+        $this->parameters  = $parameters;
+        $this->http_method = $http_method;
+        $this->http_url    = $http_url;
     }
 
     /**
@@ -91,24 +91,23 @@ class request {
     public static function from_request($http_method = null, $http_url = null, $parameters = null) {
 
 
-
-      return new request($http_method, $http_url, $parameters);
+        return new request($http_method, $http_url, $parameters);
     }
 
     public function set_parameter($name, $value, $allow_duplicates = true) {
 
-      if ($allow_duplicates && isset($this->parameters[$name])) {
-          // We have already added parameter(s) with this name, so add to the list
-          if (is_scalar($this->parameters[$name])) {
-              // This is the first duplicate, so transform scalar (string)
-              // into an array so we can add the duplicates
-              $this->parameters[$name] = array($this->parameters[$name]);
-          }
+        if ($allow_duplicates && isset($this->parameters[$name])) {
+            // We have already added parameter(s) with this name, so add to the list
+            if (is_scalar($this->parameters[$name])) {
+                // This is the first duplicate, so transform scalar (string)
+                // into an array so we can add the duplicates
+                $this->parameters[$name] = array($this->parameters[$name]);
+            }
 
-          $this->parameters[$name][] = $value;
-      } else {
-          $this->parameters[$name] = $value;
-      }
+            $this->parameters[$name][] = $value;
+        } else {
+            $this->parameters[$name] = $value;
+        }
     }
 
     public function get_parameter($name) {
@@ -125,6 +124,7 @@ class request {
 
     /**
      * The request parameters, sorted and concatenated into a normalized string.
+     *
      * @return string
      */
     public function get_signable_parameters() {
@@ -153,7 +153,7 @@ class request {
         $parts = array(
             $this->get_normalized_http_method(),
             $this->get_normalized_http_url(),
-            $this->get_signable_parameters()
+            $this->get_signable_parameters(),
         );
 
         $parts = util::urlencode_rfc3986($parts);
@@ -178,9 +178,9 @@ class request {
         $parts = parse_url($this->http_url);
 
         $scheme = (isset($parts['scheme'])) ? $parts['scheme'] : 'http';
-        $port = (isset($parts['port'])) ? $parts['port'] : (($scheme == 'https') ? '443' : '80');
-        $host = (isset($parts['host'])) ? strtolower($parts['host']) : '';
-        $path = (isset($parts['path'])) ? $parts['path'] : '';
+        $port   = (isset($parts['port'])) ? $parts['port'] : (($scheme == 'https') ? '443' : '80');
+        $host   = (isset($parts['host'])) ? strtolower($parts['host']) : '';
+        $path   = (isset($parts['path'])) ? $parts['path'] : '';
 
         if (($scheme == 'https' && $port != '443')
             || ($scheme == 'http' && $port != '80')) {
@@ -197,9 +197,9 @@ class request {
     public function to_url() {
 
         $post_data = $this->to_postdata();
-        $out = $this->get_normalized_http_url();
+        $out       = $this->get_normalized_http_url();
         if ($post_data) {
-            $out .= '?'.$post_data;
+            $out .= '?' . $post_data;
         }
 
         return $out;
@@ -219,23 +219,22 @@ class request {
     public function to_header($realm = null) {
 
         $first = true;
-        if($realm) {
-            $out = 'Authorization: OAuth realm="' . util::urlencode_rfc3986($realm) . '"';
+        if ($realm) {
+            $out   = 'Authorization: OAuth realm="' . util::urlencode_rfc3986($realm) . '"';
             $first = false;
         } else
             $out = 'Authorization: OAuth';
 
-        $total = array();
         foreach ($this->parameters as $k => $v) {
             if (substr($k, 0, 5) != "oauth") continue;
             if (is_array($v)) {
-              throw new exception('Arrays not supported in headers');
+                throw new exception('Arrays not supported in headers');
             }
-            $out .= ($first) ? ' ' : ',';
-            $out .= util::urlencode_rfc3986($k) .
-                    '="' .
-                    util::urlencode_rfc3986($v) .
-                    '"';
+            $out   .= ($first) ? ' ' : ',';
+            $out   .= util::urlencode_rfc3986($k) .
+                '="' .
+                util::urlencode_rfc3986($v) .
+                '"';
             $first = false;
         }
 
@@ -251,9 +250,9 @@ class request {
     public function sign_request($signature_method, $consumer, $token) {
 
         $this->set_parameter(
-          "oauth_signature_method",
-          $signature_method->get_name(),
-          false
+            "oauth_signature_method",
+            $signature_method->get_name(),
+            false
         );
         $signature = $this->build_signature($signature_method, $consumer, $token);
         $this->set_parameter("oauth_signature", $signature, false);
@@ -262,6 +261,7 @@ class request {
 
     public function build_signature($signature_method, $consumer, $token) {
         $signature = $signature_method->build_signature($this, $consumer, $token);
+
         return $signature;
     }
 
@@ -276,7 +276,7 @@ class request {
      * util function: current nonce
      */
     private static function generate_nonce() {
-        $mt = microtime();
+        $mt   = microtime();
         $rand = mt_rand();
 
         return md5($mt . $rand); // md5s look nicer than numbers

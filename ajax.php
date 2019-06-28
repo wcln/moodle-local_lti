@@ -27,7 +27,7 @@ define('AJAX_SCRIPT', true);
 require_once(__DIR__ . '/../../config.php');
 
 // Used to rewrite pluginfile URLs.
-require_once($CFG->libdir .'/filelib.php');
+require_once($CFG->libdir . '/filelib.php');
 
 // The outcome object to be returned.
 $outcome          = new stdClass;

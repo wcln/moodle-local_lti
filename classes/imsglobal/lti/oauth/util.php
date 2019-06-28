@@ -20,8 +20,8 @@ namespace local_lti\imsglobal\lti\oauth;
  * Class to provide %OAuth utility methods
  *
  * @copyright  Andy Smith
- * @version 2008-08-04
- * @license https://opensource.org/licenses/MIT The MIT License
+ * @version    2008-08-04
+ * @license    https://opensource.org/licenses/MIT The MIT License
  */
 class util {
 
@@ -51,7 +51,7 @@ class util {
     public static function split_header($header, $only_allow_oauth_parameters = true) {
 
         $params = array();
-        if (preg_match_all('/('.($only_allow_oauth_parameters ? 'oauth_' : '').'[a-z_-]*)=(:?"([^"]*)"|([^,]*))/', $header, $matches)) {
+        if (preg_match_all('/(' . ($only_allow_oauth_parameters ? 'oauth_' : '') . '[a-z_-]*)=(:?"([^"]*)"|([^,]*))/', $header, $matches)) {
             foreach ($matches[1] as $i => $h) {
                 $params[$h] = util::urldecode_rfc3986(empty($matches[3][$i]) ? $matches[4][$i] : $matches[3][$i]);
             }
@@ -78,16 +78,16 @@ class util {
             // request
             $out = array();
             foreach ($headers AS $key => $value) {
-                $key = str_replace(" ", "-", ucwords(strtolower(str_replace("-", " ", $key))));
+                $key       = str_replace(" ", "-", ucwords(strtolower(str_replace("-", " ", $key))));
                 $out[$key] = $value;
             }
         } else {
             // otherwise we don't have apache and are just going to have to hope
             // that $_SERVER actually contains what we need
             $out = array();
-            if( isset($_SERVER['CONTENT_TYPE']) )
+            if (isset($_SERVER['CONTENT_TYPE']))
                 $out['Content-Type'] = $_SERVER['CONTENT_TYPE'];
-            if( isset($_ENV['CONTENT_TYPE']) )
+            if (isset($_ENV['CONTENT_TYPE']))
                 $out['Content-Type'] = $_ENV['CONTENT_TYPE'];
 
             foreach ($_SERVER as $key => $value) {
@@ -95,28 +95,29 @@ class util {
                     // this is chaos, basically it is just there to capitalize the first
                     // letter of every word that is not an initial HTTP and strip HTTP
                     // code from przemek
-                    $key = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+                    $key       = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
                     $out[$key] = $value;
                 }
             }
         }
+
         return $out;
     }
 
     // This function takes a input like a=b&a=c&d=e and returns the parsed
     // parameters like this
     // array('a' => array('b','c'), 'd' => 'e')
-    public static function parse_parameters( $input ) {
+    public static function parse_parameters($input) {
 
-        if (!isset($input) || !$input) return array();
+        if ( ! isset($input) || ! $input) return array();
 
         $pairs = explode('&', $input);
 
         $parsed_parameters = array();
         foreach ($pairs as $pair) {
-            $split = explode('=', $pair, 2);
+            $split     = explode('=', $pair, 2);
             $parameter = self::urldecode_rfc3986($split[0]);
-            $value = isset($split[1]) ? self::urldecode_rfc3986($split[1]) : '';
+            $value     = isset($split[1]) ? self::urldecode_rfc3986($split[1]) : '';
 
             if (isset($parsed_parameters[$parameter])) {
                 // We have already recieved parameter(s) with this name, so add to the list
@@ -140,10 +141,10 @@ class util {
 
     public static function build_http_query($params) {
 
-        if (!$params) return '';
+        if ( ! $params) return '';
 
         // Urlencode both keys and values
-        $keys = util::urlencode_rfc3986(array_keys($params));
+        $keys   = util::urlencode_rfc3986(array_keys($params));
         $values = util::urlencode_rfc3986(array_values($params));
         $params = array_combine($keys, $values);
 
