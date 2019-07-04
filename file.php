@@ -15,7 +15,7 @@ try {
 
             // Find and send the file.
             $fs = get_file_storage();
-            $fullpath = preg_split('/file\.php\?sessid=[^\/]*/',  $_SERVER['REQUEST_URI'])[1];
+            $fullpath = rawurldecode(preg_replace('/\?time=\d*$/', '', preg_split('/file\.php\?sessid=[^\/]*/',  $_SERVER['REQUEST_URI'])[1]));
 
             // If this file is stored in mod_page, always use 0.
             if (strpos($fullpath, '/mod_page/') !== false) {
