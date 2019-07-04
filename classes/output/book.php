@@ -61,9 +61,13 @@ class book implements renderable, templatable {
         // Set title.
         $data->title = $lesson->title;
 
+        // Retrieve and set the current request session ID.
+        // Will be used to verify subsequent requests coming from this book.
+        $data->session_id = $this->book->request->get_session_id();
+
         // Rewrite pluginfile URLs.
         // Required to render database images and files.
-        $chaptertext = file_rewrite_pluginfile_urls($lesson->content, 'pluginfile.php', $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
+        $chaptertext = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$data->session_id", $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
 
         // Apply filters and format the chapter text.
         $data->content = format_text($chaptertext, $lesson->contentformat, array(
@@ -74,10 +78,6 @@ class book implements renderable, templatable {
 
         // Set the page number.
         $data->pagenum = $this->book->get_pagenum();
-
-        // Retrieve and set the current request session ID.
-        // Will be used to verify subsequent requests coming from this book.
-        $data->session_id = $this->book->request->get_session_id();
 
         // Set pages. Needed for table of contents.
         $data->pages = [];

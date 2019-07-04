@@ -49,7 +49,7 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = o
         $outcome->lesson = $lesson;
 
         // Set the outcome content and title to be returned.
-        $chaptertext      = file_rewrite_pluginfile_urls($lesson->content, 'pluginfile.php', $book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
+        $chaptertext      = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$session_id", $book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
         $outcome->content = format_text($chaptertext, $lesson->contentformat, array(
             'noclean'     => true,
             'overflowdiv' => true,

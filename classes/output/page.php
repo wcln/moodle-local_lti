@@ -49,7 +49,7 @@ class page implements renderable, templatable {
 
         // Rewrite pluginfile URLs.
         // Required to render database images and files.
-        $content = file_rewrite_pluginfile_urls($page->content, 'pluginfile.php', $this->page->get_context()->id, 'mod_page', 'content', $page->revision);
+        $content = file_rewrite_pluginfile_urls($page->content, 'local/lti/file.php?sessid=' . $this->page->request->get_session_id(), $this->page->get_context()->id, 'mod_page', 'content', $page->revision);
 
         // Apply filters and format the chapter text.
         $data->content = format_text($content, $page->contentformat, array(
