@@ -138,6 +138,9 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
             } catch (\Exception $e) {
                 $ok = false;
             }
+        } else {
+            // Invalid consumer key.
+            throw new \Exception("Invalid consumer key '" . parent::get_parameter('oauth_consumer_key') . "'!'");
         }
 
         return $ok;
