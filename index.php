@@ -31,6 +31,8 @@ try {
     // Require standard Moodle configuration file.
     require_once(__DIR__ . '/../../config.php');
 
+    header('Set-Cookie: ' . session_name() . '=' . session_id() . '; SameSite=None; Secure');
+
     // Set page context.
     $PAGE->set_context(context_system::instance());
 

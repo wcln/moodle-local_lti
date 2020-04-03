@@ -66,6 +66,8 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = o
     $outcome->error = get_string('error_missing_required_params', 'local_lti');
 }
 
+header('Set-Cookie: ' . session_name() . '=' . session_id() . '; SameSite=None; Secure');
+
 // Ouput the outcome object as a JSON string.
 echo json_encode($outcome);
 
