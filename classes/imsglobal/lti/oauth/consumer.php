@@ -23,18 +23,21 @@ namespace local_lti\imsglobal\lti\oauth;
  * @version    2008-08-04
  * @license    https://opensource.org/licenses/MIT The MIT License
  */
-class consumer {
+class consumer
+{
 
     public $key;
     public $secret;
 
-    function __construct($key, $secret, $callback_url = NULL) {
+    function __construct($key, $secret, $callback_url = null)
+    {
         $this->key          = $key;
         $this->secret       = $secret;
         $this->callback_url = $callback_url;
     }
 
-    function __toString() {
+    function __toString()
+    {
         return "consumer[key=$this->key,secret=$this->secret]";
     }
 }

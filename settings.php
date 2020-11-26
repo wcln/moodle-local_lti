@@ -27,7 +27,6 @@ $settings = null;
 
 // Ensure the configurations for this site are set.
 if ($hassiteconfig) {
-
     // Create the new settings page.
     $settings = new admin_settingpage('local_lti', get_string('pluginname', 'local_lti'));
     $ADMIN->add('localplugins', $settings);
@@ -63,5 +62,4 @@ if ($hassiteconfig) {
         20,
         PARAM_INT
     ));
-
 }

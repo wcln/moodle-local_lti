@@ -22,16 +22,16 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-use local_lti\provider\request;
 use local_lti\provider\error;
+use local_lti\provider\request;
 use local_lti\provider\util;
 
 // Catch all exceptions and render them using a custom template.
 try {
     // Require standard Moodle configuration file.
-    require_once(__DIR__ . '/../../config.php');
+    require_once(__DIR__.'/../../config.php');
 
-    header('Set-Cookie: ' . session_name() . '=' . session_id() . '; SameSite=None; Secure');
+    header('Set-Cookie: '.session_name().'='.session_id().'; SameSite=None; Secure');
 
     // Set page context.
     $PAGE->set_context(context_system::instance());
@@ -61,7 +61,6 @@ try {
 
     // Render the resource.
     $resource->render();
-
 } catch (Exception $e) {
     // Catch all exceptions and render them using a custom template.
     error::render($e->getMessage());

@@ -16,7 +16,8 @@
 
 namespace local_lti\provider;
 
-use local_lti\provider\request;
+use dml_exception;
+use stdClass;
 
 /**
  * LTI Resource
@@ -27,7 +28,8 @@ use local_lti\provider\request;
  * @copyright  2019 Colin Bernard
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-abstract class resource {
+abstract class resource
+{
 
     /** @var int The type of the resource requested. */
     protected $type;
@@ -41,7 +43,8 @@ abstract class resource {
     /** @var int The ID of the resource content that is being requested.. */
     protected $content_id;
 
-    public function __construct($type, $consumer_id, $request) {
+    public function __construct($type, $consumer_id, $request)
+    {
         $this->type        = $type;
         $this->consumer_id = $consumer_id;
         $this->request     = $request;
@@ -52,11 +55,10 @@ abstract class resource {
      * Checks if a record exists in the resource linking database table for this resource.
      * If it does, update it. If it does not, create it.
      */
-    protected function update_link() {
-
+    protected function update_link()
+    {
         // Check if record exists in local_lti_resource_link table.
         if ($this->is_linked()) {
-
             // Update access_count and last_access fields.
             global $DB;
             $record               = $this->get_record_from_database();
@@ -64,9 +66,7 @@ abstract class resource {
             $record->last_access  = date("Y-m-d H:i:s"); // Now.
             $DB->update_record('local_lti_resource_link', $record);
             $this->update_consumer();
-
         } else {
-
             // Create new record in local_lti_resource_link.
             $this->create_link();
         }
@@ -76,14 +76,16 @@ abstract class resource {
      * Update the last_access consumer field.
      * Set it to 'now'.
      *
-     * @throws \dml_exception
+     * @throws dml_exception
      */
     // TODO create consumer class and link to resource.
-    private function update_consumer() {
+    private function update_consumer()
+    {
         global $DB;
 
         $resource_record              = $this->get_record_from_database();
-        $consumer_record              = $DB->get_record('local_lti_consumer', array('id' => $resource_record->consumer), 'id');
+        $consumer_record              = $DB->get_record('local_lti_consumer', array('id' => $resource_record->consumer),
+            'id');
         $consumer_record->last_access = date("Y-m-d H:i:s"); // Now.
         $DB->update_record('local_lti_consumer', $consumer_record);
     }
@@ -93,7 +95,8 @@ abstract class resource {
      *
      * @return boolean
      */
-    private function is_linked() {
+    private function is_linked()
+    {
         $record = $this->get_record_from_database();
         if ($record) {
             return true;
@@ -107,7 +110,8 @@ abstract class resource {
      *
      * @return object The database record object.
      */
-    private function get_record_from_database() {
+    private function get_record_from_database()
+    {
         global $DB;
 
         // Search for the record using the record_link_id and consumer_id.
@@ -125,13 +129,14 @@ abstract class resource {
     /*
      * Inserts this resource into local_lti_resource_link table.
      */
-    public function create_link() {
+    public function create_link()
+    {
         global $DB;
 
         $now = date("Y-m-d H:i:s");
 
         // Insert a new record.
-        $record               = new \stdClass();
+        $record               = new stdClass();
         $record->type         = $this->type;
         $record->consumer     = $this->consumer_id;
         $record->content_id   = $this->content_id;
@@ -144,16 +149,15 @@ abstract class resource {
     /**
      * Get the book/page ID of this resource.
      */
-    private function get_content_id() {
-
+    private function get_content_id()
+    {
         // Check if the request custom ID parameter is set.
         if ( ! is_null($this->request->get_parameter('custom_id'))) {
             return $this->request->get_parameter('custom_id');
 
             // Check for an ID parameter appended to the launch URL.
             // Canvas LMS will work this way.
-        } else if ($id = optional_param('id', false, PARAM_INT)) {
-
+        } elseif ($id = optional_param('id', false, PARAM_INT)) {
             // Set the request custom parameter. This is needed for Canvas to switch book pages.
             // The optional param above will not be set when navigating pages, so will rely on the stored request data.
             $this->request->set_parameter('custom_id', $id, false);
@@ -164,7 +168,6 @@ abstract class resource {
 
         // There is no ID set.
         return null;
-
     }
 
     /**

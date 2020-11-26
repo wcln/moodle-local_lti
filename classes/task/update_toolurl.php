@@ -23,30 +23,35 @@
 
 namespace local_lti\task;
 
+use core\task\scheduled_task;
+
 defined('MOODLE_INTERNAL') || die();
 
 // Require the config file for DB calls.
-require_once(__DIR__ . '/../../../../config.php');
+require_once(__DIR__.'/../../../../config.php');
 
 /**
  * Update the toolurl field in mdl_lti.
  * This field needs to be set to correctly backup/restore custom LTI courses.
  */
-class update_toolurl extends \core\task\scheduled_task {
+class update_toolurl extends scheduled_task
+{
 
     /**
      * Return the task's name as shown in admin screens.
      *
      * @return string
      */
-    public function get_name() {
+    public function get_name()
+    {
         return get_string('update_toolurl', 'local_lti');
     }
 
     /**
      * Execute the task.
      */
-    public function execute() {
+    public function execute()
+    {
         global $DB, $CFG;
 
         // Access the plugin configuration,

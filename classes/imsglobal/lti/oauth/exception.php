@@ -23,6 +23,7 @@ namespace local_lti\imsglobal\lti\oauth;
  * @version    2008-08-04
  * @license    https://opensource.org/licenses/MIT The MIT License
  */
-class exception extends \Exception {
+class exception extends \Exception
+{
     // pass
 }

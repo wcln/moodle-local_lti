@@ -23,7 +23,8 @@ namespace local_lti\imsglobal\lti\oauth;
  * @version    2008-08-04
  * @license    https://opensource.org/licenses/MIT The MIT License
  */
-class token {
+class token
+{
 
     // access tokens and request tokens
     public $key;
@@ -33,7 +34,8 @@ class token {
      * key = the token
      * secret = the token secret
      */
-    function __construct($key, $secret) {
+    function __construct($key, $secret)
+    {
         $this->key    = $key;
         $this->secret = $secret;
     }
@@ -42,14 +44,16 @@ class token {
      * generates the basic string serialization of a token that a server
      * would respond to request_token and access_token calls with
      */
-    function to_string() {
-        return 'oauth_token=' .
-            util::urlencode_rfc3986($this->key) .
-            '&oauth_token_secret=' .
-            util::urlencode_rfc3986($this->secret);
+    function to_string()
+    {
+        return 'oauth_token='.
+               util::urlencode_rfc3986($this->key).
+               '&oauth_token_secret='.
+               util::urlencode_rfc3986($this->secret);
     }
 
-    function __toString() {
+    function __toString()
+    {
         return $this->to_string();
     }
 

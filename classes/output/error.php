@@ -18,15 +18,17 @@ namespace local_lti\output;
 
 use renderable;
 use renderer_base;
-use templatable;
 use stdClass;
+use templatable;
 
-class error implements renderable, templatable {
+class error implements renderable, templatable
+{
 
     // The error message to render.
     var $message = null;
 
-    public function __construct($message) {
+    public function __construct($message)
+    {
         $this->message = $message;
     }
 
@@ -35,7 +37,8 @@ class error implements renderable, templatable {
      *
      * @return stdClass
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output)
+    {
         global $DB;
 
         // Data class to be sent to template.

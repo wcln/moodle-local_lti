@@ -32,14 +32,16 @@ namespace local_lti\imsglobal\lti\oauth;
  * encoded per Parameter Encoding) of the Consumer Secret and Token Secret, separated by an '&'
  * character (ASCII code 38) even if empty.
  */
-class signature_method_HMAC_SHA256 extends signature_method {
+class signature_method_HMAC_SHA256 extends signature_method
+{
 
-    function get_name() {
+    function get_name()
+    {
         return "HMAC-SHA256";
     }
 
-    public function build_signature($request, $consumer, $token) {
-
+    public function build_signature($request, $consumer, $token)
+    {
         $base_string          = $request->get_signature_base_string();
         $request->base_string = $base_string;
 
@@ -52,7 +54,6 @@ class signature_method_HMAC_SHA256 extends signature_method {
         $key       = implode('&', $key_parts);
 
         return base64_encode(hash_hmac('sha256', $base_string, $key, true));
-
     }
 
 }

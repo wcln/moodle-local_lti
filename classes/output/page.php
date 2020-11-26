@@ -18,19 +18,21 @@ namespace local_lti\output;
 
 use renderable;
 use renderer_base;
-use templatable;
 use stdClass;
+use templatable;
 
-require_once($CFG->libdir . '/filelib.php');
+require_once($CFG->libdir.'/filelib.php');
 
-class page implements renderable, templatable {
+class page implements renderable, templatable
+{
 
     /**
      * @var object a custom page object to render.
      */
     var $page = null;
 
-    public function __construct($page) {
+    public function __construct($page)
+    {
         $this->page = $page;
     }
 
@@ -39,17 +41,21 @@ class page implements renderable, templatable {
      *
      * @return stdClass
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output)
+    {
         global $DB;
 
         // Data class to be sent to template.
         $data          = new stdClass();
-        $page          = $DB->get_record('page', array('id' => $this->page->page_id), 'id, name, content, revision, contentformat', MUST_EXIST);
+        $page          = $DB->get_record('page', array('id' => $this->page->page_id),
+            'id, name, content, revision, contentformat', MUST_EXIST);
         $data->content = $page->content;
 
         // Rewrite pluginfile URLs.
         // Required to render database images and files.
-        $content = file_rewrite_pluginfile_urls($page->content, 'local/lti/file.php?sessid=' . $this->page->request->get_session_id(), $this->page->get_context()->id, 'mod_page', 'content', $page->revision);
+        $content = file_rewrite_pluginfile_urls($page->content,
+            'local/lti/file.php?sessid='.$this->page->request->get_session_id(), $this->page->get_context()->id,
+            'mod_page', 'content', $page->revision);
 
         // Apply filters and format the chapter text.
         $data->content = format_text($content, $page->contentformat, array(

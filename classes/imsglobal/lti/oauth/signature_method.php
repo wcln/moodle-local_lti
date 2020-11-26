@@ -28,7 +28,8 @@ namespace local_lti\imsglobal\lti\oauth;
  * A class for implementing a Signature Method
  * See section 9 ("Signing Requests") in the spec
  */
-abstract class signature_method {
+abstract class signature_method
+{
     /**
      * Needs to return the name of the Signature Method (ie HMAC-SHA1)
      *
@@ -42,9 +43,9 @@ abstract class signature_method {
      * the encoding is handled in request when the final
      * request is serialized
      *
-     * @param request  $request
-     * @param consumer $consumer
-     * @param token    $token
+     * @param  request  $request
+     * @param  consumer  $consumer
+     * @param  token  $token
      *
      * @return string
      */
@@ -53,15 +54,15 @@ abstract class signature_method {
     /**
      * Verifies that a given signature is correct
      *
-     * @param request  $request
-     * @param consumer $consumer
-     * @param token    $token
-     * @param string   $signature
+     * @param  request  $request
+     * @param  consumer  $consumer
+     * @param  token  $token
+     * @param  string  $signature
      *
      * @return bool
      */
-    public function check_signature($request, $consumer, $token, $signature) {
-
+    public function check_signature($request, $consumer, $token, $signature)
+    {
         $built = $this->build_signature($request, $consumer, $token);
 
         // Check for zero length, although unlikely here
@@ -80,7 +81,6 @@ abstract class signature_method {
         }
 
         return $result == 0;
-
     }
 
 }

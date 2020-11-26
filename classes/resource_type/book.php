@@ -16,6 +16,8 @@
 
 namespace local_lti\resource_type;
 
+use context_module;
+use Exception;
 use local_lti\provider\resource;
 
 /**
@@ -28,7 +30,8 @@ use local_lti\provider\resource;
  * @copyright  2019 Colin Bernard
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class book extends resource {
+class book extends resource
+{
 
     /** @var int The page number of the resource to retrieve. */
     private $pagenum = 1;
@@ -38,20 +41,19 @@ class book extends resource {
      *
      * @return int book ID.
      */
-    public function get_book_id() {
+    public function get_book_id()
+    {
         global $DB;
 
         try {
-
             // Get the book object using the course module ID.
             $cm     = get_coursemodule_from_id('book', $this->content_id, 0, false, MUST_EXIST);
             $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
             $book   = $DB->get_record('book', array('id' => $cm->instance), '*', MUST_EXIST);
 
             return $book->id;
-
-        } catch (\Exception $e) {
-            throw new \Exception(get_string('error_book_id', 'local_lti'));
+        } catch (Exception $e) {
+            throw new Exception(get_string('error_book_id', 'local_lti'));
         }
     }
 
@@ -60,18 +62,20 @@ class book extends resource {
      *
      * @return context
      */
-    public function get_context() {
-        return \context_module::instance($this->content_id);
+    public function get_context()
+    {
+        return context_module::instance($this->content_id);
     }
 
     /**
      * Returns a lesson from within this book.
      *
-     * @param int $pagenum Page number to return.
+     * @param  int  $pagenum  Page number to return.
      *
      * @return object          Lesson object.
      */
-    public function get_lesson($pagenum = null) {
+    public function get_lesson($pagenum = null)
+    {
         global $DB;
 
         if (is_null($pagenum)) {
@@ -90,7 +94,8 @@ class book extends resource {
     /**
      * Renders the book using a template.
      */
-    public function render() {
+    public function render()
+    {
         global $PAGE;
 
         // Ensure this resource exists in the local_lti_resource_link table, and update it.
@@ -100,13 +105,11 @@ class book extends resource {
         $renderer = $PAGE->get_renderer('local_lti');
 
         try {
-
             // Render book.
             $book = new \local_lti\output\book($this);
             echo $renderer->render($book);
-
-        } catch (\Exception $e) {
-            throw new \Exception(get_string('error_rendering_book', 'local_lti'));
+        } catch (Exception $e) {
+            throw new Exception(get_string('error_rendering_book', 'local_lti'));
         }
     }
 
@@ -115,7 +118,8 @@ class book extends resource {
      *
      * @return int Page number.
      */
-    public function get_pagenum() {
+    public function get_pagenum()
+    {
         return $this->pagenum;
     }
 
@@ -123,9 +127,10 @@ class book extends resource {
      * Sets the current page number of the book.
      * Only used for non-AJAX page navigation.
      *
-     * @param int $pagenum Page number.
+     * @param  int  $pagenum  Page number.
      */
-    public function set_pagenum($pagenum) {
+    public function set_pagenum($pagenum)
+    {
         $this->pagenum = $pagenum;
     }
 }

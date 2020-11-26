@@ -25,7 +25,8 @@ namespace local_lti\provider;
  * @copyright  2019 Colin Bernard
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class util {
+class util
+{
 
     /**
      * Returns an assoc array of consumers and their secret keys.
@@ -33,7 +34,8 @@ class util {
      *
      * @return array An assoc. array of consumer => secret key.
      */
-    public static function get_all_tool_consumer_secrets() {
+    public static function get_all_tool_consumer_secrets()
+    {
         global $DB;
 
         $tool_consumer_secrets = $DB->get_records_menu('local_lti_consumer', null, '', 'consumer_key, secret');
@@ -47,7 +49,8 @@ class util {
      *
      * @return array An assoc. array of consumer => secret key.
      */
-    public static function get_enabled_tool_consumer_secrets() {
+    public static function get_enabled_tool_consumer_secrets()
+    {
         global $DB;
 
         $now = date("Y-m-d H:i:s");
@@ -66,11 +69,12 @@ class util {
     /**
      * Returns a consumer ID.
      *
-     * @param string $name The consumer name.
+     * @param  string  $name  The consumer name.
      *
      * @return int      The consumer ID.
      */
-    public static function get_consumer_id($name) {
+    public static function get_consumer_id($name)
+    {
         global $DB;
 
         $record = $DB->get_record('local_lti_consumer', array('consumer_key' => $name), 'id');
@@ -85,11 +89,12 @@ class util {
     /**
      * Returns the ID of an LTI resource type given a unique name.
      *
-     * @param string $name The name of the LTI resource type.
+     * @param  string  $name  The name of the LTI resource type.
      *
      * @return int       The ID of the LTI resource type.
      */
-    public static function get_type_id($name) {
+    public static function get_type_id($name)
+    {
         global $DB;
 
         $record = $DB->get_record('local_lti_type', array('name' => $name), 'id');
@@ -104,11 +109,12 @@ class util {
     /**
      * Returns the name of an LTI resource type given an ID.
      *
-     * @param int $id The ID of the LTI resource type.
+     * @param  int  $id  The ID of the LTI resource type.
      *
      * @return string     The name of the LTI resource type.
      */
-    public static function get_type_name($id) {
+    public static function get_type_name($id)
+    {
         global $DB;
 
         $record = $DB->get_record('local_lti_type', array('id' => $id), 'name');
@@ -125,7 +131,8 @@ class util {
      *
      * @return string Random hexadecimal string.
      */
-    public static function generate_random_session_id() {
+    public static function generate_random_session_id()
+    {
         return bin2hex(random_bytes(10));
     }
 }

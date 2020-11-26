@@ -24,10 +24,10 @@
 define('AJAX_SCRIPT', true);
 
 // Require standard Moodle configuration file.
-require_once(__DIR__ . '/../../config.php');
+require_once(__DIR__.'/../../config.php');
 
 // Used to rewrite pluginfile URLs.
-require_once($CFG->libdir . '/filelib.php');
+require_once($CFG->libdir.'/filelib.php');
 
 // The outcome object to be returned.
 $outcome          = new stdClass;
@@ -35,11 +35,11 @@ $outcome->success = false;
 $outcome->error   = null;
 
 // Check if the session ID parameter was provided.
-if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = optional_param('page', false, PARAM_INT))) {
-
+if (($session_id = optional_param('sessid', false, PARAM_TEXT))
+    && ($pagenum = optional_param('page', false, PARAM_INT))
+) {
     // Check if a request with this session ID exists.
     if (isset($SESSION->{"lti_request_$session_id"})) {
-
         // Load the existing request (we know it has already been verified).
         $request = $SESSION->{"lti_request_$session_id"};
 
@@ -49,7 +49,8 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = o
         $outcome->lesson = $lesson;
 
         // Set the outcome content and title to be returned.
-        $chaptertext      = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$session_id", $book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
+        $chaptertext      = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$session_id",
+            $book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
         $outcome->content = format_text($chaptertext, $lesson->contentformat, array(
             'noclean'     => true,
             'overflowdiv' => true,
@@ -57,16 +58,14 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT)) && ($pagenum = o
         ));
         $outcome->title   = $lesson->title;
         $outcome->success = true;
-
     } else {
         $outcome->error = get_string('error_session_expired', 'local_lti');
     }
-
 } else {
     $outcome->error = get_string('error_missing_required_params', 'local_lti');
 }
 
-header('Set-Cookie: ' . session_name() . '=' . session_id() . '; SameSite=None; Secure');
+header('Set-Cookie: '.session_name().'='.session_id().'; SameSite=None; Secure');
 
 // Ouput the outcome object as a JSON string.
 echo json_encode($outcome);

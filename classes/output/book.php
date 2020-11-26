@@ -16,19 +16,22 @@
 
 namespace local_lti\output;
 
+use Exception;
 use renderable;
 use renderer_base;
-use templatable;
 use stdClass;
+use templatable;
 
-require_once($CFG->libdir . '/filelib.php');
+require_once($CFG->libdir.'/filelib.php');
 
-class book implements renderable, templatable {
+class book implements renderable, templatable
+{
 
     /** @var object A custom book object to render. */
     var $book = null;
 
-    public function __construct($book) {
+    public function __construct($book)
+    {
         $this->book = $book;
     }
 
@@ -37,7 +40,8 @@ class book implements renderable, templatable {
      *
      * @return stdClass
      */
-    public function export_for_template(renderer_base $output) {
+    public function export_for_template(renderer_base $output)
+    {
         global $DB;
 
         // Data class to be sent to template.
@@ -52,10 +56,9 @@ class book implements renderable, templatable {
                                        FROM {book_chapters}
                                        WHERE bookid=?
                                        ORDER BY pagenum ASC', array($this->book->get_book_id()));
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Re-throw exception with custom message.
-            throw new \Exception(get_string('error_retrieving_book_page', 'local_lti'));
+            throw new Exception(get_string('error_retrieving_book_page', 'local_lti'));
         }
 
         // Set title.
@@ -67,7 +70,8 @@ class book implements renderable, templatable {
 
         // Rewrite pluginfile URLs.
         // Required to render database images and files.
-        $chaptertext = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$data->session_id", $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
+        $chaptertext = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$data->session_id",
+            $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
 
         // Apply filters and format the chapter text.
         $data->content = format_text($chaptertext, $lesson->contentformat, array(

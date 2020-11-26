@@ -23,45 +23,41 @@ namespace local_lti\imsglobal\lti\oauth;
  * @version    2008-08-04
  * @license    https://opensource.org/licenses/MIT The MIT License
  */
-class datastore {
-    private $consumer_key = NULL;
-    private $consumer_secret = NULL;
+class datastore
+{
+    private $consumer_key = null;
+    private $consumer_secret = null;
 
-    public function __construct($consumer_key, $consumer_secret) {
-
+    public function __construct($consumer_key, $consumer_secret)
+    {
         $this->consumer_key    = $consumer_key;
         $this->consumer_secret = $consumer_secret;
-
     }
 
-    function lookup_consumer($consumer_key) {
-
+    function lookup_consumer($consumer_key)
+    {
         return new consumer($this->consumer_key, $this->consumer_secret);
-
     }
 
-    function lookup_token($consumer, $token_type, $token) {
-
+    function lookup_token($consumer, $token_type, $token)
+    {
         return new token($consumer, '');
-
     }
 
-    function lookup_nonce($consumer, $token, $nonce, $timestamp) {
-
+    function lookup_nonce($consumer, $token, $nonce, $timestamp)
+    {
         return false;  // If a persistent store is available nonce values should be retained for a period and checked here
 
     }
 
-    function new_request_token($consumer, $callback = null) {
-
+    function new_request_token($consumer, $callback = null)
+    {
         return null;
-
     }
 
-    function new_access_token($token, $consumer, $verifier = null) {
-
+    function new_access_token($token, $consumer, $verifier = null)
+    {
         return null;
-
     }
 
 }

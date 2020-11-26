@@ -31,14 +31,16 @@ namespace local_lti\imsglobal\lti\oauth;
  * character (ASCII code 38) even if empty.
  *   - Chapter 9.2 ("HMAC-SHA1")
  */
-class signature_method_HMAC_SHA1 extends signature_method {
+class signature_method_HMAC_SHA1 extends signature_method
+{
 
-    function get_name() {
+    function get_name()
+    {
         return "HMAC-SHA1";
     }
 
-    public function build_signature($request, $consumer, $token) {
-
+    public function build_signature($request, $consumer, $token)
+    {
         $base_string          = $request->get_signature_base_string();
         $request->base_string = $base_string;
 
@@ -51,7 +53,6 @@ class signature_method_HMAC_SHA1 extends signature_method {
         $key       = implode('&', $key_parts);
 
         return base64_encode(hash_hmac('sha1', $base_string, $key, true));
-
     }
 
 }

@@ -16,6 +16,7 @@
 
 namespace local_lti\resource_type;
 
+use context_module;
 use local_lti\provider\resource;
 
 /**
@@ -28,7 +29,8 @@ use local_lti\provider\resource;
  * @copyright  2019 Colin Bernard
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class page extends resource {
+class page extends resource
+{
 
     /** @var int The course module instance aka the page ID. */
     var $page_id = null;
@@ -36,7 +38,8 @@ class page extends resource {
     /**
      * Renders the page using a template.
      */
-    public function render() {
+    public function render()
+    {
         global $PAGE;
 
         // Ensure this resource exists in the local_lti_resource_link table, and update it.
@@ -59,10 +62,11 @@ class page extends resource {
     /**
      * Get context object for this page.
      *
-     * @return \context_module
+     * @return context_module
      */
-    public function get_context() {
-        return \context_module::instance(get_coursemodule_from_id('page', $this->content_id)->id);
+    public function get_context()
+    {
+        return context_module::instance(get_coursemodule_from_id('page', $this->content_id)->id);
     }
 }
 

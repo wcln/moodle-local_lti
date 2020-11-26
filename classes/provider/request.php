@@ -16,11 +16,7 @@
 
 namespace local_lti\provider;
 
-use local_lti\provider\util;
-use local_lti\provider\resource;
-use local_lti\provider\user;
-use local_lti\resource_type\book;
-use local_lti\resource_type\page;
+use Exception;
 use local_lti\imsglobal\lti\oauth;
 
 /**
@@ -32,7 +28,8 @@ use local_lti\imsglobal\lti\oauth;
  * @copyright  2019 Colin Bernard
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
-class request extends \local_lti\imsglobal\lti\oauth\request {
+class request extends oauth\request
+{
 
     /** @var object The resource that was requested. */
     private $resource;
@@ -43,13 +40,13 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
     /** @var string The random session ID. */
     private $session_id;
 
-    public function __construct() {
-
+    public function __construct()
+    {
         // Construct oauth parent request.
         parent::__construct();
 
         // Load resource depending on type.
-        $resource_class = "\\local_lti\\resource_type\\" . request::get_resource_type();
+        $resource_class = "\\local_lti\\resource_type\\".request::get_resource_type();
 
         try {
             $this->resource = new $resource_class(
@@ -57,8 +54,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
                 util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
                 $this
             );
-        } catch (\Exception $e) {
-            throw new \Exception(get_string('error_invalid_type', 'local_lti'));
+        } catch (Exception $e) {
+            throw new Exception(get_string('error_invalid_type', 'local_lti'));
         }
 
         // Load user.
@@ -71,19 +68,20 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *   2. This is a VALID LTI launch request (authenticated).
      *   3. All required parameters have been provided.
      */
-    public function verify() {
+    public function verify()
+    {
         if ($this->verify_launch_request()) {
             if ($this->verify_valid_launch_request()) {
                 if ($this->verify_required_parameters()) {
                     return true;
                 } else {
-                    throw new \Exception(get_string('error_missing_required_params', 'local_lti'));
+                    throw new Exception(get_string('error_missing_required_params', 'local_lti'));
                 }
             } else {
-                throw new \Exception(get_string('error_auth_failed', 'local_lti'));
+                throw new Exception(get_string('error_auth_failed', 'local_lti'));
             }
         } else {
-            throw new \Exception(get_string('error_launch_request', 'local_lti'));
+            throw new Exception(get_string('error_launch_request', 'local_lti'));
         }
     }
 
@@ -92,17 +90,20 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return boolean is this a launch request?
      */
-    private function verify_launch_request() {
+    private function verify_launch_request()
+    {
         $ok = true;
 
         // Check it is a POST request
         $ok = $ok && $_SERVER['REQUEST_METHOD'] === 'POST';
 
         // Check the LTI message type
-        $ok = $ok && ! is_null(parent::get_parameter('lti_message_type')) && (parent::get_parameter('lti_message_type') === 'basic-lti-launch-request');
+        $ok = $ok && ! is_null(parent::get_parameter('lti_message_type'))
+              && (parent::get_parameter('lti_message_type') === 'basic-lti-launch-request');
 
         // Check the LTI version
-        $ok = $ok && ! is_null(parent::get_parameter('lti_version')) && (parent::get_parameter('lti_version') === 'LTI-1p0');
+        $ok = $ok && ! is_null(parent::get_parameter('lti_version'))
+              && (parent::get_parameter('lti_version') === 'LTI-1p0');
 
         // Check a consumer key exists
         $ok = $ok && ! is_null(parent::get_parameter('oauth_consumer_key'));
@@ -118,7 +119,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return boolean is this a valid launch request?
      */
-    private function verify_valid_launch_request() {
+    private function verify_valid_launch_request()
+    {
         $ok = true;
 
         // Retrieve array of consumer keys and secrets.
@@ -130,17 +132,18 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
         // Check the OAuth credentials (nonce, timestamp and signature)
         if ($ok) {
             try {
-                $store  = new oauth\datastore(parent::get_parameter('oauth_consumer_key'), $tool_consumer_secrets[parent::get_parameter('oauth_consumer_key')]);
+                $store  = new oauth\datastore(parent::get_parameter('oauth_consumer_key'),
+                    $tool_consumer_secrets[parent::get_parameter('oauth_consumer_key')]);
                 $server = new oauth\server($store);
                 $method = new oauth\signature_method_HMAC_SHA1();
                 $server->add_signature_method($method);
                 $server->verify_request($this); // Verify this request.
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $ok = false;
             }
         } else {
             // Invalid consumer key.
-            throw new \Exception("Invalid consumer key '" . parent::get_parameter('oauth_consumer_key') . "'!'");
+            throw new Exception("Invalid consumer key '".parent::get_parameter('oauth_consumer_key')."'!'");
         }
 
         return $ok;
@@ -151,7 +154,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return boolean are all required parameters present?
      */
-    private function verify_required_parameters() {
+    private function verify_required_parameters()
+    {
         $ok = true;
 
         // Check if a custom ID parameter is set.
@@ -171,7 +175,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return boolean is the custom parameter set?
      */
-    private function is_custom_parameter_set() {
+    private function is_custom_parameter_set()
+    {
         if ($this->get_parameter('custom_id') || optional_param('id', false, PARAM_INT)) {
             return true;
         }
@@ -184,7 +189,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return object Instance of provider/user class.
      */
-    public function get_user() {
+    public function get_user()
+    {
         return $this->user;
     }
 
@@ -193,7 +199,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return object Instance of provider/resource class.
      */
-    public function get_resource() {
+    public function get_resource()
+    {
         return $this->resource;
     }
 
@@ -202,7 +209,8 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return string The type of resource that was requested.
      */
-    private static function get_resource_type() {
+    private static function get_resource_type()
+    {
         return required_param('type', PARAM_TEXT);
     }
 
@@ -211,16 +219,18 @@ class request extends \local_lti\imsglobal\lti\oauth\request {
      *
      * @return string The random session ID.
      */
-    public function get_session_id() {
+    public function get_session_id()
+    {
         return $this->session_id;
     }
 
     /**
      * Sets the session ID associated with this request.
      *
-     * @param string $session_id Random string.
+     * @param  string  $session_id  Random string.
      */
-    public function set_session_id($session_id) {
+    public function set_session_id($session_id)
+    {
         $this->session_id = $session_id;
     }
 }

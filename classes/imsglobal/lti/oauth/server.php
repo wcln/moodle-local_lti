@@ -23,7 +23,8 @@ namespace local_lti\imsglobal\lti\oauth;
  * @version    2008-08-04
  * @license    https://opensource.org/licenses/MIT The MIT License
  */
-class server {
+class server
+{
 
     protected $timestamp_threshold = 300; // in seconds, five minutes
     protected $version = '1.0';
@@ -31,11 +32,13 @@ class server {
 
     protected $data_store;
 
-    function __construct($data_store) {
+    function __construct($data_store)
+    {
         $this->data_store = $data_store;
     }
 
-    public function add_signature_method($signature_method) {
+    public function add_signature_method($signature_method)
+    {
         $this->signature_methods[$signature_method->get_name()] = $signature_method;
     }
 
@@ -45,14 +48,14 @@ class server {
      * process a request_token request
      * returns the request token on success
      */
-    public function fetch_request_token(&$request) {
-
+    public function fetch_request_token(&$request)
+    {
         $this->get_version($request);
 
         $consumer = $this->get_consumer($request);
 
         // no token required for the initial token request
-        $token = NULL;
+        $token = null;
 
         $this->check_signature($request, $consumer, $token);
 
@@ -61,15 +64,14 @@ class server {
         $new_token = $this->data_store->new_request_token($consumer, $callback);
 
         return $new_token;
-
     }
 
     /**
      * process an access_token request
      * returns the access token on success
      */
-    public function fetch_access_token(&$request) {
-
+    public function fetch_access_token(&$request)
+    {
         $this->get_version($request);
 
         $consumer = $this->get_consumer($request);
@@ -84,21 +86,19 @@ class server {
         $new_token = $this->data_store->new_access_token($token, $consumer, $verifier);
 
         return $new_token;
-
     }
 
     /**
      * verify an api call, checks all the parameters
      */
-    public function verify_request(&$request) {
-
+    public function verify_request(&$request)
+    {
         $this->get_version($request);
         $consumer = $this->get_consumer($request);
         $token    = $this->get_token($request, $consumer, "access");
         $this->check_signature($request, $consumer, $token);
 
         return array($consumer, $token);
-
     }
 
     // Internals from here
@@ -106,8 +106,8 @@ class server {
     /**
      * version 1
      */
-    private function get_version(&$request) {
-
+    private function get_version(&$request)
+    {
         $version = $request->get_parameter("oauth_version");
         if ( ! $version) {
             // Service Providers MUST assume the protocol version to be 1.0 if this parameter is not present.
@@ -119,16 +119,15 @@ class server {
         }
 
         return $version;
-
     }
 
     /**
      * figure out the signature with some defaults
      */
-    private function get_signature_method($request) {
-
+    private function get_signature_method($request)
+    {
         $signature_method = $request instanceof request
-            ? $request->get_parameter('oauth_signature_method') : NULL;
+            ? $request->get_parameter('oauth_signature_method') : null;
 
         if ( ! $signature_method) {
             // According to chapter 7 ("Accessing Protected Ressources") the signature-method
@@ -137,25 +136,25 @@ class server {
         }
 
         if ( ! in_array($signature_method,
-            array_keys($this->signature_methods))) {
+            array_keys($this->signature_methods))
+        ) {
             throw new exception(
-                "Signature method '$signature_method' not supported " .
-                'try one of the following: ' .
+                "Signature method '$signature_method' not supported ".
+                'try one of the following: '.
                 implode(', ', array_keys($this->signature_methods))
             );
         }
 
         return $this->signature_methods[$signature_method];
-
     }
 
     /**
      * try to find the consumer for the provided request's consumer key
      */
-    private function get_consumer($request) {
-
+    private function get_consumer($request)
+    {
         $consumer_key = $request instanceof request
-            ? $request->get_parameter('oauth_consumer_key') : NULL;
+            ? $request->get_parameter('oauth_consumer_key') : null;
 
         if ( ! $consumer_key) {
             throw new exception('Invalid consumer key');
@@ -167,16 +166,15 @@ class server {
         }
 
         return $consumer;
-
     }
 
     /**
      * try to find the token for the provided request's token key
      */
-    private function get_token($request, $consumer, $token_type = "access") {
-
+    private function get_token($request, $consumer, $token_type = "access")
+    {
         $token_field = $request instanceof request
-            ? $request->get_parameter('oauth_token') : NULL;
+            ? $request->get_parameter('oauth_token') : null;
 
         $token = $this->data_store->lookup_token($consumer, $token_type, $token_field);
         if ( ! $token) {
@@ -184,22 +182,21 @@ class server {
         }
 
         return $token;
-
     }
 
     /**
      * all-in-one function to check the signature on a request
      * should guess the signature method appropriately
      */
-    private function check_signature($request, $consumer, $token) {
-
+    private function check_signature($request, $consumer, $token)
+    {
         // this should probably be in a different method
         $timestamp = $request instanceof request
             ? $request->get_parameter('oauth_timestamp')
-            : NULL;
+            : null;
         $nonce     = $request instanceof request
             ? $request->get_parameter('oauth_nonce')
-            : NULL;
+            : null;
 
         $this->check_timestamp($timestamp);
         $this->check_nonce($consumer, $token, $nonce, $timestamp);
@@ -217,32 +214,33 @@ class server {
     /**
      * check that the timestamp is new enough
      */
-    private function check_timestamp($timestamp) {
-        if ( ! $timestamp)
+    private function check_timestamp($timestamp)
+    {
+        if ( ! $timestamp) {
             throw new exception('Missing timestamp parameter. The parameter is required');
+        }
 
         // verify that timestamp is recentish
         $now = time();
         if (abs($now - $timestamp) > $this->timestamp_threshold) {
             throw new exception("Expired timestamp, yours $timestamp, ours $now");
         }
-
     }
 
     /**
      * check that the nonce is not repeated
      */
-    private function check_nonce($consumer, $token, $nonce, $timestamp) {
-
-        if ( ! $nonce)
+    private function check_nonce($consumer, $token, $nonce, $timestamp)
+    {
+        if ( ! $nonce) {
             throw new exception('Missing nonce parameter. The parameter is required');
+        }
 
         // verify that the nonce is uniqueish
         $found = $this->data_store->lookup_nonce($consumer, $token, $nonce, $timestamp);
         if ($found) {
             throw new exception("Nonce already used: $nonce");
         }
-
     }
 
 }
