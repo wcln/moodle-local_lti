@@ -17,7 +17,7 @@
  * Create a settings page for the plugin.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard {@link https://wcln.ca}
+ * @copyright  2020 Colin Perepelken {@link https://wcln.ca}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
@@ -25,11 +25,13 @@ defined('MOODLE_INTERNAL') || die();
 
 $settings = null;
 
-// Ensure the configurations for this site are set.
-if ($hassiteconfig) {
-    // Create the new settings page.
-    $settings = new admin_settingpage('local_lti', get_string('pluginname', 'local_lti'));
-    $ADMIN->add('localplugins', $settings);
+if (has_capability('moodle/site:config', context_system::instance())) {
+    $ADMIN->add('localplugins', new admin_category('local_lti_category',
+        get_string('setting:category', 'local_lti')));
+
+    // Create the new settings page
+    $settings = new admin_settingpage('local_lti', get_string('setting:page', 'local_lti'));
+    $ADMIN->add('local_lti_category', $settings);
 
     $settings->add(new admin_setting_configtext(
         'local_lti/book_toolurl',
@@ -62,4 +64,8 @@ if ($hassiteconfig) {
         20,
         PARAM_INT
     ));
+
+    $ADMIN->add('local_lti_category',
+        new admin_externalpage('local_lti_dashboard', get_string('setting:dashboard', 'local_lti'),
+            '/local/lti/dashboard.php'));
 }

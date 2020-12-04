@@ -21,13 +21,10 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-// General.
-$string['pluginname']     = "WCLN LTI Provider";
-$string['brand_heading']  = 'Western Canadian Learning Network';
-$string['brand_short']    = 'WCLN';
-$string['update_toolurl'] = 'Update LTI toolurl Field';
-
-// Errors.
+$string['pluginname']                    = "WCLN LTI Provider";
+$string['brand_heading']                 = 'Western Canadian Learning Network';
+$string['brand_short']                   = 'WCLN';
+$string['update_toolurl']                = 'Update LTI toolurl Field';
 $string['error_heading']                 = 'LTI Error';
 $string['error_footer']                  = 'Contact a course administrator, teacher or wcln.ca to fix this issue.';
 $string['error_invalid_type']            = 'Invalid LTI type in launch URL. Try ?type=book or ?type=page.';
@@ -50,14 +47,13 @@ $string['error_session_not_found']
 $string['error_retrieving_book_page']
                                          = 'An error occurred while attempting to retrieve the book page from the database.';
 $string['error_session_expired']         = 'Session expired. Try reloading this page.';
-
-// Resource not configured.
-$string['resource_not_setup_heading'] = 'LTI Resource Not Configured';
+$string['resource_not_setup_heading']    = 'LTI Resource Not Configured';
 $string['resource_not_setup_description']
-                                      = 'A book ID or page ID custom parameter has not been configured for this resource. Contact a course teacher or administrator to set up this LTI resource.';
-
-// Book.
-$string['table_of_contents'] = 'Table of Contents';
-
-// Loading.
-$string['loading'] = 'Loading...';
+                                         = 'A book ID or page ID custom parameter has not been configured for this resource. Contact a course teacher or administrator to set up this LTI resource.';
+$string['table_of_contents']             = 'Table of Contents';
+$string['loading']                       = 'Loading...';
+$string['dashboard_title']               = 'LTI Dashboard';
+$string['dashboard_heading']             = 'LTI Dashboard';
+$string['setting:dashboard']             = 'Dashboard';
+$string['setting:page']                  = 'LTI settings';
+$string['setting:category']              = 'WCLN LTI Provider';
