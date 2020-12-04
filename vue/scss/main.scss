@@ -1,0 +1,32 @@
+/*
+Clear some bootstrap styles
+
+This MUST come first in this file, so that we can overwrite these settings with our CSS below
+
+*/
+//#lti-dashboard-app {
+//  button,
+//  .label {
+//    all: unset;
+//  }
+//
+//  .modal {
+//    all: unset;
+//
+//    textarea {
+//      box-sizing: border-box;
+//    }
+//  }
+//}
+
+/* Only apply our styles to the Vue app div, otherwise all of Moodle will be affected */
+#lti-dashboard-app {
+
+  @import './variables';
+
+  /*
+    Import the Bulma CSS framework
+    See: https://bulma.io/
+   */
+  @import "../node_modules/bulma/bulma";
+}

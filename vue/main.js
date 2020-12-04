@@ -10,8 +10,9 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import { store } from './store';
-import ExampleComponent from "./components/ExampleComponent";
+import './scss/main.scss';
 import config from './config';
+import Dashboard from "./components/views/Dashboard";
 
 function init() {
 
@@ -21,7 +22,7 @@ function init() {
 
     // TODO Add your routes here
     const routes = [
-        { path: '/', component: ExampleComponent }
+        { path: '/', component: Dashboard }
     ];
 
     const currenturl = window.location.pathname;
