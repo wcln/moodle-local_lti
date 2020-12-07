@@ -48,7 +48,7 @@ export default {
       if (!isNaN(index)) {
         this.tabs.map((tab, tabIndex) => {
           tab.isActive = tabIndex === index;
-        })
+        });
       }
     }
   }

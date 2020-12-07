@@ -10,6 +10,9 @@ $PAGE->set_heading(get_string('dashboard_heading', 'local_lti'));
 $PAGE->set_title(get_string('dashboard_title', 'local_lti'));
 $PAGE->set_url(new moodle_url('/local/lti/dashboard.php'));
 
+require_login();
+require_capability('moodle/site:config', context_system::instance());
+
 // Output Moodle's header
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('dashboard_heading', 'local_lti'));
