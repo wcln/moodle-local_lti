@@ -12,16 +12,32 @@
 
     <!-- Requests by month line chart -->
     <RequestsChart></RequestsChart>
+
+    <!-- Top sites by month -->
+    <div class="columns">
+      <div class="column">
+        <TopSitesTable></TopSitesTable>
+      </div>
+      <div class="column">
+        <TopSitesChart></TopSitesChart>
+      </div>
+    </div>
+
+    <!-- Most requested resources -->
+    <TopResourcesTable></TopResourcesTable>
   </div>
 </template>
 
 <script>
 import StatisticBox from "../../partials/StatisticBox";
 import RequestsChart from "../../partials/charts/RequestsChart";
+import TopSitesTable from "../../partials/tables/TopSitesTable";
+import TopSitesChart from "../../partials/charts/TopSitesChart";
+import TopResourcesTable from "../../partials/tables/TopResourcesTable";
 
 export default {
   name: "Overview",
-  components: {RequestsChart, StatisticBox},
+  components: {TopResourcesTable, TopSitesChart, TopSitesTable, RequestsChart, StatisticBox},
   data() {
     return {
       statisticBoxes: [

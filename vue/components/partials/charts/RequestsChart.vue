@@ -25,6 +25,9 @@ export default {
           label: 'Requests by month',
           backgroundColor: '#2D7DD2',
           borderColor: '#474647',
+          pointBackgroundColor: "#eba600",
+          pointBorderColor: "#474647",
+          hoverBackgroundColor: "#8ec63f",
           data: [0, 10, 5, 2, 20, 30, 45]
         }]
       },
