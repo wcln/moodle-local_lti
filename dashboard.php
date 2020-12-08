@@ -23,7 +23,9 @@ $PAGE->requires->js_call_amd('local_lti/app-lazy', 'init');
 // Output HTML, inside of which the Vue app will be loaded
 echo <<<HTML
 <div id="lti-dashboard-app">
-  <router-view></router-view>
+  <router-view>
+    <div class="loader"></div>
+  </router-view>
 </div>
 HTML;
 
