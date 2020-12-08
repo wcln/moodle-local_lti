@@ -23,7 +23,6 @@ export default {
   },
   methods: {
     tabChanged(tab, index) {
-      window.console.log(index);
       if (! tab.isActive) {
         this.$emit('tabChanged', index);
       }
