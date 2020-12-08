@@ -1,5 +1,7 @@
 <template>
   <div class="overview-tab">
+
+    <!-- Statistic boxes -->
     <div class="columns is-centered">
       <div class="column" v-for="statBox in statisticBoxes">
         <StatisticBox class="statbox" :icon="statBox.icon" :number="statBox.number" :text="statBox.text">
@@ -7,15 +9,19 @@
         </StatisticBox>
       </div>
     </div>
+
+    <!-- Requests by month line chart -->
+    <RequestsChart></RequestsChart>
   </div>
 </template>
 
 <script>
 import StatisticBox from "../../partials/StatisticBox";
+import RequestsChart from "../../partials/charts/RequestsChart";
 
 export default {
   name: "Overview",
-  components: {StatisticBox},
+  components: {RequestsChart, StatisticBox},
   data() {
     return {
       statisticBoxes: [
@@ -39,7 +45,21 @@ export default {
           text: "errors in last 24 hours",
           icon: "fa-bug"
         },
-      ]
+      ],
+      chartdata: {
+        labels: ['January', 'February'],
+        datasets: [
+          {
+            label: 'Data One',
+            backgroundColor: '#f87979',
+            data: [40, 20]
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false
+      }
     }
   }
 }
