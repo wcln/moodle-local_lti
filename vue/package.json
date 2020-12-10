@@ -13,6 +13,7 @@
     "bulma": "^0.9.1",
     "chart.js": "^2.9.4",
     "vue": "^2.6.10",
+    "vue-bulma-paginate": "^0.2.1",
     "vue-chartjs": "^3.5.1",
     "vue-router": "^3.0.5",
     "vuex": "^3.1.0"

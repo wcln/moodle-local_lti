@@ -4,8 +4,7 @@
     <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>More details</b> to view all consumer
       information.</p>
 
-    <div class="field is-grouped">
-      <div class="field is-horizontal mr-5">
+      <div class="field is-horizontal">
         <div class="field-label">
           <label class="label">Sort by</label>
         </div>
@@ -38,11 +37,20 @@
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
             </div>
-            <div class="control">
-              <a class="button is-info">
-                Search
-              </a>
-            </div>
+          </div>
+        </div>
+      </div>
+
+    <div class="field is-horizontal">
+      <div class="field-label">
+        <!-- Left empty for spacing -->
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <a class="button is-primary">
+              Search
+            </a>
           </div>
         </div>
       </div>
@@ -61,28 +69,83 @@
         </tr>
         </thead>
         <tbody>
-        <tr>
-          <td>Southeast Kootenay</td>
-          <td>BC-SD05</td>
-          <td>canadian950</td>
+        <tr v-for="consumer in consumers">
+          <td>{{consumer.name}}</td>
+          <td>{{consumer.consumerKey}}</td>
+          <td>{{consumer.secret}}</td>
           <td>
-            <input type="checkbox" checked>
+            <input type="checkbox" :checked="consumer.enabled">
           </td>
-          <td>10:40AM November 30, 2020</td>
+          <td>{{consumer.lastAccess}}</td>
         </tr>
         </tbody>
       </table>
     </div>
 
+    <!-- Pagination bar -->
+    <Pagination
+      :itemsTotal="consumers.length"
+      :itemsPerPage="pagination.itemsPerPage"
+      :currentPage="pagination.currentPage"
+      :buttonsMax="5"
+    ></Pagination>
+
+    <!-- Download button -->
+    <a class="button is-light">Download</a>
+
   </div>
 </template>
 
 <script>
+import Pagination from "vue-bulma-paginate";
+
 export default {
-  name: "Consumers"
+  name: "Consumers",
+  components: {
+    Pagination
+  },
+  data() {
+    return {
+      consumers: [
+        {
+          name: "Southeast Kootenay",
+          consumerKey: "BC-SD05",
+          secret: "canadian950",
+          enabled: true,
+          lastAccess: "10:40AM November 30, 2020"
+        },
+        {
+          name: "Southeast Kootenay 2",
+          consumerKey: "BC-SD06",
+          secret: "hamburger",
+          enabled: true,
+          lastAccess: "11:12 October 22, 2020"
+        },
+        {
+          name: "Southeast Kootenay 3",
+          consumerKey: "BC-SD07",
+          secret: "poutine",
+          enabled: true,
+          lastAccess: "9:35AM December 1, 2020"
+        },
+      ],
+      pagination: {
+        itemsPerPage: 1,
+        currentPage:  1
+      }
+    }
+  }
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+  #lti-dashboard-app {
+    .pagination {
+      .pagination-link {
+        height: 2rem;
+        padding: .2em .1em;
+        min-width: 2em;
+      }
+    }
+  }
 </style>

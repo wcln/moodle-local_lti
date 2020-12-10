@@ -29,4 +29,18 @@ This MUST come first in this file, so that we can overwrite these settings with 
     See: https://bulma.io/
    */
   @import "../node_modules/bulma/bulma";
+
+
+  .pagination {
+    .pagination-link {
+      height: 2em;
+      padding: .2em .1em;
+      min-width: 2em;
+    }
+
+    .pagination-next,
+    .pagination-previous {
+      height: 2em;
+    }
+  }
 }
