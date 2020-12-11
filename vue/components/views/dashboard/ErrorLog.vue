@@ -59,7 +59,7 @@
 
 
     <div class="box">
-      <table class="table">
+      <table class="table is-hoverable">
         <thead>
         <tr>
           <th>Date</th>

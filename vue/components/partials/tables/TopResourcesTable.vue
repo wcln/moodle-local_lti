@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <h4 class="title is-4">Most requested resources</h4>
-    <table class="table">
+    <table class="table is-hoverable">
       <thead>
       <tr>
         <th>Resource</th>

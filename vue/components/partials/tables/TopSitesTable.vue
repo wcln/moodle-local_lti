@@ -2,7 +2,7 @@
   <section>
     <div class="box">
       <h4 class="title is-4">Top consumer sites</h4>
-      <table class="table">
+      <table class="table is-hoverable">
         <thead>
         <tr>
           <th>Site</th>
