@@ -20,9 +20,9 @@ function init() {
 
     Vue.use(VueRouter);
 
-    // TODO Add your routes here
     const routes = [
-        { path: '/', component: Dashboard }
+        { path: '/:tab?', component: Dashboard, name: 'dashboard' },
+        { path: '/consumers:page?', component: Dashboard, name: 'consumers', params: { tab: 'consumers' } } // Special case for consumsers tab to support pagination
     ];
 
     const currenturl = window.location.pathname;

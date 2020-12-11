@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Tabs @tabChanged="tabChanged" :tabs="tabs"></Tabs>
+    <Tabs @tabChanged="changeTab" :tabs="tabs"></Tabs>
     <component v-bind:is="tabContent"/>
   </div>
 </template>
@@ -24,18 +24,21 @@ export default {
       tabs: [
         {
           title: "Overview",
+          key: "overview",
           icon: "fa-tachometer-alt",
           isActive: true,
           component: Overview
         },
         {
           title: "Consumers",
+          key: "consumers",
           icon: "fa-sitemap",
           isActive: false,
           component: Consumers
         },
         {
           title: "Error log",
+          key: "errors",
           icon: "fa-bug",
           isActive: false,
           component: ErrorLog
@@ -44,12 +47,19 @@ export default {
     }
   },
   methods: {
-    tabChanged(index) {
+    changeTab(index) {
       if (!isNaN(index)) {
-        this.tabs.map((tab, tabIndex) => {
-          tab.isActive = tabIndex === index;
-        });
+        let currentTab = this.tabs.find((tab, tabIndex) => tabIndex === index);
+        this.tabs.map(tab => tab.isActive = (currentTab === tab));
+        if (this.$route.params.tab !== currentTab.key) {
+          this.$router.push({path: '/' + currentTab.key});
+        }
       }
+    }
+  },
+  mounted() {
+    if (this.$route.params.tab !== undefined) {
+      this.changeTab(this.tabs.findIndex(tab => tab.key === this.$route.params.tab));
     }
   }
 }

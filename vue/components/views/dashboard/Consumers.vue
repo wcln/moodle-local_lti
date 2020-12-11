@@ -4,6 +4,7 @@
     <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>More details</b> to view all consumer
       information.</p>
 
+    <div class="field is-horizontal ml-5">
       <div class="field is-horizontal">
         <div class="field-label">
           <label class="label">Sort by</label>
@@ -25,7 +26,7 @@
         </div>
       </div>
 
-      <div class="field is-horizontal">
+      <div class="field is-horizontal ml-5">
         <div class="field-label">
           <label class="label">Keywords</label>
         </div>
@@ -41,20 +42,22 @@
         </div>
       </div>
 
-    <div class="field is-horizontal">
-      <div class="field-label">
-        <!-- Left empty for spacing -->
-      </div>
-      <div class="field-body">
-        <div class="field">
-          <div class="control">
-            <a class="button is-primary">
-              Search
-            </a>
+      <div class="field is-horizontal">
+        <div class="field-label">
+          <!-- Left empty for spacing -->
+        </div>
+        <div class="field-body">
+          <div class="field">
+            <div class="control">
+              <a class="button is-primary">
+                Search
+              </a>
+            </div>
           </div>
         </div>
       </div>
     </div>
+
 
 
     <div class="box">
@@ -80,15 +83,16 @@
         </tr>
         </tbody>
       </table>
-    </div>
 
-    <!-- Pagination bar -->
-    <Pagination
-      :itemsTotal="consumers.length"
-      :itemsPerPage="pagination.itemsPerPage"
-      :currentPage="pagination.currentPage"
-      :buttonsMax="5"
-    ></Pagination>
+      <!-- Pagination bar -->
+      <Pagination
+          :itemsTotal="consumers.length"
+          :itemsPerPage="pagination.itemsPerPage"
+          :currentPage="pagination.currentPage"
+          :buttonsMax="5"
+          :url="'consumers'"
+      ></Pagination>
+    </div>
 
     <!-- Download button -->
     <a class="button is-light">Download</a>
@@ -102,7 +106,12 @@ import Pagination from "vue-bulma-paginate";
 export default {
   name: "Consumers",
   components: {
-    Pagination
+    Pagination,
+  },
+  computed: {
+    currentPage() {
+
+    }
   },
   data() {
     return {
@@ -134,6 +143,18 @@ export default {
         currentPage:  1
       }
     }
+  },
+  watch: {
+    $route(to, from) {
+      if (to.query.page !== undefined) {
+        this.pagination.currentPage = Number(to.query.page);
+      }
+    }
+  },
+  mounted() {
+    if (this.$route.query.page !== undefined) {
+      this.pagination.currentPage = Number(this.$route.query.page);
+    }
   }
 }
 </script>
@@ -146,6 +167,10 @@ export default {
         padding: .2em .1em;
         min-width: 2em;
       }
+    }
+
+    .field .label {
+      white-space: nowrap;
     }
   }
 </style>
