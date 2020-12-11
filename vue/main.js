@@ -22,7 +22,8 @@ function init() {
 
     const routes = [
         { path: '/:tab?', component: Dashboard, name: 'dashboard' },
-        { path: '/consumers:page?', component: Dashboard, name: 'consumers', params: { tab: 'consumers' } } // Special case for consumsers tab to support pagination
+        { path: '/consumers:page?', component: Dashboard, name: 'consumers', params: { tab: 'consumers' } }, // Special case for consumsers tab to support pagination
+        { path: '/errors:page?', component: Dashboard, name: 'errors', params: { tab: 'errors' } } // Special case for errors tab to support pagination
     ];
 
     const currenturl = window.location.pathname;

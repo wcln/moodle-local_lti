@@ -108,11 +108,6 @@ export default {
   components: {
     Pagination,
   },
-  computed: {
-    currentPage() {
-
-    }
-  },
   data() {
     return {
       consumers: [
