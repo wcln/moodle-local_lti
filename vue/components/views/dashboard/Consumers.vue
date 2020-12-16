@@ -1,7 +1,8 @@
 <template>
   <div>
     <h4 class="title is-4">Manage consumers</h4>
-    <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>More details</b> to view all consumer
+    <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>More details</b> to view all
+      consumer
       information.</p>
 
     <div class="field is-horizontal ml-5">
@@ -59,39 +60,16 @@
     </div>
 
 
-
     <div class="box">
-      <table class="table is-hoverable">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Consumer key</th>
-          <th>Secret</th>
-          <th>Enabled</th>
-          <th>Last access</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="consumer in consumers">
-          <td>{{consumer.name}}</td>
-          <td>{{consumer.consumerKey}}</td>
-          <td>{{consumer.secret}}</td>
-          <td>
-            <input type="checkbox" :checked="consumer.enabled">
-          </td>
-          <td>{{consumer.lastAccess}}</td>
-        </tr>
-        </tbody>
-      </table>
-
-      <!-- Pagination bar -->
-      <Pagination
-          :itemsTotal="consumers.length"
-          :itemsPerPage="pagination.itemsPerPage"
-          :currentPage="pagination.currentPage"
-          :buttonsMax="5"
-          :url="'consumers'"
-      ></Pagination>
+      <EditableTable
+        :pagination="true"
+        :pagination-url="'consumers'"
+        :items-per-page="this.pagination.itemsPerPage"
+        :current-page="this.pagination.currentPage"
+        :headings="this.tableData.headings"
+        :expanded-headings="this.tableData.expandedHeadings"
+        :rows="this.tableData.rows"
+      ></EditableTable>
     </div>
 
     <!-- Download button -->
@@ -101,41 +79,66 @@
 </template>
 
 <script>
-import Pagination from "vue-bulma-paginate";
+import EditableTable from "../../partials/tables/editable/EditableTable";
 
 export default {
   name: "Consumers",
   components: {
-    Pagination,
+    EditableTable,
   },
   data() {
     return {
-      consumers: [
-        {
-          name: "Southeast Kootenay",
-          consumerKey: "BC-SD05",
-          secret: "canadian950",
-          enabled: true,
-          lastAccess: "10:40AM November 30, 2020"
-        },
-        {
-          name: "Southeast Kootenay 2",
-          consumerKey: "BC-SD06",
-          secret: "hamburger",
-          enabled: true,
-          lastAccess: "11:12 October 22, 2020"
-        },
-        {
-          name: "Southeast Kootenay 3",
-          consumerKey: "BC-SD07",
-          secret: "poutine",
-          enabled: true,
-          lastAccess: "9:35AM December 1, 2020"
-        },
-      ],
+      tableData: {
+        headings: [
+          'Name',
+          'Consumer key',
+          'Secret',
+          'Enabled',
+          'Last access'
+        ],
+        expandedHeadings: [
+          'License category',
+          'Paid?',
+          'Unique users',
+          'Admin contact name',
+          'Admin contact email',
+          'Admin contact phone',
+          'Billing email',
+          'Developer email',
+          'Staff email format',
+          'Student email format',
+          'LMS'
+        ],
+        rows: [
+            [
+              {
+                value: "Southeast Kootenay",
+                type: "text"
+              },
+              {
+                value: "BC-SD05",
+                type: "text"
+              },
+              {
+                value: "canadian950",
+                type: "text"
+              },
+              {
+                value: true,
+                type: "checkbox"
+              },
+              {
+                value: "10:40AM November 30, 2020",
+                type: "text"
+              },
+            ]
+        ],
+
+      },
+      expanded: false,
       pagination: {
         itemsPerPage: 1,
-        currentPage:  1
+        currentPage: 1
       }
     }
   },
@@ -155,17 +158,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  #lti-dashboard-app {
-    .pagination {
-      .pagination-link {
-        height: 2rem;
-        padding: .2em .1em;
-        min-width: 2em;
-      }
-    }
-
-    .field .label {
-      white-space: nowrap;
+#lti-dashboard-app {
+  .pagination {
+    .pagination-link {
+      height: 2rem;
+      padding: .2em .1em;
+      min-width: 2em;
     }
   }
+
+  .field .label {
+    white-space: nowrap;
+  }
+}
 </style>
