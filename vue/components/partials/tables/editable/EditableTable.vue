@@ -1,13 +1,5 @@
 <template>
   <div>
-    <span class="saved has-text-success">
-      <span class="icon">
-        <i class="fas fa-check-circle"></i>
-      </span>
-      Saved
-    </span>
-
-
     <div class="table-container">
 
       <a @click="expanded = ! expanded" class="button is-outlined" id="expand">
@@ -16,6 +8,15 @@
             </span>
         <span>{{ expanded ? "Collapse" : "Expand" }}</span>
       </a>
+
+      <transition name="fade">
+        <span class="saved has-text-success" v-if="showSaved">
+          <span class="icon">
+            <i class="fas fa-check-circle"></i>
+          </span>
+          Saved
+        </span>
+      </transition>
 
       <table class="table is-hoverable">
         <thead>
@@ -33,6 +34,7 @@
               :type="cell.type"
               :editable="! (cell.editable !== undefined && cell.editable === false)"
               :editing="cell.editing"
+              @cellUpdated="cellUpdated"
           >
           </EditableField>
         </tr>
@@ -72,7 +74,8 @@ export default {
   },
   data() {
     return {
-      expanded: false
+      expanded: false,
+      showSaved: false
     }
   },
   props: {
@@ -91,6 +94,14 @@ export default {
     currentPage: Number,
     paginationUrl: String
   },
+  methods: {
+    cellUpdated() {
+      this.showSaved = true;
+      setTimeout(() => {
+          this.showSaved = false;
+      }, 1000)
+    }
+  }
 }
 </script>
 
@@ -105,11 +116,19 @@ export default {
   .saved {
     float: right;
     font-style: italic;
+    margin-right: 1rem;
   }
 
   td {
     min-width: 7rem;
     white-space: nowrap;
+  }
+
+  .fade-enter-active, .fade-leave-active {
+    transition: opacity .5s;
+  }
+  .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+    opacity: 0;
   }
 }
 </style>

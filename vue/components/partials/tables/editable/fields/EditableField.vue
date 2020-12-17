@@ -1,6 +1,6 @@
 <template>
   <td @click="editing = true">
-    <component @blur="editing = false" :is="getField()" :value="value" :editing="editing" :editable="editable"></component>
+    <component @change="updateCellValue" :is="getField()" :value="value" :editing="editing" :editable="editable"></component>
   </td>
 </template>
 
@@ -38,6 +38,14 @@ export default {
         case 'checkbox': return "CheckboxField";
         default: return "TextField";
       }
+    },
+    updateCellValue(value) {
+      this.editing = false;
+      // TODO make web service request to update value
+      window.console.log("Updating value to: " + value);
+
+      // Once web service call complete, show "Saved"
+      this.$emit('cellUpdated');
     }
   }
 }
