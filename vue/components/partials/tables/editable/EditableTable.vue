@@ -1,8 +1,16 @@
 <template>
   <div>
+    <span class="saved has-text-success">
+      <span class="icon">
+        <i class="fas fa-check-circle"></i>
+      </span>
+      Saved
+    </span>
+
+
     <div class="table-container">
 
-      <a @click="expanded = ! expanded" class="button is-info" id="expand">
+      <a @click="expanded = ! expanded" class="button is-outlined" id="expand">
             <span class="icon is-small">
               <i :class="'fas ' + (expanded ? 'fa-compress-alt' : 'fa-expand-alt')"></i>
             </span>
@@ -17,14 +25,16 @@
         </thead>
         <tbody>
         <tr v-for="row in rows">
-          <td v-for="column in row">
-            <EditableField
-              :value="column.value"
-              :type="column.type"
-              :editing="false"
-            >
-            </EditableField>
-          </td>
+          <EditableField
+              v-for="(cell, index) in row"
+              :key="index"
+              v-if="index < tableHeadings.length"
+              :value="cell.value"
+              :type="cell.type"
+              :editable="! (cell.editable !== undefined && cell.editable === false)"
+              :editing="cell.editing"
+          >
+          </EditableField>
         </tr>
         </tbody>
       </table>
@@ -60,6 +70,11 @@ export default {
       return this.headings;
     }
   },
+  data() {
+    return {
+      expanded: false
+    }
+  },
   props: {
     headings: {
       type: Array,
@@ -74,19 +89,27 @@ export default {
     },
     itemsPerPage: Number,
     currentPage: Number,
-    paginationUrl: String,
-    expanded: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  }
+    paginationUrl: String
+  },
 }
 </script>
 
 <style scoped lang="scss">
+#lti-dashboard-app {
   #expand {
-    float: right;
-    height: 2rem;
+    float: left;
+    height: 1.5rem;
+    margin-bottom: .5rem;
   }
+
+  .saved {
+    float: right;
+    font-style: italic;
+  }
+
+  td {
+    min-width: 7rem;
+    white-space: nowrap;
+  }
+}
 </style>

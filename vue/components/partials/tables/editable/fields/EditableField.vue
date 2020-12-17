@@ -1,5 +1,7 @@
 <template>
-  <component :is="getField()" :value="value" :editing="editing"></component>
+  <td @click="editing = true">
+    <component @blur="editing = false" :is="getField()" :value="value" :editing="editing" :editable="editable"></component>
+  </td>
 </template>
 
 <script>
@@ -12,16 +14,21 @@ export default {
     CheckboxField, TextField
   },
   props: {
-    editing: {
+    editable: {
       type: Boolean,
       required: false,
-      default: false
+      default: true
     },
-    value: {},
+    value: [Object, Boolean, String],
     type: {
       type: String,
       required: false,
       default: "text"
+    }
+  },
+  data() {
+    return {
+      editing: false
     }
   },
   methods: {

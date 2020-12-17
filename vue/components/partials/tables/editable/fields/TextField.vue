@@ -1,19 +1,28 @@
 <template>
   <span>
-      <input v-if="editing" type="text" value="value">
-      <template v-else>{{value}}</template>
+      <input v-focus @blur="$emit('blur')" type="text" :value="value" :disabled="! editable">
   </span>
 </template>
 
 <script>
-import EditableField from "./EditableField";
-
 export default {
   name: "TextField",
-  props: ['value', 'editing']
+  props: ['value', 'editing', 'editable'],
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+  input {
+    background: none;
+    border: none;
+    transition: none;
+    box-shadow: none;
+    padding: 0;
 
+    &:focus {
+      background: none;
+      border: none;
+      box-shadow: none;
+    }
+  }
 </style>

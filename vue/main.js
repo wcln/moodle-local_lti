@@ -45,6 +45,14 @@ function init() {
         next();
     });
 
+    // Register 'focus' directive
+    // See: https://vuejs.org/v2/guide/custom-directive.html
+    Vue.directive('focus', {
+        inserted(el) {
+            el.focus();
+        }
+    });
+
     new Vue({
         el: '#lti-dashboard-app',
         store,

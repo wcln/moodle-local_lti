@@ -5,7 +5,7 @@
 <script>
 export default {
   name: "CheckboxField",
-  props: ['value', 'editing']
+  props: ['value', 'editing'],
 }
 </script>
 

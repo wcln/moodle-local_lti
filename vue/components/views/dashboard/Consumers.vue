@@ -129,6 +129,51 @@ export default {
               },
               {
                 value: "10:40AM November 30, 2020",
+                type: "text",
+                editable: false
+              },
+              {
+                value: "License 1",
+                type: "text"
+              },
+              {
+                value: true,
+                type: "checkbox"
+              },
+              {
+                value: "Test",
+                type: "text"
+              },
+              {
+                value: "Jerry Garcia",
+                type: "text"
+              },
+              {
+                value: "jerry@gratefuldead.com",
+                type: "text"
+              },
+              {
+                value: "250-718-9233",
+                type: "text"
+              },
+              {
+                value: "billing@example.com",
+                type: "text"
+              },
+              {
+                value: "dev@example.com",
+                type: "text"
+              },
+              {
+                value: "sd05.bc.ca",
+                type: "text"
+              },
+              {
+                value: "student.sd5.ca",
+                type: "text"
+              },
+              {
+                value: "https://eschool.sd23.bc.ca",
                 type: "text"
               },
             ]
