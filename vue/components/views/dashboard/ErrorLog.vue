@@ -11,12 +11,12 @@
           <div class="field">
             <div class="control">
               <div class="select">
-                <select>
-                  <option>West Kootenary</option>
-                  <option>East Kootenay</option>
-                  <option>Kelowna</option>
-                  <option>Vernon</option>
-                  <option selected>All consumers</option>
+                <select v-model="filters.consumer">
+                  <option value="1">West Kootenary</option>
+                  <option value="2">East Kootenay</option>
+                  <option value="3">Kelowna</option>
+                  <option value="4">Vernon</option>
+                  <option value="0" selected>All consumers</option>
                 </select>
               </div>
             </div>
@@ -31,7 +31,7 @@
         <div class="field-body">
           <div class="field is-grouped">
             <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="Search the error log...">
+              <input v-model="filters.keywords" class="input" type="text" placeholder="Search the error log...">
               <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
@@ -57,7 +57,6 @@
     </div>
 
 
-
     <div class="box">
       <table class="table is-hoverable">
         <thead>
@@ -70,10 +69,10 @@
         </thead>
         <tbody>
         <tr v-for="error in errors">
-          <td>{{error.date}}</td>
-          <td>{{error.consumer}}</td>
-          <td>{{error.code}}</td>
-          <td>{{error.message}}</td>
+          <td>{{ error.date }}</td>
+          <td>{{ error.consumer }}</td>
+          <td>{{ error.code }}</td>
+          <td>{{ error.message }}</td>
         </tr>
         </tbody>
       </table>
@@ -104,6 +103,10 @@ export default {
   },
   data() {
     return {
+      filters: {
+        consumer: "0",
+        keywords: "",
+      },
       errors: [
         {
           date: "10:40AM November 30, 2020",
@@ -132,7 +135,7 @@ export default {
       ],
       pagination: {
         itemsPerPage: 1,
-        currentPage:  1
+        currentPage: 1
       }
     }
   },
@@ -146,6 +149,11 @@ export default {
   mounted() {
     if (this.$route.query.page !== undefined) {
       this.pagination.currentPage = Number(this.$route.query.page);
+    }
+  },
+  methods: {
+    search() {
+      // TODO query web service
     }
   }
 }

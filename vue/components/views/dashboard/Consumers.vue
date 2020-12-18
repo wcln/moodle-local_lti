@@ -14,12 +14,12 @@
           <div class="field">
             <div class="control">
               <div class="select">
-                <select>
-                  <option>Date added (oldest first)</option>
-                  <option>Date added (newest first)</option>
-                  <option>Name (A - Z)</option>
-                  <option>Name reverse (Z - A)</option>
-                  <option>Last access</option>
+                <select v-model="filters.sort">
+                  <option value="date_oldest">Date added (oldest first)</option>
+                  <option value="date_newest">Date added (newest first)</option>
+                  <option value="alphabetical">Name (A - Z)</option>
+                  <option value="alphabetical_reverse">Name reverse (Z - A)</option>
+                  <option value="last_access">Last access</option>
                 </select>
               </div>
             </div>
@@ -34,7 +34,7 @@
         <div class="field-body">
           <div class="field is-grouped">
             <div class="control has-icons-left">
-              <input class="input" type="text" placeholder="Search for consumers...">
+              <input v-model="filters.keywords" class="input" type="text" placeholder="Search for consumers...">
               <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
@@ -50,7 +50,7 @@
         <div class="field-body">
           <div class="field">
             <div class="control">
-              <a class="button is-primary">
+              <a class="button is-primary" @click="search">
                 Search
               </a>
             </div>
@@ -62,13 +62,13 @@
 
     <div class="box">
       <EditableTable
-        :pagination="true"
-        :pagination-url="'consumers'"
-        :items-per-page="this.pagination.itemsPerPage"
-        :current-page="this.pagination.currentPage"
-        :headings="this.tableData.headings"
-        :expanded-headings="this.tableData.expandedHeadings"
-        :rows="this.tableData.rows"
+          :pagination="true"
+          :pagination-url="'consumers'"
+          :items-per-page="this.pagination.itemsPerPage"
+          :current-page="this.pagination.currentPage"
+          :headings="this.tableData.headings"
+          :expanded-headings="this.tableData.expandedHeadings"
+          :rows="this.tableData.rows"
       ></EditableTable>
     </div>
 
@@ -88,6 +88,10 @@ export default {
   },
   data() {
     return {
+      filters: {
+        keywords: "",
+        sort: "date_oldest"
+      },
       tableData: {
         headings: [
           'Name',
@@ -110,75 +114,74 @@ export default {
           'LMS'
         ],
         rows: [
-            [
-              {
-                value: "Southeast Kootenay",
-                type: "text"
-              },
-              {
-                value: "BC-SD05",
-                type: "text"
-              },
-              {
-                value: "canadian950",
-                type: "text"
-              },
-              {
-                value: true,
-                type: "checkbox"
-              },
-              {
-                value: "10:40AM November 30, 2020",
-                type: "text",
-                editable: false
-              },
-              {
-                value: "License 1",
-                type: "text"
-              },
-              {
-                value: true,
-                type: "checkbox"
-              },
-              {
-                value: "Test",
-                type: "text"
-              },
-              {
-                value: "Jerry Garcia",
-                type: "text"
-              },
-              {
-                value: "jerry@gratefuldead.com",
-                type: "text"
-              },
-              {
-                value: "250-718-9233",
-                type: "text"
-              },
-              {
-                value: "billing@example.com",
-                type: "text"
-              },
-              {
-                value: "dev@example.com",
-                type: "text"
-              },
-              {
-                value: "sd05.bc.ca",
-                type: "text"
-              },
-              {
-                value: "student.sd5.ca",
-                type: "text"
-              },
-              {
-                value: "https://eschool.sd23.bc.ca",
-                type: "text"
-              },
-            ]
-        ],
-
+          [
+            {
+              value: "Southeast Kootenay",
+              type: "text"
+            },
+            {
+              value: "BC-SD05",
+              type: "text"
+            },
+            {
+              value: "canadian950",
+              type: "text"
+            },
+            {
+              value: true,
+              type: "checkbox"
+            },
+            {
+              value: "10:40AM November 30, 2020",
+              type: "text",
+              editable: false
+            },
+            {
+              value: "License 1",
+              type: "text"
+            },
+            {
+              value: true,
+              type: "checkbox"
+            },
+            {
+              value: "Test",
+              type: "text"
+            },
+            {
+              value: "Jerry Garcia",
+              type: "text"
+            },
+            {
+              value: "jerry@gratefuldead.com",
+              type: "text"
+            },
+            {
+              value: "250-718-9233",
+              type: "text"
+            },
+            {
+              value: "billing@example.com",
+              type: "text"
+            },
+            {
+              value: "dev@example.com",
+              type: "text"
+            },
+            {
+              value: "sd05.bc.ca",
+              type: "text"
+            },
+            {
+              value: "student.sd5.ca",
+              type: "text"
+            },
+            {
+              value: "https://eschool.sd23.bc.ca",
+              type: "text"
+            },
+          ]
+        ]
       },
       expanded: false,
       pagination: {
@@ -197,6 +200,12 @@ export default {
   mounted() {
     if (this.$route.query.page !== undefined) {
       this.pagination.currentPage = Number(this.$route.query.page);
+    }
+  },
+  methods: {
+    search() {
+      // TODO make web service request
+      // Use filters.sort, filters.keywords and pagination.currentPage to query API and update rows
     }
   }
 }
