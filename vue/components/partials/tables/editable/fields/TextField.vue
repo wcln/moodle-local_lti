@@ -1,6 +1,6 @@
 <template>
   <span>
-      <input v-focus @change="$emit('change', value)" type="text" :value="value" :disabled="! editable">
+      <input @change="$emit('change', value)" type="text" :value="value" :disabled="! editable">
   </span>
 </template>
 
