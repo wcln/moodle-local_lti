@@ -163,7 +163,9 @@ class request extends oauth\request
 
         // Check that the return URL parameter is set.
         // This is used for the back to course button.
-        $ok = $ok && ! empty(parent::get_parameter('launch_presentation_return_url'));
+        // This has been disabled because D2L/Brightspace does not send this!
+        // TODO LTI-21 Make this optional, and hide 'return to course' button if not present
+        // $ok = $ok && ! empty(parent::get_parameter('launch_presentation_return_url'));
 
         // If other parameters become required they are to be added here...
 
