@@ -1,7 +1,9 @@
 <template>
   <div>
     <Tabs @tabChanged="changeTab" :tabs="tabs"></Tabs>
+    <transition name="component-fade" mode="out-in">
     <component v-bind:is="tabContent"/>
+    </transition>
   </div>
 </template>
 
@@ -66,5 +68,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.component-fade-enter-active, .component-fade-leave-active {
+  transition: opacity .3s ease;
+}
+.component-fade-enter, .component-fade-leave-to {
+  opacity: 0;
+}
 </style>
