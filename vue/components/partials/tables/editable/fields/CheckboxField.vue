@@ -1,5 +1,5 @@
 <template>
-  <input type="checkbox" :checked="value">
+  <input @change="$emit('change', value)" type="checkbox" :checked="value">
 </template>
 
 <script>
