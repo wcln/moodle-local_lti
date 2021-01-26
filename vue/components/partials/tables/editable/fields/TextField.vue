@@ -1,6 +1,6 @@
 <template>
   <span>
-      <input @change="$emit('change', value)" type="text" :value="value" :disabled="! editable">
+      <input @keyup.enter="$event.target.blur()" @change="$emit('change', value)" type="text" :value="value" :disabled="! editable">
   </span>
 </template>
 
