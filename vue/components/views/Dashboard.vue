@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <Tabs @tabChanged="changeTab" :tabs="tabs"></Tabs>
-    <transition name="component-fade" mode="out-in">
-    <component v-bind:is="tabContent"/>
-    </transition>
-  </div>
+  <transition appear appear-active-class="fade-enter-active">
+    <div>
+      <Tabs @tabChanged="changeTab" :tabs="tabs"></Tabs>
+      <transition name="component-fade" mode="out-in">
+      <component v-bind:is="tabContent"/>
+      </transition>
+    </div>
+  </transition>
 </template>
 
 <script>
@@ -73,5 +75,18 @@ export default {
 }
 .component-fade-enter, .component-fade-leave-to {
   opacity: 0;
+}
+
+.fade-enter-active {
+  animation: go 1s;
+}
+
+@keyframes go {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 </style>
