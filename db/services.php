@@ -1,0 +1,132 @@
+<?php
+
+defined('MOODLE_INTERNAL') || die;
+
+/**
+ * Local LTI web services definitions
+ */
+
+$functions = [
+    'local_lti_get_top_consumers'         => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_top_consumers',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get top consumers for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_top_resources'         => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_top_resources',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get top resources for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_total_consumers_count' => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_total_consumers_count',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get total consumers count for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_errors_count'          => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_errors_count',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get errors count for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_requests_by_month'     => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_requests_by_month',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get LTI requests by month for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_total_requests_count'  => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_total_requests_count',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get total LTI requests for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_total_resources_count' => [
+        'classname'     => 'local_lti\external\overview_api',
+        'methodname'    => 'get_total_resources_count',
+        'classpath'     => 'local/lti/classes/external/overview_api.php',
+        'description'   => 'Get total resources count for the overview tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_consumers'             => [
+        'classname'     => 'local_lti\external\consumers_api',
+        'methodname'    => 'get_consumers',
+        'classpath'     => 'local/lti/classes/external/consumers_api.php',
+        'description'   => 'Get all consumers for the consumers tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_update_consumer'           => [
+        'classname'     => 'local_lti\external\consumers_api',
+        'methodname'    => 'update_consumer',
+        'classpath'     => 'local/lti/classes/external/consumers_api.php',
+        'description'   => 'Get all consumers for the consumers tab',
+        'type'          => 'write',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+    'local_lti_get_errors'                => [
+        'classname'     => 'local_lti\external\errors_api',
+        'methodname'    => 'get_errors',
+        'classpath'     => 'local/lti/classes/external/errors_api.php',
+        'description'   => 'Get all errors for the errors tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
+];
+
+$services = [
+    'WCLN LTI Web Service' => [
+        'functions'          => [
+            'local_lti_get_top_consumers',
+            'local_lti_get_top_resources',
+            'local_lti_get_total_consumers_count',
+            'local_lti_get_errors_count',
+            'local_lti_get_requests_by_month',
+            'local_lti_get_total_requests_count',
+            'local_lti_get_total_resources_count',
+            'local_lti_get_consumers',
+            'local_lti_update_consumer',
+            'local_lti_get_errors',
+        ],
+        'requiredcapability' => 'moodle/site:config',
+        'restrictedusers'    => false,
+        'enabled'            => true,
+        'downloadfiles'      => false,
+        'uploadfiles'        => false,
+    ],
+];

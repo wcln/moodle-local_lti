@@ -116,11 +116,11 @@ abstract class resource
 
         // Search for the record using the record_link_id and consumer_id.
         $record = $DB->get_record('local_lti_resource_link',
-            array(
+            [
                 'content_id' => $this->content_id,
                 'consumer'   => $this->consumer_id,
                 'type'       => $this->type,
-            ));
+            ]);
 
         // Return the record.
         return $record;
