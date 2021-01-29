@@ -84,15 +84,31 @@ class overview_api extends external_api
 
     public static function get_total_consumers_count_parameters(): \external_function_parameters
     {
-        return new \external_function_parameters([]);
+        return new \external_function_parameters([
+            'active_only' => new \external_value(PARAM_BOOL, 'If set to true, only count enabled consumers', VALUE_DEFAULT, true)
+        ]);
     }
 
-    public static function get_total_consumers_count($active_only = true)
+    public static function get_total_consumers_count($active_only)
     {
+        global $DB;
+
+        $params = self::validate_parameters(self::get_total_consumers_count_parameters(), compact('active_only'));
+
+        if ($params['active_only']) {
+            $conditions = [
+                'enabled' => true
+            ];
+        } else {
+            $conditions = [];
+        }
+
+        return $DB->count_records(consumer::TABLE, $conditions);
     }
 
     public static function get_total_consumers_count_returns()
     {
+        return new \external_value(PARAM_INT, 'The number of consumer sites');
     }
 
     /*
