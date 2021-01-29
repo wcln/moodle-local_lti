@@ -5,6 +5,7 @@ namespace local_lti\external;
 use external_api;
 use local_lti\helper\consumer;
 use local_lti\helper\resource_link;
+use local_lti\provider\resource;
 
 class overview_api extends external_api
 {
@@ -25,14 +26,14 @@ class overview_api extends external_api
         ]);
     }
 
-    public static function get_top_consumers($limit)
+    public static function get_top_consumers($limit): array
     {
         $params = self::validate_parameters(self::get_top_consumers_parameters(), compact('limit'));
 
         return consumer::get_top_consumers($params['limit']);
     }
 
-    public static function get_top_consumers_returns()
+    public static function get_top_consumers_returns(): \external_multiple_structure
     {
         return new \external_multiple_structure(new \external_single_structure([
             'id'           => new \external_value(PARAM_INT, 'Consumer ID'),
@@ -57,14 +58,14 @@ class overview_api extends external_api
         ]);
     }
 
-    public static function get_top_resources($limit)
+    public static function get_top_resources($limit): array
     {
         $params = self::validate_parameters(self::get_top_resources_parameters(), compact('limit'));
 
         return resource_link::get_top_resources($params['limit']);
     }
 
-    public static function get_top_resources_returns()
+    public static function get_top_resources_returns(): \external_multiple_structure
     {
         return new \external_multiple_structure(new \external_single_structure([
             'id'           => new \external_value(PARAM_INT, 'Activity ID'),
@@ -89,7 +90,7 @@ class overview_api extends external_api
         ]);
     }
 
-    public static function get_total_consumers_count($active_only)
+    public static function get_total_consumers_count($active_only): int
     {
         global $DB;
 
@@ -106,7 +107,7 @@ class overview_api extends external_api
         return $DB->count_records(consumer::TABLE, $conditions);
     }
 
-    public static function get_total_consumers_count_returns()
+    public static function get_total_consumers_count_returns(): \external_value
     {
         return new \external_value(PARAM_INT, 'The number of consumer sites');
     }
@@ -125,12 +126,16 @@ class overview_api extends external_api
         return new \external_function_parameters([]);
     }
 
-    public static function get_total_requests_count()
+    public static function get_total_requests_count(): int
     {
+        global $DB;
+
+        return $DB->count_records_sql("SELECT SUM(access_count) FROM {".resource_link::TABLE."}");
     }
 
-    public static function get_total_requests_count_returns()
+    public static function get_total_requests_count_returns(): \external_value
     {
+        return new \external_value(PARAM_INT, 'The total access count');
     }
 
     /*
