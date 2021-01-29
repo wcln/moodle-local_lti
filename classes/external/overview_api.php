@@ -4,6 +4,7 @@ namespace local_lti\external;
 
 use external_api;
 use local_lti\helper\consumer;
+use local_lti\helper\resource_link;
 
 class overview_api extends external_api
 {
@@ -20,7 +21,7 @@ class overview_api extends external_api
     public static function get_top_consumers_parameters(): \external_function_parameters
     {
         return new \external_function_parameters([
-            'limit' => new \external_value(PARAM_INT, 'Number of top consumers to fetch', VALUE_DEFAULT, 5)
+            'limit' => new \external_value(PARAM_INT, 'Number of top consumers to fetch', VALUE_DEFAULT, 5),
         ]);
     }
 
@@ -28,7 +29,7 @@ class overview_api extends external_api
     {
         $params = self::validate_parameters(self::get_top_consumers_parameters(), compact('limit'));
 
-        return consumer::get_top_consumers($limit);
+        return consumer::get_top_consumers($params['limit']);
     }
 
     public static function get_top_consumers_returns()
@@ -51,15 +52,25 @@ class overview_api extends external_api
 
     public static function get_top_resources_parameters(): \external_function_parameters
     {
-        return new \external_function_parameters([]);
+        return new \external_function_parameters([
+            'limit' => new \external_value(PARAM_INT, 'Number of top consumers to fetch', VALUE_DEFAULT, 5),
+        ]);
     }
 
-    public static function get_top_resources()
+    public static function get_top_resources($limit)
     {
+        $params = self::validate_parameters(self::get_top_resources_parameters(), compact('limit'));
+
+        return resource_link::get_top_resources($params['limit']);
     }
 
     public static function get_top_resources_returns()
     {
+        return new \external_multiple_structure(new \external_single_structure([
+            'id'           => new \external_value(PARAM_INT, 'Activity ID'),
+            'name'         => new \external_value(PARAM_TEXT, 'Activity name'),
+            'access_count' => new \external_value(PARAM_INT),
+        ]));
     }
 
     /*

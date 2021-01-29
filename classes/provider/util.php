@@ -22,7 +22,7 @@ namespace local_lti\provider;
  * Provides functions to be used by other Provider classes.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class util

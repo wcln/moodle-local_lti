@@ -25,7 +25,7 @@ use local_lti\imsglobal\lti\oauth;
  * Represents the LTI request.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class request extends oauth\request

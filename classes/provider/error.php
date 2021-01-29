@@ -22,7 +22,7 @@ namespace local_lti\provider;
  * Represents a custom LTI provider error.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class error

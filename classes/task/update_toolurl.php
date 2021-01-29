@@ -17,7 +17,7 @@
  * Scheduled task to update a toolurl field.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard {@link https://wcln.ca}
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com) {@link https://wcln.ca}
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 

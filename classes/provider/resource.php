@@ -25,11 +25,12 @@ use stdClass;
  * Represents the LTI resource which was requested.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 abstract class resource
 {
+    const TYPE_TABLE = 'local_lti_type';
 
     /** @var int The type of the resource requested. */
     protected $type;
@@ -174,4 +175,26 @@ abstract class resource
      * To be overridden by resource type classes.
      */
     abstract public function render();
+
+    /**
+     * Get the ID of the resource (activity)
+     *
+     * This is different than the content_id, and will be used
+     * to get activity information like name etc...
+     *
+     * @param $content_id
+     *
+     * @return int
+     */
+    abstract public static function get_activity_id($content_id);
+
+    /**
+     * Get the database record from the activity table
+     *
+     * @param $content_id
+     *
+     * @return mixed
+     */
+    abstract public static function get_activity_record($content_id);
+
 }

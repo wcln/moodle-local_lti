@@ -27,35 +27,16 @@ use local_lti\provider\resource;
  * Contains custom render code.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class book extends resource
 {
 
+    const TABLE = 'book';
+
     /** @var int The page number of the resource to retrieve. */
     private $pagenum = 1;
-
-    /**
-     * Returns the ID of this Book.
-     *
-     * @return int book ID.
-     */
-    public function get_book_id()
-    {
-        global $DB;
-
-        try {
-            // Get the book object using the course module ID.
-            $cm     = get_coursemodule_from_id('book', $this->content_id, 0, false, MUST_EXIST);
-            $course = $DB->get_record('course', array('id' => $cm->course), '*', MUST_EXIST);
-            $book   = $DB->get_record('book', array('id' => $cm->instance), '*', MUST_EXIST);
-
-            return $book->id;
-        } catch (Exception $e) {
-            throw new Exception(get_string('error_book_id', 'local_lti'));
-        }
-    }
 
     /**
      * Retrieve the context module instance of this book.
@@ -86,7 +67,7 @@ class book extends resource
                                    FROM {book_chapters}
                                    WHERE bookid=?
                                    AND pagenum=?
-                                   ORDER BY pagenum ASC', array($this->get_book_id(), $pagenum));
+                                   ORDER BY pagenum ASC', [self::get_activity_id($this->content_id), $pagenum]);
 
         return $lesson;
     }
@@ -132,5 +113,46 @@ class book extends resource
     public function set_pagenum($pagenum)
     {
         $this->pagenum = $pagenum;
+    }
+
+    /**
+     * Get the ID of this book activity
+     *
+     * @param $content_id
+     *
+     * @return int
+     * @throws \coding_exception
+     */
+    public static function get_activity_id($content_id)
+    {
+        global $DB;
+
+        try {
+            // Get the book object using the course module ID.
+            $cm   = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
+            $book = $DB->get_record('book', ['id' => $cm->instance], '*', MUST_EXIST);
+
+            return $book->id;
+        } catch (Exception $e) {
+            throw new Exception(get_string('error_book_id', 'local_lti'));
+        }
+    }
+
+    /**
+     * Get the book record from mdl_book table
+     *
+     * @param $content_id
+     *
+     * @return false|mixed|\stdClass
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function get_activity_record($content_id)
+    {
+        global $DB;
+
+        $id = self::get_activity_id($content_id);
+
+        return $DB->get_record(self::TABLE, ['id' => $id]);
     }
 }

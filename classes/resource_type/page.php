@@ -26,11 +26,13 @@ use local_lti\provider\resource;
  * Contains custom render code.
  *
  * @package    local_lti
- * @copyright  2019 Colin Bernard
+ * @copyright  2021 Colin Perepelken (colin@lingellearning.com)
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 class page extends resource
 {
+
+    const TABLE = 'page';
 
     /** @var int The course module instance aka the page ID. */
     var $page_id = null;
@@ -48,11 +50,8 @@ class page extends resource
         // Get the plugin renderer.
         $renderer = $PAGE->get_renderer('local_lti');
 
-        // Retrieve page ID.
-        $cm = get_coursemodule_from_id('page', $this->content_id);
-
-        // Set this page ID.
-        $this->page_id = $cm->instance;
+        // Get the ID of this page
+        $this->page_id = self::get_activity_id($this->content_id);
 
         // Render page.
         $page = new \local_lti\output\page($this);
@@ -67,6 +66,41 @@ class page extends resource
     public function get_context()
     {
         return context_module::instance(get_coursemodule_from_id('page', $this->content_id)->id);
+    }
+
+    /**
+     * Get the ID of this page activity
+     *
+     * @param $content_id
+     *
+     * @return int
+     * @throws \coding_exception
+     */
+    public static function get_activity_id($content_id)
+    {
+        // Retrieve page ID.
+        $cm = get_coursemodule_from_id('page', $content_id);
+
+        // Set this page ID.
+        return $cm->instance;
+    }
+
+    /**
+     * Get the page record from the database
+     *
+     * @param $content_id
+     *
+     * @return mixed|void
+     * @throws \coding_exception
+     * @throws \dml_exception
+     */
+    public static function get_activity_record($content_id)
+    {
+        global $DB;
+
+        $id = self::get_activity_id($content_id);
+
+        $DB->get_record(self::TABLE, ['id' => $id]);
     }
 }
 
