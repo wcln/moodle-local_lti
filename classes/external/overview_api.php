@@ -5,7 +5,6 @@ namespace local_lti\external;
 use external_api;
 use local_lti\helper\consumer;
 use local_lti\helper\resource_link;
-use local_lti\provider\resource;
 
 class overview_api extends external_api
 {
@@ -86,7 +85,8 @@ class overview_api extends external_api
     public static function get_total_consumers_count_parameters(): \external_function_parameters
     {
         return new \external_function_parameters([
-            'active_only' => new \external_value(PARAM_BOOL, 'If set to true, only count enabled consumers', VALUE_DEFAULT, true)
+            'active_only' => new \external_value(PARAM_BOOL, 'If set to true, only count enabled consumers',
+                VALUE_DEFAULT, true),
         ]);
     }
 
@@ -98,7 +98,7 @@ class overview_api extends external_api
 
         if ($params['active_only']) {
             $conditions = [
-                'enabled' => true
+                'enabled' => true,
             ];
         } else {
             $conditions = [];
@@ -152,12 +152,16 @@ class overview_api extends external_api
         return new \external_function_parameters([]);
     }
 
-    public static function get_total_resources_count()
+    public static function get_total_resources_count(): int
     {
+        global $DB;
+
+        return $DB->count_records(resource_link::TABLE);
     }
 
-    public static function get_total_resources_count_returns()
+    public static function get_total_resources_count_returns(): \external_value
     {
+        return new \external_value(PARAM_INT, 'Total number of reesources requested');
     }
 
     /*
@@ -174,12 +178,15 @@ class overview_api extends external_api
         return new \external_function_parameters([]);
     }
 
-    public static function get_errors_count()
+    public static function get_errors_count(): int
     {
+        // TODO I need to create an errors table
+        return 0;
     }
 
-    public static function get_errors_count_returns()
+    public static function get_errors_count_returns(): \external_value
     {
+        return new \external_value(PARAM_INT, 'Number of errors in the last 24 hours');
     }
 
     /*
@@ -198,6 +205,7 @@ class overview_api extends external_api
 
     public static function get_requests_by_month()
     {
+        
     }
 
     public static function get_requests_by_month_returns()
