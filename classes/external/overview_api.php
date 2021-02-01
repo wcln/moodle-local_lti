@@ -4,6 +4,7 @@ namespace local_lti\external;
 
 use external_api;
 use local_lti\helper\consumer;
+use local_lti\helper\request_log;
 use local_lti\helper\resource_link;
 
 class overview_api extends external_api
@@ -205,11 +206,17 @@ class overview_api extends external_api
 
     public static function get_requests_by_month()
     {
-        
+        return request_log::get_records();
     }
 
     public static function get_requests_by_month_returns()
     {
+        return new \external_multiple_structure(new \external_single_structure([
+            'id'           => new \external_value(PARAM_INT),
+            'month'        => new \external_value(PARAM_INT),
+            'year'         => new \external_value(PARAM_INT),
+            'access_count' => new \external_value(PARAM_INT),
+        ]));
     }
 
 }
