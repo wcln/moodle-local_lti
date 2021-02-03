@@ -8,6 +8,7 @@ function xmldb_local_lti_upgrade($oldversion)
 
     $dbman = $DB->get_manager();
 
+    // Create request_log table
     if ($oldversion < 2021020100) {
 
         // Define table local_lti_request_log to be created.
@@ -30,6 +31,31 @@ function xmldb_local_lti_upgrade($oldversion)
         // Lti savepoint reached.
         upgrade_plugin_savepoint(true, 2021020100, 'local', 'lti');
     }
+
+    // Create error_log table
+    if ($oldversion < 2021020300) {
+
+        // Define table local_lti_error_log to be created.
+        $table = new xmldb_table('local_lti_error_log');
+
+        // Adding fields to table local_lti_error_log.
+        $table->add_field('id', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, XMLDB_SEQUENCE, null);
+        $table->add_field('consumer', XMLDB_TYPE_INTEGER, '10', null, null, null, null);
+        $table->add_field('code', XMLDB_TYPE_TEXT, null, null, XMLDB_NOTNULL, null, null);
+        $table->add_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, null);
+
+        // Adding keys to table local_lti_error_log.
+        $table->add_key('primary', XMLDB_KEY_PRIMARY, ['id']);
+
+        // Conditionally launch create table for local_lti_error_log.
+        if (!$dbman->table_exists($table)) {
+            $dbman->create_table($table);
+        }
+
+        // Lti savepoint reached.
+        upgrade_plugin_savepoint(true, 2021020300, 'local', 'lti');
+    }
+
 
     return true;
 }

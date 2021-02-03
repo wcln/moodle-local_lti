@@ -28,6 +28,27 @@ namespace local_lti\provider;
 class error
 {
 
+    /** @var string[] Error codes and their associated messages */
+    const ERROR_CODES
+        = [
+            'E110' => ''
+            // TODO
+        ];
+
+    const TABLE = 'local_lti_error_log';
+
+    public static function log()
+    {
+        global $DB;
+
+        // TODO
+        $DB->insert_record(self::TABLE, (object)[
+            'consumer'    => 0,
+            'code'        => 0,
+            'timecreated' => time(),
+        ]);
+    }
+
     /**
      * Renders an error message using a custom tempalte.
      *
