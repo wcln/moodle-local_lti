@@ -6,6 +6,7 @@ use external_api;
 use local_lti\helper\consumer;
 use local_lti\helper\request_log;
 use local_lti\helper\resource_link;
+use local_lti\provider\error;
 
 class overview_api extends external_api
 {
@@ -181,8 +182,9 @@ class overview_api extends external_api
 
     public static function get_errors_count(): int
     {
-        // TODO I need to create an errors table
-        return 0;
+        global $DB;
+
+        return $DB->count_records_select(error::TABLE, "timecreated > :timecreated", ['timecreated' => time() - (3600 * 24)]);
     }
 
     public static function get_errors_count_returns(): \external_value

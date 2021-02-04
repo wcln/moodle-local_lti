@@ -37,7 +37,7 @@ class error
 
     const TABLE = 'local_lti_error_log';
 
-    public static function log()
+    public static function log(\Exception $exception, $request = null)
     {
         global $DB;
 
@@ -52,9 +52,11 @@ class error
     /**
      * Renders an error message using a custom tempalte.
      *
-     * @param  string  $message  The error message to show the user.
+     * @param  \Exception  $exception
+     *
+     * @throws \coding_exception
      */
-    public static function render($message)
+    public static function render(\Exception $exception)
     {
         global $PAGE;
 
@@ -62,7 +64,7 @@ class error
         $renderer = $PAGE->get_renderer('local_lti');
 
         // Render the error.
-        $error = new \local_lti\output\error($message);
+        $error = new \local_lti\output\error($exception->getMessage());
         echo $renderer->render($error);
     }
 }

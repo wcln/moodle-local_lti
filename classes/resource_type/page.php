@@ -98,9 +98,7 @@ class page extends resource
     {
         global $DB;
 
-        $id = self::get_activity_id($content_id);
-
-        $DB->get_record(self::TABLE, ['id' => $id]);
+        $DB->get_record(self::TABLE, ['id' => self::get_activity_id($content_id)]);
     }
 }
 

@@ -55,7 +55,7 @@ class book implements renderable, templatable
             $pages = $DB->get_records_sql('SELECT id, pagenum, title
                                        FROM {book_chapters}
                                        WHERE bookid=?
-                                       ORDER BY pagenum ASC', array($this->book->get_book_id()));
+                                       ORDER BY pagenum ASC', array(\local_lti\resource_type\book::get_activity_id($this->book->content_id)));
         } catch (Exception $e) {
             // Re-throw exception with custom message.
             throw new Exception(get_string('error_retrieving_book_page', 'local_lti'));

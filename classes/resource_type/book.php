@@ -151,8 +151,6 @@ class book extends resource
     {
         global $DB;
 
-        $id = self::get_activity_id($content_id);
-
-        return $DB->get_record(self::TABLE, ['id' => $id]);
+        return $DB->get_record(self::TABLE, ['id' => self::get_activity_id($content_id)]);
     }
 }

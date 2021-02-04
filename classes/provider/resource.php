@@ -42,7 +42,7 @@ abstract class resource
     public $request;
 
     /** @var int The ID of the resource content that is being requested.. */
-    protected $content_id;
+    public $content_id;
 
     public function __construct($type, $consumer_id, $request)
     {
@@ -181,6 +181,7 @@ abstract class resource
      *
      * This is different than the content_id, and will be used
      * to get activity information like name etc...
+     *
      *
      * @param $content_id
      *
