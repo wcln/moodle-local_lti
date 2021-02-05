@@ -113,18 +113,30 @@ class consumers_api extends external_api
 
     public static function update_consumer_parameters()
     {
+        return new \external_function_parameters([
+            'id'    => new \external_value(PARAM_INT, 'Consumer ID'),
+            'key'   => new \external_value(PARAM_TEXT),
+            'value' => new \external_value(PARAM_TEXT),
+        ]);
     }
 
-    public static function update_consumer($id, $data)
+    public static function update_consumer($id, $key, $value)
     {
+        global $DB;
+
+        $params = self::validate_parameters(self::update_consumer_parameters(), compact('id', 'key', 'value'));
+
+        $consumer = [
+            'id'           => $params['id'],
+            $params['key'] => $params['value'],
+        ];
+
+        $DB->update_record(consumer::TABLE, (object)$consumer);
     }
 
     public static function update_consumer_returns()
     {
+        return null;
     }
-
-    /*
-     *
-     */
 
 }
