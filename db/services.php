@@ -107,6 +107,16 @@ $functions = [
         'loginrequired' => true,
         'capabilities'  => 'moodle/site:config',
     ],
+    'local_lti_get_consumer_options'                => [
+        'classname'     => 'local_lti\external\errors_api',
+        'methodname'    => 'get_consumer_options',
+        'classpath'     => 'local/lti/classes/external/errors_api.php',
+        'description'   => 'Get the consumer options for the dropdown on the error tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
 ];
 
 $services = [
@@ -122,6 +132,7 @@ $services = [
             'local_lti_get_consumers',
             'local_lti_update_consumer',
             'local_lti_get_errors',
+            'local_lti_get_consumer_options'
         ],
         'requiredcapability' => 'moodle/site:config',
         'restrictedusers'    => false,
