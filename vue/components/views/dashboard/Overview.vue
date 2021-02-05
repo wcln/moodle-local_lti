@@ -34,34 +34,14 @@ import RequestsChart from "../../partials/charts/RequestsChart";
 import TopSitesTable from "../../partials/tables/TopSitesTable";
 import TopSitesChart from "../../partials/charts/TopSitesChart";
 import TopResourcesTable from "../../partials/tables/TopResourcesTable";
+import {ajax} from "../../../store";
 
 export default {
   name: "Overview",
   components: {TopResourcesTable, TopSitesChart, TopSitesTable, RequestsChart, StatisticBox},
   data() {
     return {
-      statisticBoxes: [
-        {
-          number: "1.25 million",
-          text: "requests",
-          icon: "fa-exchange-alt"
-        },
-        {
-          number: "768",
-          text: "resources requested",
-          icon: "fa-book"
-        },
-        {
-          number: "40",
-          text: "active consumer sites",
-          icon: "fa-sitemap"
-        },
-        {
-          number: "0",
-          text: "errors in last 24 hours",
-          icon: "fa-bug"
-        },
-      ],
+      statisticBoxes: [], // To be loaded in mounted() function below
       chartdata: {
         labels: ['January', 'February'],
         datasets: [
@@ -77,6 +57,46 @@ export default {
         maintainAspectRatio: false
       }
     }
+  },
+  methods: {
+      numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      }
+  },
+  mounted() {
+
+    ajax('local_lti_get_total_requests_count', []).then(count => {
+      this.statisticBoxes.push({
+        number: this.numberWithCommas(count),
+        text: "requests",
+        icon: "fa-exchange-alt"
+      });
+    });
+
+    ajax('local_lti_get_total_consumers_count', []).then(count => {
+      this.statisticBoxes.push({
+        number: this.numberWithCommas(count),
+        text: "active consumer sites",
+        icon: "fa-sitemap"
+      });
+    });
+
+    ajax('local_lti_get_total_resources_count', []).then(count => {
+      this.statisticBoxes.push({
+        number: this.numberWithCommas(count),
+        text: "resources requested",
+        icon: "fa-book"
+      });
+    });
+
+    ajax('local_lti_get_errors_count', []).then(count => {
+      this.statisticBoxes.push({
+        number: this.numberWithCommas(count),
+        text: "errors in last 24 hours",
+        icon: "fa-bug"
+      });
+    });
+
   }
 }
 </script>

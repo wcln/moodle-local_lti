@@ -13,7 +13,6 @@ import config from './config';
 
 Vue.use(Vuex);
 
-// TODO Add state, mutations, actions to the store as required
 export const store = new Vuex.Store({
     state: {
         strings: {}
