@@ -64,7 +64,7 @@ abstract class resource
             global $DB;
             $record               = $this->get_record_from_database();
             $record->access_count += 1;
-            $record->last_access  = date("Y-m-d H:i:s"); // Now.
+            $record->last_access  = time();
             $DB->update_record('local_lti_resource_link', $record);
             $this->update_consumer();
         } else {
@@ -87,7 +87,7 @@ abstract class resource
         $resource_record              = $this->get_record_from_database();
         $consumer_record              = $DB->get_record('local_lti_consumer', array('id' => $resource_record->consumer),
             'id');
-        $consumer_record->last_access = date("Y-m-d H:i:s"); // Now.
+        $consumer_record->last_access = time();
         $DB->update_record('local_lti_consumer', $consumer_record);
     }
 
@@ -134,7 +134,7 @@ abstract class resource
     {
         global $DB;
 
-        $now = date("Y-m-d H:i:s");
+        $now = time();
 
         // Insert a new record.
         $record               = new stdClass();
@@ -142,7 +142,7 @@ abstract class resource
         $record->consumer     = $this->consumer_id;
         $record->content_id   = $this->content_id;
         $record->access_count = 1;
-        $record->created      = $now;
+        $record->timecreated  = $now;
         $record->last_access  = $now;
         $DB->insert_record('local_lti_resource_link', $record);
     }

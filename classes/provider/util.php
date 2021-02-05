@@ -53,7 +53,7 @@ class util
     {
         global $DB;
 
-        $now = date("Y-m-d H:i:s");
+        $now = time();
 
         $sql = 'SELECT consumer_key, secret
             FROM {local_lti_consumer}
@@ -61,7 +61,7 @@ class util
             AND (enable_from < ? OR enable_from IS NULL)
             AND (enable_until > ? OR enable_until IS NULL)';
 
-        $tool_consumer_secrets = $DB->get_records_sql_menu($sql, array($now, $now));
+        $tool_consumer_secrets = $DB->get_records_sql_menu($sql, [$now, $now]);
 
         return $tool_consumer_secrets;
     }
@@ -77,7 +77,7 @@ class util
     {
         global $DB;
 
-        $record = $DB->get_record('local_lti_consumer', array('consumer_key' => $name), 'id');
+        $record = $DB->get_record('local_lti_consumer', ['consumer_key' => $name], 'id');
 
         if ($record) {
             return $record->id;
@@ -97,7 +97,7 @@ class util
     {
         global $DB;
 
-        $record = $DB->get_record('local_lti_type', array('name' => $name), 'id');
+        $record = $DB->get_record('local_lti_type', ['name' => $name], 'id');
 
         if ($record) {
             return $record->id;
@@ -117,7 +117,7 @@ class util
     {
         global $DB;
 
-        $record = $DB->get_record('local_lti_type', array('id' => $id), 'name');
+        $record = $DB->get_record('local_lti_type', ['id' => $id], 'name');
 
         if ($record) {
             return $record->name;
