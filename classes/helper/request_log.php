@@ -38,7 +38,7 @@ class request_log
     {
         global $DB;
 
-        return $DB->get_records(self::TABLE, [], 'year DESC, month DESC', '*', 0, $num_months);
+        return $DB->get_records(self::TABLE, [], '`year` DESC, `month` DESC', '*', 0, $num_months);
     }
 
 }

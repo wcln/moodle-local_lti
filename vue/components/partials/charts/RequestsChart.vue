@@ -12,6 +12,7 @@
 
 <script>
 import LineChart from "./base/LineChart";
+import {ajax} from "../../../store";
 
 export default {
   name: 'RequestsChart',
@@ -19,18 +20,7 @@ export default {
   data() {
     return {
       loaded: true,
-      chartdata: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-        datasets: [{
-          label: 'Requests by month',
-          backgroundColor: '#2D7DD2',
-          borderColor: '#474647',
-          pointBackgroundColor: "#eba600",
-          pointBorderColor: "#474647",
-          hoverBackgroundColor: "#8ec63f",
-          data: [0, 10, 5, 2, 20, 30, 45]
-        }]
-      },
+      chartdata: {}, // To be loaded in mounted()
       options: {
         legend: {
           display: false
@@ -45,7 +35,25 @@ export default {
     }
   },
   async mounted() {
-    // TODO make an API call and load the chart data
+    this.loaded = false;
+
+    ajax('local_lti_get_requests_by_month', []).then(response => {
+      this.chartdata.labels = response.map(log => {
+        let date = new Date(log.year, log.month);
+        return date.toLocaleString('default', {month: 'long'});
+      }).reverse();
+      this.chartdata.datasets = [{
+        label: 'Requests by month',
+        backgroundColor: '#2D7DD2',
+        borderColor: '#474647',
+        pointBackgroundColor: "#eba600",
+        pointBorderColor: "#474647",
+        hoverBackgroundColor: "#8ec63f",
+        data: response.map(log => log.access_count).reverse()
+      }];
+
+      this.loaded = true;
+    });
   }
 }
 </script>
