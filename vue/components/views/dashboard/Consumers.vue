@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 class="title is-4">Manage consumers</h4>
-    <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>More details</b> to view all
+    <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>Expand</b> to view all
       consumer
       information.</p>
 
@@ -14,7 +14,7 @@
           <div class="field">
             <div class="control">
               <div class="select">
-                <select v-model="filters.sort">
+                <select v-model="filters.sort" @change="search">
                   <option v-for="option in sortOptions" :value="option.value">{{ option.name }}</option>
                 </select>
               </div>
@@ -30,25 +30,10 @@
         <div class="field-body">
           <div class="field is-grouped">
             <div class="control has-icons-left">
-              <input v-model="filters.keywords" class="input" type="text" placeholder="Search for consumers...">
+              <input @keyup="search" v-model="filters.keywords" class="input" type="text" placeholder="Search for consumers...">
               <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="field is-horizontal">
-        <div class="field-label">
-          <!-- Left empty for spacing -->
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <a class="button is-primary" @click="search">
-                Search
-              </a>
             </div>
           </div>
         </div>

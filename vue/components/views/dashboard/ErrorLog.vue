@@ -11,7 +11,7 @@
           <div class="field">
             <div class="control">
               <div class="select">
-                <select v-model="filters.consumer">
+                <select @change="search" v-model="filters.consumer">
                   <option value="1">West Kootenary</option>
                   <option value="2">East Kootenay</option>
                   <option value="3">Kelowna</option>
@@ -31,25 +31,10 @@
         <div class="field-body">
           <div class="field is-grouped">
             <div class="control has-icons-left">
-              <input v-model="filters.keywords" class="input" type="text" placeholder="Search the error log...">
+              <input @keyup="search" v-model="filters.keywords" class="input" type="text" placeholder="Search the error log...">
               <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="field is-horizontal">
-        <div class="field-label">
-          <!-- Left empty for spacing -->
-        </div>
-        <div class="field-body">
-          <div class="field">
-            <div class="control">
-              <a class="button is-primary">
-                Search
-              </a>
             </div>
           </div>
         </div>
