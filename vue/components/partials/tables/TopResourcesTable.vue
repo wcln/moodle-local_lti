@@ -11,9 +11,9 @@
       </thead>
       <tbody>
       <tr v-for="resource in resources">
-        <td>{{ resource.name }}</td>
-        <td>{{ resource.course }}</td>
-        <td>{{ resource.accessCount }}</td>
+        <td><a :href="resource.url">{{ resource.name }}</a></td>
+        <td><a :href="resource.course_url">{{ resource.course }}</a></td>
+        <td>{{ resource.access_count }}</td>
       </tr>
       </tbody>
     </table>
@@ -21,22 +21,23 @@
 </template>
 
 <script>
+import {ajax} from "../../../store";
+import numberWithCommas from "../../../functions/numberWithCommas";
+
 export default {
   name: "TopResourcesTable",
   data() {
     return {
-      resources: [
-        {name: "Unit 1 Learning Guide", course: "Computer Science 11", accessCount: 401},
-        {name: "2.2 Velocity", course: "Physics 11", accessCount: 323},
-        {name: "Pythagorean Theorem", course: "Math 8", accessCount: 321},
-        {name: "Gravity 1.2", course: "Physics 11", accessCount: 220},
-        {name: "Gravity 1.2", course: "Physics 11", accessCount: 220},
-        {name: "Gravity 1.2", course: "Physics 11", accessCount: 220},
-        {name: "Gravity 1.2", course: "Physics 11", accessCount: 220},
-        {name: "Gravity 1.2", course: "Physics 11", accessCount: 220},
-        {name: "Gravity 1.2", course: "Physics 11", accessCount: 220},
-      ]
+      resources: []
     }
+  },
+  mounted() {
+    ajax('local_lti_get_top_resources', {}).then(resources => {
+      this.resources = resources.map(resource => {
+        resource.access_count = numberWithCommas(resource.access_count);
+        return resource;
+      });
+    });
   }
 }
 </script>

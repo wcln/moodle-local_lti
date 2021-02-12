@@ -71,6 +71,9 @@ class overview_api extends external_api
         return new \external_multiple_structure(new \external_single_structure([
             'id'           => new \external_value(PARAM_INT, 'Activity ID'),
             'name'         => new \external_value(PARAM_TEXT, 'Activity name'),
+            'url'          => new \external_value(PARAM_URL, 'Activity name'),
+            'course'       => new \external_value(PARAM_TEXT, 'Activity name'),
+            'course_url'   => new \external_value(PARAM_URL, 'Activity name'),
             'access_count' => new \external_value(PARAM_INT),
         ]));
     }
@@ -184,7 +187,8 @@ class overview_api extends external_api
     {
         global $DB;
 
-        return $DB->count_records_select(error::TABLE, "timecreated > :timecreated", ['timecreated' => time() - (3600 * 24)]);
+        return $DB->count_records_select(error::TABLE, "timecreated > :timecreated",
+            ['timecreated' => time() - (3600 * 24)]);
     }
 
     public static function get_errors_count_returns(): \external_value

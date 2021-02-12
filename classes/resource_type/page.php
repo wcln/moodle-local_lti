@@ -78,10 +78,8 @@ class page extends resource
      */
     public static function get_activity_id($content_id)
     {
-        // Retrieve page ID.
-        $cm = get_coursemodule_from_id('page', $content_id);
+        $cm = get_coursemodule_from_id('page', $content_id, 0, false, MUST_EXIST);
 
-        // Set this page ID.
         return $cm->instance;
     }
 
@@ -98,7 +96,7 @@ class page extends resource
     {
         global $DB;
 
-        $DB->get_record(self::TABLE, ['id' => self::get_activity_id($content_id)]);
+        return $DB->get_record(self::TABLE, ['id' => self::get_activity_id($content_id)]);
     }
 }
 

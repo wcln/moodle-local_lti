@@ -2,7 +2,6 @@
 
 namespace local_lti\helper;
 
-use local_lti\provider\request;
 use local_lti\provider\resource;
 
 class resource_link
@@ -24,7 +23,7 @@ class resource_link
 
         $sql = "
             SELECT content_id, `type`, SUM(access_count) AS access_count
-            FROM mdl_local_lti_resource_link rl
+            FROM {local_lti_resource_link} rl
             GROUP BY content_id, `type`
             ORDER BY access_count DESC
         ";
@@ -35,19 +34,24 @@ class resource_link
 
         $resources = [];
         foreach ($resource_links as $link) {
-
-            if (! isset($types[$link->type])) {
+            if ( ! isset($types[$link->type])) {
                 continue;
             }
 
-            $resource_class = "\\local_lti\\resource_type\\" . $types[$link->type];
+            $resource_class = "\\local_lti\\resource_type\\".$types[$link->type];
 
             if (class_exists($resource_class)) {
                 $record = $resource_class::get_activity_record($link->content_id);
 
+                $course = $DB->get_record('course', ['id' => $record->course]);
+
                 $resources[] = [
                     'id'           => $record->id,
                     'name'         => $record->name,
+                    'url'          => (new \moodle_url('/mod/'.$types[$link->type].'/view.php',
+                        ['id' => $link->content_id]))->out(),
+                    'course'       => $course->fullname,
+                    'course_url'   => (new \moodle_url('/course/view.php', ['id' => $course->id]))->out(),
                     'access_count' => $link->access_count,
                 ];
             }
