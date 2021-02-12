@@ -31,7 +31,8 @@ class error
     /** @var string[] Error codes and their associated messages */
     const ERROR_CODES
         = [
-            'E110' => ''
+            'E110' => '',
+            0      => 'Test error code message'
             // TODO
         ];
 

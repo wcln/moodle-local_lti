@@ -46,6 +46,7 @@ class errors_api extends external_api
 
         foreach ($errors as $error) {
             $error->timecreated = userdate($error->timecreated, get_string('strftimedatetime'));
+            $error->message     = error::ERROR_CODES[$error->code];
         }
 
         return $errors;
@@ -57,6 +58,7 @@ class errors_api extends external_api
             'id'          => new \external_value(PARAM_INT),
             'consumer'    => new \external_value(PARAM_INT, 'Consumer ID'),
             'code'        => new \external_value(PARAM_TEXT, 'Error code'),
+            'message'     => new \external_value(PARAM_TEXT, 'Error message'),
             'timecreated' => new \external_value(PARAM_TEXT, 'Formatted error time'),
         ]));
     }
