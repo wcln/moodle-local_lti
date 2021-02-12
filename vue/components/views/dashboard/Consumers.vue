@@ -15,11 +15,7 @@
             <div class="control">
               <div class="select">
                 <select v-model="filters.sort">
-                  <option value="date_oldest">Date added (oldest first)</option>
-                  <option value="date_newest">Date added (newest first)</option>
-                  <option value="alphabetical">Name (A - Z)</option>
-                  <option value="alphabetical_reverse">Name reverse (Z - A)</option>
-                  <option value="last_access">Last access</option>
+                  <option v-for="option in sortOptions" :value="option.value">{{ option.name }}</option>
                 </select>
               </div>
             </div>
@@ -65,6 +61,7 @@
           :pagination="true"
           :pagination-url="'consumers'"
           :items-per-page="this.pagination.itemsPerPage"
+          :items-total="this.pagination.itemsTotal"
           :current-page="this.pagination.currentPage"
           :headings="this.tableData.headings"
           :expanded-headings="this.tableData.expandedHeadings"
@@ -80,6 +77,7 @@
 
 <script>
 import EditableTable from "../../partials/tables/editable/EditableTable";
+import {ajax} from "../../../store";
 
 export default {
   name: "Consumers",
@@ -90,8 +88,9 @@ export default {
     return {
       filters: {
         keywords: "",
-        sort: "date_oldest"
+        sort: "date_desc"
       },
+      sortOptions: [],
       tableData: {
         headings: [
           'Name',
@@ -114,78 +113,13 @@ export default {
           'LMS'
         ],
         rows: [
-          [
-            {
-              value: "Southeast Kootenay",
-              type: "text"
-            },
-            {
-              value: "BC-SD05",
-              type: "text"
-            },
-            {
-              value: "canadian950",
-              type: "text"
-            },
-            {
-              value: true,
-              type: "checkbox"
-            },
-            {
-              value: "10:40AM November 30, 2020",
-              type: "text",
-              editable: false
-            },
-            {
-              value: "License 1",
-              type: "text"
-            },
-            {
-              value: true,
-              type: "checkbox"
-            },
-            {
-              value: "Test",
-              type: "text"
-            },
-            {
-              value: "Jerry Garcia",
-              type: "text"
-            },
-            {
-              value: "jerry@gratefuldead.com",
-              type: "text"
-            },
-            {
-              value: "250-718-9233",
-              type: "text"
-            },
-            {
-              value: "billing@example.com",
-              type: "text"
-            },
-            {
-              value: "dev@example.com",
-              type: "text"
-            },
-            {
-              value: "sd05.bc.ca",
-              type: "text"
-            },
-            {
-              value: "student.sd5.ca",
-              type: "text"
-            },
-            {
-              value: "https://eschool.sd23.bc.ca",
-              type: "text"
-            },
-          ]
+          []
         ]
       },
       expanded: false,
       pagination: {
-        itemsPerPage: 1,
+        itemsPerPage: 10,
+        itemsTotal: 1,
         currentPage: 1
       }
     }
@@ -194,6 +128,7 @@ export default {
     $route(to, from) {
       if (to.query.page !== undefined) {
         this.pagination.currentPage = Number(to.query.page);
+        this.search();
       }
     }
   },
@@ -201,13 +136,25 @@ export default {
     if (this.$route.query.page !== undefined) {
       this.pagination.currentPage = Number(this.$route.query.page);
     }
+
+    ajax('local_lti_get_sort_options', {}).then(options => {
+      this.sortOptions = options;
+    });
+
+    this.search();
   },
   methods: {
     search() {
-      // TODO make web service request
-      // Use filters.sort, filters.keywords and pagination.currentPage to query API and update rows
+      ajax('local_lti_get_consumers', {
+        keywords: this.filters.keywords,
+        sort: this.filters.sort,
+        page: this.pagination.currentPage - 1
+      }).then(response => {
+        this.tableData.rows = response.consumers.map(consumer => consumer.fields);
+        this.pagination.itemsTotal = response.page_count;
+      });
     }
-  }
+  },
 }
 </script>
 

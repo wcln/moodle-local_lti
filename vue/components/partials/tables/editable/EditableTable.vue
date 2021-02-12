@@ -45,7 +45,7 @@
     <!-- Pagination bar -->
     <Pagination
         v-if="pagination"
-        :itemsTotal="rows.length"
+        :itemsTotal="itemsTotal"
         :itemsPerPage="itemsPerPage"
         :currentPage="currentPage"
         :buttonsMax="5"
@@ -92,6 +92,7 @@ export default {
     },
     itemsPerPage: Number,
     currentPage: Number,
+    itemsTotal: Number,
     paginationUrl: String
   },
   methods: {

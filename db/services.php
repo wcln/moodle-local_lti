@@ -87,6 +87,16 @@ $functions = [
         'loginrequired' => true,
         'capabilities'  => 'moodle/site:config',
     ],
+    'local_lti_get_sort_options'          => [
+        'classname'     => 'local_lti\external\consumers_api',
+        'methodname'    => 'get_sort_options',
+        'classpath'     => 'local/lti/classes/external/consumers_api.php',
+        'description'   => 'Get all sort options for the dropdown on the consumers tab',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => true,
+        'capabilities'  => 'moodle/site:config',
+    ],
     'local_lti_update_consumer'           => [
         'classname'     => 'local_lti\external\consumers_api',
         'methodname'    => 'update_consumer',
@@ -107,7 +117,7 @@ $functions = [
         'loginrequired' => true,
         'capabilities'  => 'moodle/site:config',
     ],
-    'local_lti_get_consumer_options'                => [
+    'local_lti_get_consumer_options'      => [
         'classname'     => 'local_lti\external\errors_api',
         'methodname'    => 'get_consumer_options',
         'classpath'     => 'local/lti/classes/external/errors_api.php',
@@ -132,7 +142,8 @@ $services = [
             'local_lti_get_consumers',
             'local_lti_update_consumer',
             'local_lti_get_errors',
-            'local_lti_get_consumer_options'
+            'local_lti_get_consumer_options',
+            'local_lti_get_sort_options',
         ],
         'requiredcapability' => 'moodle/site:config',
         'restrictedusers'    => false,
