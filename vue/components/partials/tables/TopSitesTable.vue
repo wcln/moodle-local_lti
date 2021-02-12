@@ -12,7 +12,7 @@
         <tbody>
         <tr v-for="site in sites">
           <td>{{ site.name }}</td>
-          <td>{{ site.accessCount }}</td>
+          <td>{{ site.access_count }}</td>
         </tr>
         </tbody>
       </table>
@@ -21,18 +21,25 @@
 </template>
 
 <script>
+import {ajax} from "../../../store";
+import numberWithCommas from "../../../functions/numberWithCommas";
+
 export default {
   name: "TopSitesTable",
   data() {
     return {
-      sites: [
-        {name: "Southeast Kootenay", accessCount: 7392},
-        {name: "Rocky Mountain", accessCount: 3389},
-        {name: "Burnaby", accessCount: 3091},
-        {name: "Central Okanagan", accessCount: 1066},
-        {name: "Vernon", accessCount: 739},
-      ]
+      sites: []
     }
+  },
+  mounted() {
+    ajax('local_lti_get_top_consumers', {}).then(sites => {
+      if (Array.isArray(sites)) {
+        this.sites = sites.map(site => {
+          site.access_count = numberWithCommas(site.access_count);
+          return site;
+        });
+      }
+    });
   }
 }
 </script>

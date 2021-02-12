@@ -35,6 +35,7 @@ import TopSitesTable from "../../partials/tables/TopSitesTable";
 import TopSitesChart from "../../partials/charts/TopSitesChart";
 import TopResourcesTable from "../../partials/tables/TopResourcesTable";
 import {ajax} from "../../../store";
+import numberWithCommas from "../../../functions/numberWithCommas";
 
 export default {
   name: "Overview",
@@ -44,16 +45,12 @@ export default {
       statisticBoxes: [], // To be loaded in mounted() function below
     }
   },
-  methods: {
-      numberWithCommas(x) {
-        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-      }
-  },
   mounted() {
+
 
     ajax('local_lti_get_total_requests_count', []).then(count => {
       this.statisticBoxes.push({
-        number: this.numberWithCommas(count),
+        number: numberWithCommas(count),
         text: "requests",
         icon: "fa-exchange-alt"
       });
@@ -61,7 +58,7 @@ export default {
 
     ajax('local_lti_get_total_consumers_count', []).then(count => {
       this.statisticBoxes.push({
-        number: this.numberWithCommas(count),
+        number: numberWithCommas(count),
         text: "active consumer sites",
         icon: "fa-sitemap"
       });
@@ -69,7 +66,7 @@ export default {
 
     ajax('local_lti_get_total_resources_count', []).then(count => {
       this.statisticBoxes.push({
-        number: this.numberWithCommas(count),
+        number: numberWithCommas(count),
         text: "resources requested",
         icon: "fa-book"
       });
@@ -77,7 +74,7 @@ export default {
 
     ajax('local_lti_get_errors_count', []).then(count => {
       this.statisticBoxes.push({
-        number: this.numberWithCommas(count),
+        number: numberWithCommas(count),
         text: "errors in last 24 hours",
         icon: "fa-bug"
       });
