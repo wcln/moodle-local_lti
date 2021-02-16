@@ -19,7 +19,7 @@ export default {
       required: false,
       default: true
     },
-    value: [Object, Boolean, String],
+    value: {},
     type: {
       type: String,
       required: false,
