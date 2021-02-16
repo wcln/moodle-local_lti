@@ -1,7 +1,7 @@
 <template>
   <div>
     <h4 class="title is-4">Manage consumers</h4>
-    <p class="mb-5">Click the edit icon inside a cell to change the value. Click <b>Expand</b> to view all
+    <p class="mb-5">Click on any cell below to edit consumer details. Click <b>Expand</b> to view all
       consumer
       information.</p>
 

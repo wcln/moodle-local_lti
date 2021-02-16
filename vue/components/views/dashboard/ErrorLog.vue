@@ -12,35 +12,15 @@
             <div class="control">
               <div class="select">
                 <select @change="search" v-model="filters.consumer">
-                  <option value="1">West Kootenary</option>
-                  <option value="2">East Kootenay</option>
-                  <option value="3">Kelowna</option>
-                  <option value="4">Vernon</option>
-                  <option value="0" selected>All consumers</option>
+                  <option value="0">All consumers</option>
+                  <option v-for="consumer in consumerOptions" :value="consumer.id">{{ consumer.name }}</option>
                 </select>
               </div>
             </div>
           </div>
         </div>
       </div>
-
-      <div class="field is-horizontal ml-5">
-        <div class="field-label">
-          <label class="label">Keywords</label>
-        </div>
-        <div class="field-body">
-          <div class="field is-grouped">
-            <div class="control has-icons-left">
-              <input @keyup="search" v-model="filters.keywords" class="input" type="text" placeholder="Search the error log...">
-              <span class="icon is-left">
-                    <i class="fas fa-search" aria-hidden="true"></i>
-                </span>
-            </div>
-          </div>
-        </div>
-      </div>
     </div>
-
 
     <div class="box">
       <table class="table is-hoverable">
@@ -54,17 +34,30 @@
         </thead>
         <tbody>
         <tr v-for="error in errors">
-          <td>{{ error.date }}</td>
+          <td>{{ error.timecreated }}</td>
           <td>{{ error.consumer }}</td>
           <td>{{ error.code }}</td>
           <td>{{ error.message }}</td>
         </tr>
+        <tr v-if="errors.length === 0">
+          <td colspan="4">
+            <Message id="no-errors-message">
+              <span v-if="filters.consumer == 0">
+                No errors have been logged yet.
+              </span>
+              <span v-else>
+                No errors for the selected consumer. Try choosing 'All consumers' from the dropdown above.
+              </span>
+            </Message>
+          </td>
+        </tr>
+
         </tbody>
       </table>
 
       <!-- Pagination bar -->
       <Pagination
-          :itemsTotal="errors.length"
+          :itemsTotal="pagination.itemsTotal"
           :itemsPerPage="pagination.itemsPerPage"
           :currentPage="pagination.currentPage"
           :buttonsMax="5"
@@ -80,54 +73,34 @@
 
 <script>
 import Pagination from "vue-bulma-paginate";
+import {ajax} from "../../../store";
+import Message from "../../partials/Message";
 
 export default {
   name: "ErrorLog",
   components: {
+    Message,
     Pagination,
   },
   data() {
     return {
       filters: {
-        consumer: "0",
-        keywords: "",
+        consumer: 0,
       },
-      errors: [
-        {
-          date: "10:40AM November 30, 2020",
-          consumer: "Southeast Kootenay",
-          code: "300",
-          message: "An error occurred while rendering the LTI book. Ensure that the ID you provided is correct.",
-        },
-        {
-          date: "8:32AM November 30, 2020",
-          consumer: "Vernon",
-          code: "400",
-          message: "LTI type parameter is missing from the launch URL.",
-        },
-        {
-          date: "7:22AM November 30, 2020",
-          consumer: "Southeast Kootenay",
-          code: "500",
-          message: "The request could not be verified.",
-        },
-        {
-          date: "7:21AM November 30, 2020",
-          consumer: "Delta",
-          code: "600",
-          message: "The previous session could not be recovered.",
-        },
-      ],
+      errors: [],
       pagination: {
-        itemsPerPage: 1,
-        currentPage: 1
-      }
+        itemsPerPage: 10, // This should match the value in external/errors_api.php
+        currentPage: 1,
+        itemsTotal: 0
+      },
+      consumerOptions: []
     }
   },
   watch: {
     $route(to, from) {
       if (to.query.page !== undefined) {
         this.pagination.currentPage = Number(to.query.page);
+        this.search();
       }
     }
   },
@@ -135,10 +108,22 @@ export default {
     if (this.$route.query.page !== undefined) {
       this.pagination.currentPage = Number(this.$route.query.page);
     }
+
+    ajax('local_lti_get_consumer_options', {}).then(consumers => {
+      this.consumerOptions = consumers;
+    });
+
+    this.search();
   },
   methods: {
     search() {
-      // TODO query web service
+      ajax('local_lti_get_errors', {
+        page: this.pagination.currentPage - 1,
+        consumer: this.filters.consumer
+      }).then(response => {
+        this.errors = response.errors;
+        this.pagination.itemsTotal = response.page_count;
+      });
     }
   }
 }
@@ -156,6 +141,11 @@ export default {
 
   .field .label {
     white-space: nowrap;
+  }
+
+  #no-errors-message {
+    margin: 2rem auto 0 auto;
+    width: 50rem;
   }
 }
 </style>
