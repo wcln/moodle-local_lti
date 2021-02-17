@@ -22,48 +22,50 @@
       </div>
     </div>
 
-    <div class="box">
-      <table class="table is-hoverable">
-        <thead>
-        <tr>
-          <th>Date</th>
-          <th>Consumer</th>
-          <th>Error code</th>
-          <th>Message</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="error in errors">
-          <td>{{ error.timecreated }}</td>
-          <td>{{ error.consumer }}</td>
-          <td>{{ error.code }}</td>
-          <td>{{ error.message }}</td>
-        </tr>
-        <tr v-if="errors.length === 0">
-          <td colspan="4">
-            <Message id="no-errors-message">
-              <span v-if="filters.consumer == 0">
-                No errors have been logged yet.
-              </span>
-              <span v-else>
-                No errors for the selected consumer. Try choosing 'All consumers' from the dropdown above.
-              </span>
-            </Message>
-          </td>
-        </tr>
+    <transition name="fade">
+      <div class="box" v-if="loaded">
+        <table class="table is-hoverable">
+          <thead>
+          <tr>
+            <th>Date</th>
+            <th>Consumer</th>
+            <th>Error code</th>
+            <th>Message</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr v-for="error in errors">
+            <td>{{ error.timecreated }}</td>
+            <td>{{ error.consumer }}</td>
+            <td>{{ error.code }}</td>
+            <td>{{ error.message }}</td>
+          </tr>
+          <tr v-if="errors.length === 0">
+            <td colspan="4">
+              <Message id="no-errors-message">
+                <span v-if="filters.consumer == 0">
+                  No errors have been logged yet.
+                </span>
+                <span v-else>
+                  No errors for the selected consumer. Try choosing 'All consumers' from the dropdown above.
+                </span>
+              </Message>
+            </td>
+          </tr>
 
-        </tbody>
-      </table>
+          </tbody>
+        </table>
 
-      <!-- Pagination bar -->
-      <Pagination
-          :itemsTotal="pagination.itemsTotal"
-          :itemsPerPage="pagination.itemsPerPage"
-          :currentPage="pagination.currentPage"
-          :buttonsMax="5"
-          :url="'errors'"
-      ></Pagination>
-    </div>
+        <!-- Pagination bar -->
+        <Pagination
+            :itemsTotal="pagination.itemsTotal"
+            :itemsPerPage="pagination.itemsPerPage"
+            :currentPage="pagination.currentPage"
+            :buttonsMax="5"
+            :url="'errors'"
+        ></Pagination>
+      </div>
+    </transition>
 
     <!-- Download button -->
     <a class="button is-light">Download</a>
@@ -93,7 +95,8 @@ export default {
         currentPage: 1,
         itemsTotal: 0
       },
-      consumerOptions: []
+      consumerOptions: [],
+      loaded: false
     }
   },
   watch: {
@@ -123,6 +126,7 @@ export default {
       }).then(response => {
         this.errors = response.errors;
         this.pagination.itemsTotal = response.page_count;
+        this.loaded = true;
       });
     }
   }
@@ -147,5 +151,12 @@ export default {
     margin: 2rem auto 0 auto;
     width: 50rem;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>

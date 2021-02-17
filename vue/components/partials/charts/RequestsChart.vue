@@ -1,12 +1,15 @@
 <template>
   <div class="requests-chart box">
     <h4 class="title is-4">Requests by month</h4>
-    <line-chart
-        v-if="loaded"
-        :chartdata="chartdata"
-        :options="options"
-        :styles="styles"
-    />
+    <transition name="fade">
+
+      <line-chart
+          v-if="loaded"
+          :chartdata="chartdata"
+          :options="options"
+          :styles="styles"
+      />
+    </transition>
   </div>
 </template>
 
@@ -59,5 +62,10 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

@@ -41,21 +41,23 @@
     </div>
 
 
-    <div class="box">
-      <EditableTable
-          :key="tableKey"
-          :pagination="true"
-          :pagination-url="'consumers'"
-          :items-per-page="pagination.itemsPerPage"
-          :items-total="pagination.itemsTotal"
-          :current-page="pagination.currentPage"
-          :headings="tableData.headings"
-          :expanded-headings="tableData.expandedHeadings"
-          :rows="tableData.rows"
-          :show-saved="showSaved"
-          @cellUpdated="updateConsumer"
-      ></EditableTable>
-    </div>
+    <transition name="fade">
+      <div class="box" v-if="loaded">
+        <EditableTable
+            :key="tableKey"
+            :pagination="true"
+            :pagination-url="'consumers'"
+            :items-per-page="pagination.itemsPerPage"
+            :items-total="pagination.itemsTotal"
+            :current-page="pagination.currentPage"
+            :headings="tableData.headings"
+            :expanded-headings="tableData.expandedHeadings"
+            :rows="tableData.rows"
+            :show-saved="showSaved"
+            @cellUpdated="updateConsumer"
+        ></EditableTable>
+      </div>
+    </transition>
 
     <!-- Download button -->
     <a class="button is-light">Download</a>
@@ -111,6 +113,7 @@ export default {
         currentPage: 1
       },
       showSaved: false,
+      loaded: false,
       tableKey: 0 // This is used to ensure the table is reloaded every time new data is fetched
     }
   },
@@ -147,6 +150,7 @@ export default {
         });
         this.pagination.itemsTotal = response.page_count;
         this.tableKey += 1;
+        this.loaded = true;
       });
     },
     updateConsumer(args) {
@@ -174,5 +178,12 @@ export default {
   .field .label {
     white-space: nowrap;
   }
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
 }
 </style>
