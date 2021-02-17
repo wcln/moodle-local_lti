@@ -34,7 +34,7 @@
               :type="cell.type"
               :editable="! (cell.editable !== undefined && cell.editable === false)"
               :editing="cell.editing"
-              @cellUpdated="cellUpdated"
+              @cellUpdated="$emit('cellUpdated', {id: row.consumerId, key: cell.field, value: $event.value})"
           >
           </EditableField>
         </tr>
@@ -75,7 +75,6 @@ export default {
   data() {
     return {
       expanded: false,
-      showSaved: false
     }
   },
   props: {
@@ -93,16 +92,13 @@ export default {
     itemsPerPage: Number,
     currentPage: Number,
     itemsTotal: Number,
-    paginationUrl: String
-  },
-  methods: {
-    cellUpdated() {
-      this.showSaved = true;
-      setTimeout(() => {
-          this.showSaved = false;
-      }, 1000)
+    paginationUrl: String,
+    showSaved: {
+      type: Boolean,
+      required: false,
+      default: false
     }
-  }
+  },
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <span>
-      <input @keyup.enter="$event.target.blur()" @change="$emit('change', value)" type="text" :value="value" :disabled="! editable">
+      <input @keyup.enter="$event.target.blur()" @change="$emit('change', valueModel)" type="text" v-model="valueModel" :disabled="! editable">
   </span>
 </template>
 
@@ -8,6 +8,14 @@
 export default {
   name: "TextField",
   props: ['value', 'editing', 'editable'],
+  data() {
+    return {
+      valueModel: null // Avoid changing prop value
+    }
+  },
+  mounted() {
+    this.valueModel = this.value;
+  }
 }
 </script>
 

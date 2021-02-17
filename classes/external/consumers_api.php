@@ -90,7 +90,7 @@ class consumers_api extends external_api
             $fields = [];
             foreach (consumer::CONSUMER_FIELDS as $field) {
                 $fields[] = [
-                    'field'    => $field['name'],
+                    'field'    => $field['field'],
                     'value'    => $consumer->{$field['field']},
                     'type'     => isset($field['type']) ? $field['type'] : consumer::FIELD_TYPE_TEXT,
                     'editable' => isset($field['editable']) ? $field['editable'] : true,
@@ -139,7 +139,7 @@ class consumers_api extends external_api
         return new \external_function_parameters([
             'id'    => new \external_value(PARAM_INT, 'Consumer ID'),
             'key'   => new \external_value(PARAM_TEXT),
-            'value' => new \external_value(PARAM_TEXT),
+            'value' => new \external_value(PARAM_RAW),
         ]);
     }
 

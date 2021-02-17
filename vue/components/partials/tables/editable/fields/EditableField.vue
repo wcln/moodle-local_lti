@@ -41,11 +41,7 @@ export default {
     },
     updateCellValue(value) {
       this.editing = false;
-      // TODO make web service request to update value
-      window.console.log("Updating value to: " + value);
-
-      // Once web service call complete, show "Saved"
-      this.$emit('cellUpdated');
+      this.$emit('cellUpdated', {value: value});
     }
   }
 }

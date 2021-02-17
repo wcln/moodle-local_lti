@@ -43,14 +43,17 @@
 
     <div class="box">
       <EditableTable
+          :key="tableKey"
           :pagination="true"
           :pagination-url="'consumers'"
-          :items-per-page="this.pagination.itemsPerPage"
-          :items-total="this.pagination.itemsTotal"
-          :current-page="this.pagination.currentPage"
-          :headings="this.tableData.headings"
-          :expanded-headings="this.tableData.expandedHeadings"
-          :rows="this.tableData.rows"
+          :items-per-page="pagination.itemsPerPage"
+          :items-total="pagination.itemsTotal"
+          :current-page="pagination.currentPage"
+          :headings="tableData.headings"
+          :expanded-headings="tableData.expandedHeadings"
+          :rows="tableData.rows"
+          :show-saved="showSaved"
+          @cellUpdated="updateConsumer"
       ></EditableTable>
     </div>
 
@@ -106,7 +109,9 @@ export default {
         itemsPerPage: 10,
         itemsTotal: 1,
         currentPage: 1
-      }
+      },
+      showSaved: false,
+      tableKey: 0 // This is used to ensure the table is reloaded every time new data is fetched
     }
   },
   watch: {
@@ -135,8 +140,21 @@ export default {
         sort: this.filters.sort,
         page: this.pagination.currentPage - 1
       }).then(response => {
-        this.tableData.rows = response.consumers.map(consumer => consumer.fields);
+        this.tableData.rows = response.consumers.map(consumer => {
+          return {
+            ...consumer.fields, consumerId: consumer.id
+          };
+        });
         this.pagination.itemsTotal = response.page_count;
+        this.tableKey += 1;
+      });
+    },
+    updateConsumer(args) {
+      ajax('local_lti_update_consumer', {id: args.id, key: args.key, value: args.value}).then(response => {
+        this.showSaved = true;
+        setTimeout(() => {
+          this.showSaved = false;
+        }, 1000)
       });
     }
   },
