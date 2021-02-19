@@ -167,6 +167,7 @@ export default {
     addConsumer() {
       ajax('local_lti_create_consumer', {}).then(response => {
         this.filters.sort = 'date_desc'; // Sort by newly added so the new consumer is at the top
+        this.pagination.currentPage = 1;
         this.search();
         // TODO focus on new consumer
       });
