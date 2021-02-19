@@ -38,6 +38,16 @@
           >
           </EditableField>
         </tr>
+        <tr>
+          <td :colspan="tableHeadings.length">
+            <a @click="$emit('addRow')">
+              <span class="icon">
+                <i class="fas fa-plus"></i>
+              </span>
+              <span>{{addText}}</span>
+            </a>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>
@@ -97,6 +107,11 @@ export default {
       type: Boolean,
       required: false,
       default: false
+    },
+    addText: {
+      type: String,
+      required: false,
+      default: 'Add'
     }
   },
 }

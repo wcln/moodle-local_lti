@@ -130,7 +130,7 @@ class consumers_api extends external_api
     | Update consumer
     |--------------------------------------------------------------------------
     |
-    | Get a single consumer
+    | Update consumer info
     |
     */
 
@@ -193,6 +193,41 @@ class consumers_api extends external_api
             'value' => new \external_value(PARAM_TEXT),
             'name'  => new \external_value(PARAM_TEXT),
         ]));
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Create consumer
+    |--------------------------------------------------------------------------
+    |
+    | Create a new consumer
+    |
+    */
+
+    public static function create_consumer_parameters()
+    {
+        return new \external_function_parameters([]);
+    }
+
+    public static function create_consumer()
+    {
+        global $DB;
+
+        $now = time();
+
+        $DB->insert_record(consumer::TABLE, (object)[
+            'name'         => 'New consumer',
+            'consumer_key' => 'Consumer'.rand(1000, 9999),
+            'secret'       => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1, 6),
+            'enabled'      => true,
+            'timecreated'  => $now,
+            'timeupdated'  => $now,
+        ]);
+    }
+
+    public static function create_consumer_returns()
+    {
+        return null;
     }
 
 }

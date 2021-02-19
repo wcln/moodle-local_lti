@@ -54,7 +54,9 @@
             :expanded-headings="tableData.expandedHeadings"
             :rows="tableData.rows"
             :show-saved="showSaved"
+            add-text="Add consumer"
             @cellUpdated="updateConsumer"
+            @addRow="addConsumer"
         ></EditableTable>
       </div>
     </transition>
@@ -149,7 +151,7 @@ export default {
           };
         });
         this.pagination.itemsTotal = response.page_count;
-        this.tableKey += 1;
+        this.reloadTable();
         this.loaded = true;
       });
     },
@@ -160,6 +162,16 @@ export default {
           this.showSaved = false;
         }, 1000)
       });
+    },
+    addConsumer() {
+      ajax('local_lti_create_consumer', {}).then(response => {
+        this.filters.sort = 'date_desc'; // Sort by newly added so the new consumer is at the top
+        this.search();
+        // TODO focus on new consumer
+      });
+    },
+    reloadTable() {
+      this.tableKey += 1;
     }
   },
 }
