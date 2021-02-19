@@ -218,7 +218,7 @@ class consumers_api extends external_api
         $DB->insert_record(consumer::TABLE, (object)[
             'name'         => 'New consumer',
             'consumer_key' => 'Consumer'.rand(1000, 9999),
-            'secret'       => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'),1, 6),
+            'secret'       => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 6),
             'enabled'      => true,
             'timecreated'  => $now,
             'timeupdated'  => $now,
@@ -226,6 +226,36 @@ class consumers_api extends external_api
     }
 
     public static function create_consumer_returns()
+    {
+        return null;
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Delete consumer
+    |--------------------------------------------------------------------------
+    |
+    | Delete a consumer from the database
+    |
+    */
+
+    public static function delete_consumer_parameters()
+    {
+        return new \external_function_parameters([
+            'id' => new \external_value(PARAM_INT, 'The consumer ID'),
+        ]);
+    }
+
+    public static function delete_consumer($id)
+    {
+        global $DB;
+
+        $params = self::validate_parameters(self::delete_consumer_parameters(), compact('id'));
+
+        $DB->delete_records(consumer::TABLE, ['id' => $params['id']]);
+    }
+
+    public static function delete_consumer_returns()
     {
         return null;
     }

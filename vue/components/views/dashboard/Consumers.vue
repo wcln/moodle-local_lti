@@ -54,9 +54,12 @@
             :expanded-headings="tableData.expandedHeadings"
             :rows="tableData.rows"
             :show-saved="showSaved"
+            :deleting="deleting"
             add-text="Add consumer"
             @cellUpdated="updateConsumer"
             @addRow="addConsumer"
+            @deleteRow="deleteConsumer"
+            @undoDelete="undoDelete"
         ></EditableTable>
       </div>
     </transition>
@@ -116,6 +119,7 @@ export default {
       },
       showSaved: false,
       loaded: false,
+      deleting: false,
       tableKey: 0 // This is used to ensure the table is reloaded every time new data is fetched
     }
   },
@@ -157,10 +161,7 @@ export default {
     },
     updateConsumer(args) {
       ajax('local_lti_update_consumer', {id: args.id, key: args.key, value: args.value}).then(response => {
-        this.showSaved = true;
-        setTimeout(() => {
-          this.showSaved = false;
-        }, 1000)
+        this.displaySavedMessage();
       });
     },
     addConsumer() {
@@ -170,8 +171,31 @@ export default {
         // TODO focus on new consumer
       });
     },
+    deleteConsumer(row) {
+      this.deleting = true;
+      setTimeout(() => {
+        // If delete hasn't been cancelled
+        if (this.deleting) {
+          ajax('local_lti_delete_consumer', {id: row.consumerId}).then(response => {
+            this.deleting = false;
+            this.reloadTable();
+            this.search();
+            this.displaySavedMessage();
+          });
+        }
+      }, 2500);
+    },
+    undoDelete() {
+      this.deleting = false;
+    },
     reloadTable() {
       this.tableKey += 1;
+    },
+    displaySavedMessage() {
+      this.showSaved = true;
+      setTimeout(() => {
+        this.showSaved = false;
+      }, 1000);
     }
   },
 }
