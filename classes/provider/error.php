@@ -51,7 +51,7 @@ class error extends \Exception
             self::ERROR_UNKNOWN         => 'Unknown error code',
             self::ERROR_MISSING_PARAMS  => 'Missing required LTI parameters!',
             self::ERROR_INVALID_TYPE    => 'Invalid LTI type in launch URL. Try ?type=book or ?type=page',
-            self::ERROR_AUTH_FAILED     => 'Authentication failed. This is not a valid launch request. Double check that you have entered the correct secret in your LTI configuration.',
+            self::ERROR_AUTH_FAILED     => 'Authentication failed. This is not a valid launch request. Try reloading this page.',
             self::ERROR_LAUNCH_REQUEST  => 'This is not a valid launch request.',
             self::ERROR_RENDERING_BOOK  => 'An error ocurred while attempting to render the LTI book. Ensure that the ID provided is correct.',
             self::ERROR_RENDERING_PAGE  => 'An error ocurred while rendering the LTI page. Ensure that the ID provided is correct.',
