@@ -42,7 +42,7 @@ export default {
 
     ajax('local_lti_get_requests_by_month', []).then(response => {
       this.chartdata.labels = response.map(log => {
-        let date = new Date(log.year, log.month);
+        let date = new Date(log.year, log.month - 1); // Need to subtract 1 here because months start at 0 in JS
         return date.toLocaleString('default', {month: 'long'});
       }).reverse();
       this.chartdata.datasets = [{
