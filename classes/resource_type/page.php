@@ -71,14 +71,12 @@ class page extends resource
     /**
      * Get the ID of this page activity
      *
-     * @param $content_id
-     *
      * @return int
      * @throws \coding_exception
      */
-    public static function get_activity_id($content_id)
+    public function get_activity_id()
     {
-        $cm = get_coursemodule_from_id('page', $content_id, 0, false, MUST_EXIST);
+        $cm = get_coursemodule_from_id('page', $this->content_id, 0, false, MUST_EXIST);
 
         return $cm->instance;
     }
@@ -86,17 +84,15 @@ class page extends resource
     /**
      * Get the page record from the database
      *
-     * @param $content_id
-     *
      * @return mixed|void
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_activity_record($content_id)
+    public function get_activity_record()
     {
         global $DB;
 
-        return $DB->get_record(self::TABLE, ['id' => self::get_activity_id($content_id)]);
+        return $DB->get_record(self::TABLE, ['id' => $this->get_activity_id()]);
     }
 }
 

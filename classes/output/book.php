@@ -56,7 +56,7 @@ class book implements renderable, templatable
                                        FROM {book_chapters}
                                        WHERE bookid=?
                                        ORDER BY pagenum ASC',
-                [\local_lti\resource_type\book::get_activity_id($this->book->content_id)]);
+                [$this->book->get_activity_id()]);
         } catch (Exception $e) {
             // Re-throw exception with custom message.
             throw new \local_lti\provider\error(\local_lti\provider\error::ERROR_BOOK_CHAPTER, null,

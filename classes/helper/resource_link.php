@@ -41,7 +41,9 @@ class resource_link
             $resource_class = "\\local_lti\\resource_type\\".$types[$link->type];
 
             if (class_exists($resource_class)) {
-                $record = $resource_class::get_activity_record($link->content_id);
+                // Instantiate a resource class with only the content_id so we can get the related activity record
+                $resource_instance = new $resource_class(null, null, null, $link->content_id);
+                $record            = $resource_instance->get_activity_record();
 
                 $course = $DB->get_record('course', ['id' => $record->course]);
 

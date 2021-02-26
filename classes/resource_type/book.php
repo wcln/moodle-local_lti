@@ -18,6 +18,7 @@ namespace local_lti\resource_type;
 
 use context_module;
 use Exception;
+use local_lti\provider\error;
 use local_lti\provider\resource;
 
 /**
@@ -67,7 +68,7 @@ class book extends resource
                                    FROM {book_chapters}
                                    WHERE bookid=?
                                    AND pagenum=?
-                                   ORDER BY pagenum ASC', [self::get_activity_id($this->content_id), $pagenum]);
+                                   ORDER BY pagenum ASC', [$this->get_activity_id(), $pagenum]);
 
         return $chapter;
     }
@@ -118,39 +119,35 @@ class book extends resource
     /**
      * Get the ID of this book activity
      *
-     * @param $content_id
-     *
      * @return int
      * @throws \coding_exception
      */
-    public static function get_activity_id($content_id)
+    public function get_activity_id()
     {
         global $DB;
 
         try {
             // Get the book object using the course module ID.
-            $cm   = get_coursemodule_from_id('book', $content_id, 0, false, MUST_EXIST);
+            $cm   = get_coursemodule_from_id('book', $this->content_id, 0, false, MUST_EXIST);
             $book = $DB->get_record('book', ['id' => $cm->instance], '*', MUST_EXIST);
 
             return $book->id;
         } catch (Exception $e) {
-            throw new Exception(get_string('error_book_id', 'local_lti'));
+            throw new error(error::ERROR_BOOK_ID, null, $this->consumer_id);
         }
     }
 
     /**
      * Get the book record from mdl_book table
      *
-     * @param $content_id
-     *
      * @return false|mixed|\stdClass
      * @throws \coding_exception
      * @throws \dml_exception
      */
-    public static function get_activity_record($content_id)
+    public function get_activity_record()
     {
         global $DB;
 
-        return $DB->get_record(self::TABLE, ['id' => self::get_activity_id($content_id)]);
+        return $DB->get_record(self::TABLE, ['id' => $this->get_activity_id()]);
     }
 }

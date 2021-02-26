@@ -44,12 +44,12 @@ abstract class resource
     /** @var int The ID of the resource content that is being requested.. */
     public $content_id;
 
-    public function __construct($type, $consumer_id, $request)
+    public function __construct($type = null, $consumer_id = null, $request = null, $content_id = null)
     {
         $this->type        = $type;
         $this->consumer_id = $consumer_id;
         $this->request     = $request;
-        $this->content_id  = $this->get_content_id();
+        $this->content_id  = ! empty($request) ? $this->get_content_id() : $content_id;
     }
 
     /**
@@ -183,19 +183,15 @@ abstract class resource
      * to get activity information like name etc...
      *
      *
-     * @param $content_id
-     *
      * @return int
      */
-    abstract public static function get_activity_id($content_id);
+    abstract public function get_activity_id();
 
     /**
      * Get the database record from the activity table
      *
-     * @param $content_id
-     *
      * @return mixed
      */
-    abstract public static function get_activity_record($content_id);
+    abstract public function get_activity_record();
 
 }
