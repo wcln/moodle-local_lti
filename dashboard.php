@@ -17,6 +17,9 @@ require_capability('moodle/site:config', context_system::instance());
 echo $OUTPUT->header();
 echo $OUTPUT->heading(get_string('dashboard_heading', 'local_lti'));
 
+$event = \local_lti\event\dashboard_viewed::create();
+$event->trigger();
+
 // Load the Vue app
 $PAGE->requires->js_call_amd('local_lti/app-lazy', 'init');
 
