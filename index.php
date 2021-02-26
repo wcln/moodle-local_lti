@@ -64,6 +64,9 @@ try {
 
     // Render the resource.
     $resource->render();
+
+    // Log this request for statistics
+    \local_lti\helper\request_log::log();
 } catch (error $e) {
     $e->render();
 } catch (Exception $e) {
