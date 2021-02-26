@@ -3,6 +3,9 @@
 namespace local_lti\external;
 
 use external_api;
+use local_lti\event\consumer_created;
+use local_lti\event\consumer_deleted;
+use local_lti\event\consumer_updated;
 use local_lti\helper\consumer;
 
 class consumers_api extends external_api
@@ -154,7 +157,10 @@ class consumers_api extends external_api
             $params['key'] => $params['value'],
         ];
 
-        $DB->update_record(consumer::TABLE, (object)$consumer);
+        if ($DB->update_record(consumer::TABLE, (object)$consumer)) {
+            $event = consumer_updated::create(['objectid' => $params['id']]);
+            $event->trigger();
+        }
     }
 
     public static function update_consumer_returns()
@@ -215,7 +221,7 @@ class consumers_api extends external_api
 
         $now = time();
 
-        $DB->insert_record(consumer::TABLE, (object)[
+        $consumer_id = $DB->insert_record(consumer::TABLE, (object)[
             'name'         => 'New consumer',
             'consumer_key' => 'Consumer'.rand(1000, 9999),
             'secret'       => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 6),
@@ -223,6 +229,9 @@ class consumers_api extends external_api
             'timecreated'  => $now,
             'timeupdated'  => $now,
         ]);
+
+        $event = consumer_created::create(['objectid' => $consumer_id]);
+        $event->trigger();
     }
 
     public static function create_consumer_returns()
@@ -252,7 +261,10 @@ class consumers_api extends external_api
 
         $params = self::validate_parameters(self::delete_consumer_parameters(), compact('id'));
 
-        $DB->delete_records(consumer::TABLE, ['id' => $params['id']]);
+        if ($DB->delete_records(consumer::TABLE, ['id' => $params['id']])) {
+            $event = consumer_deleted::create(['objectid' => $params['id']]);
+            $event->trigger();
+        }
     }
 
     public static function delete_consumer_returns()
