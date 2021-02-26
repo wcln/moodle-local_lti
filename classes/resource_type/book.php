@@ -18,7 +18,6 @@ namespace local_lti\resource_type;
 
 use context_module;
 use Exception;
-use local_lti\provider\error;
 use local_lti\provider\resource;
 
 /**
@@ -50,13 +49,13 @@ class book extends resource
     }
 
     /**
-     * Returns a lesson from within this book.
+     * Returns a chapter from within this book.
      *
      * @param  int  $pagenum  Page number to return.
      *
-     * @return object          Lesson object.
+     * @return object          chapter object.
      */
-    public function get_lesson($pagenum = null)
+    public function get_chapter($pagenum = null)
     {
         global $DB;
 
@@ -64,13 +63,13 @@ class book extends resource
             $pagenum = $this->pagenum;
         }
 
-        $lesson = $DB->get_record_sql('SELECT id, title, content, contentformat
+        $chapter = $DB->get_record_sql('SELECT id, title, content, contentformat
                                    FROM {book_chapters}
                                    WHERE bookid=?
                                    AND pagenum=?
                                    ORDER BY pagenum ASC', [self::get_activity_id($this->content_id), $pagenum]);
 
-        return $lesson;
+        return $chapter;
     }
 
     /**

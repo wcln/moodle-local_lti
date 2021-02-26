@@ -48,8 +48,8 @@ class book implements renderable, templatable
         $data = new stdClass();
 
         try {
-            // Retrieve the lesson to display.
-            $lesson = $this->book->get_lesson();
+            // Retrieve the chapter to display.
+            $chapter = $this->book->get_chapter();
 
             // Retrieve pages... Needed for table of contents.
             $pages = $DB->get_records_sql('SELECT id, pagenum, title
@@ -62,7 +62,7 @@ class book implements renderable, templatable
         }
 
         // Set title.
-        $data->title = $lesson->title;
+        $data->title = $chapter->title;
 
         // Retrieve and set the current request session ID.
         // Will be used to verify subsequent requests coming from this book.
@@ -70,11 +70,11 @@ class book implements renderable, templatable
 
         // Rewrite pluginfile URLs.
         // Required to render database images and files.
-        $chaptertext = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$data->session_id",
-            $this->book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
+        $chaptertext = file_rewrite_pluginfile_urls($chapter->content, "local/lti/file.php?sessid=$data->session_id",
+            $this->book->get_context()->id, 'mod_book', 'chapter', $chapter->id);
 
         // Apply filters and format the chapter text.
-        $data->content = format_text($chaptertext, $lesson->contentformat, array(
+        $data->content = format_text($chaptertext, $chapter->contentformat, array(
             'noclean'     => true,
             'overflowdiv' => true,
             'context'     => $this->book->get_context(),

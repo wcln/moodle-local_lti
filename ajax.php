@@ -43,20 +43,20 @@ if (($session_id = optional_param('sessid', false, PARAM_TEXT))
         // Load the existing request (we know it has already been verified).
         $request = $SESSION->{"lti_request_$session_id"};
 
-        // Retrieve the book and lesson.
+        // Retrieve the book and chapter.
         $book            = $request->get_resource();
-        $lesson          = $book->get_lesson($pagenum);
-        $outcome->lesson = $lesson;
+        $chapter          = $book->get_chapter($pagenum);
+        $outcome->chapter = $chapter;
 
         // Set the outcome content and title to be returned.
-        $chaptertext      = file_rewrite_pluginfile_urls($lesson->content, "local/lti/file.php?sessid=$session_id",
-            $book->get_context()->id, 'mod_book', 'chapter', $lesson->id);
-        $outcome->content = format_text($chaptertext, $lesson->contentformat, array(
+        $chaptertext      = file_rewrite_pluginfile_urls($chapter->content, "local/lti/file.php?sessid=$session_id",
+            $book->get_context()->id, 'mod_book', 'chapter', $chapter->id);
+        $outcome->content = format_text($chaptertext, $chapter->contentformat, array(
             'noclean'     => true,
             'overflowdiv' => true,
             'context'     => $request->get_resource()->get_context(),
         ));
-        $outcome->title   = $lesson->title;
+        $outcome->title   = $chapter->title;
         $outcome->success = true;
     } else {
         $outcome->error = get_string('error_session_expired', 'local_lti');
