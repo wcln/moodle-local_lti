@@ -22,6 +22,7 @@ class request_log
             $record->access_count++;
             $DB->update_record(self::TABLE, $record);
         } else {
+            $params['access_count'] = 1;
             $DB->insert_record(self::TABLE, (object)$params);
         }
     }
