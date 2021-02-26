@@ -39,6 +39,7 @@ class book implements renderable, templatable
      * Export this data so it can be used as the context for a mustache template.
      *
      * @return stdClass
+     * @throws \local_lti\provider\error
      */
     public function export_for_template(renderer_base $output)
     {
@@ -58,12 +59,10 @@ class book implements renderable, templatable
                                        ORDER BY pagenum ASC',
                 [$this->book->get_activity_id()]);
         } catch (Exception $e) {
-            // Re-throw exception with custom message.
             throw new \local_lti\provider\error(\local_lti\provider\error::ERROR_BOOK_CHAPTER, null,
-                $this->book->consumer_id);
+                $this->book->get_consumer_id());
         }
 
-        // Set title.
         $data->title = $chapter->title;
 
         // Retrieve and set the current request session ID.
@@ -101,7 +100,6 @@ class book implements renderable, templatable
         // The URL to return to the course. Will be used for the back to course button.
         $data->back_to_course_url = $this->book->request->get_parameter('launch_presentation_return_url');
 
-        // Return the data object.
         return $data;
     }
 }

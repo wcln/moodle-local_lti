@@ -97,9 +97,6 @@ class error extends \Exception
 
 
         parent::__construct($message, null, $previous);
-
-        // Whenever an error is instantiated, let's log it
-        $this->log();
     }
 
     /**
@@ -122,11 +119,14 @@ class error extends \Exception
     /**
      * Render this error using a template
      *
-     * @throws \coding_exception
+     * @throws \coding_exception|\dml_exception
      */
     public function render()
     {
         global $PAGE;
+
+        // Whenever this error is shown to the user, let's log it
+        $this->log();
 
         // Get the plugin renderer.
         $renderer = $PAGE->get_renderer('local_lti');

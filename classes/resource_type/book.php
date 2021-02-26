@@ -91,7 +91,7 @@ class book extends resource
             $book = new \local_lti\output\book($this);
             echo $renderer->render($book);
         } catch (Exception $e) {
-            throw new Exception(get_string('error_rendering_book', 'local_lti'));
+            throw new error(error::ERROR_RENDERING_BOOK, null, $this->consumer_id);
         }
     }
 

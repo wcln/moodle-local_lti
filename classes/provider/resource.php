@@ -49,7 +49,7 @@ abstract class resource
         $this->type        = $type;
         $this->consumer_id = $consumer_id;
         $this->request     = $request;
-        $this->content_id  = ! empty($request) ? $this->get_content_id() : $content_id;
+        $this->content_id  = ! empty($request) ? $this->load_content_id() : $content_id;
     }
 
     /**
@@ -150,7 +150,7 @@ abstract class resource
     /**
      * Get the book/page ID of this resource.
      */
-    private function get_content_id()
+    private function load_content_id()
     {
         // Check if the request custom ID parameter is set.
         if ( ! is_null($this->request->get_parameter('custom_id'))) {
@@ -169,6 +169,26 @@ abstract class resource
 
         // There is no ID set.
         return null;
+    }
+
+    /**
+     * Return the content id
+     *
+     * @return array|false|float|int|mixed|string|null
+     */
+    public function get_content_id()
+    {
+        return $this->content_id;
+    }
+
+    /**
+     * Return the consumer ID
+     *
+     * @return int|mixed|null
+     */
+    public function get_consumer_id()
+    {
+        return $this->consumer_id;
     }
 
     /**
