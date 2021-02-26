@@ -112,11 +112,11 @@ function navigate(page, sessionId) {
             // Updates iframe height and updates navigation buttons.
             showPage();
         } else {
-            console.log('Error loading page.'); // TODO get_string.
+            console.log('Error loading page.');
         }
 
     }).fail(function () {
-        console.log('AJAX error.'); // TODO get_string.
+        console.log('AJAX error.');
     })
 }
 

@@ -73,10 +73,10 @@
                             {{# str }} table_of_contents, local_lti {{/ str }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-                            {{#pages}}
+                            {{#chapters}}
                                 <a class="dropdown-item dropdown-{{pagenum}}"
                                    onclick="navigate({{pagenum}}, '{{session_id}}')">{{title}}</a>
-                            {{/pages}}
+                            {{/chapters}}
                         </div>
                     </li>
                     <a class="next-btn" onclick="nextPage('{{session_id}}')"><i

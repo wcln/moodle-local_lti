@@ -52,10 +52,11 @@ class book implements renderable, templatable
             $chapter = $this->book->get_chapter();
 
             // Retrieve pages... Needed for table of contents.
-            $pages = $DB->get_records_sql('SELECT id, pagenum, title
+            $chapters = $DB->get_records_sql('SELECT id, pagenum, title
                                        FROM {book_chapters}
                                        WHERE bookid=?
-                                       ORDER BY pagenum ASC', array(\local_lti\resource_type\book::get_activity_id($this->book->content_id)));
+                                       ORDER BY pagenum ASC',
+                [\local_lti\resource_type\book::get_activity_id($this->book->content_id)]);
         } catch (Exception $e) {
             // Re-throw exception with custom message.
             throw new Exception(get_string('error_retrieving_book_page', 'local_lti'));
@@ -84,17 +85,17 @@ class book implements renderable, templatable
         $data->pagenum = $this->book->get_pagenum();
 
         // Set pages. Needed for table of contents.
-        $data->pages = [];
-        foreach ($pages as $page) {
-            $data->pages[] = [
-                'title'       => $page->title,
-                'pagenum'     => $page->pagenum,
+        $data->chapters = [];
+        foreach ($chapters as $chapter) {
+            $data->chapters[] = [
+                'title'       => $chapter->title,
+                'pagenum'     => $chapter->pagenum,
                 'sesssion_id' => $data->session_id,
             ];
         }
 
-        // The total count of pages. Used for the loading bar.
-        $data->total_pages = count($data->pages);
+        // The total count of chapters. Used for the loading bar.
+        $data->total_pages = count($data->chapters);
 
         // The URL to return to the course. Will be used for the back to course button.
         $data->back_to_course_url = $this->book->request->get_parameter('launch_presentation_return_url');
