@@ -51,7 +51,7 @@ class book implements renderable, templatable
             // Retrieve the chapter to display.
             $chapter = $this->book->get_chapter();
 
-            // Retrieve pages... Needed for table of contents.
+            // Retrieve all chapters... Needed for table of contents.
             $chapters = $DB->get_records_sql('SELECT id, pagenum, title
                                        FROM {book_chapters}
                                        WHERE bookid=?
@@ -59,7 +59,8 @@ class book implements renderable, templatable
                 [\local_lti\resource_type\book::get_activity_id($this->book->content_id)]);
         } catch (Exception $e) {
             // Re-throw exception with custom message.
-            throw new Exception(get_string('error_retrieving_book_page', 'local_lti'));
+            throw new \local_lti\provider\error(\local_lti\provider\error::ERROR_BOOK_CHAPTER, null,
+                $this->book->consumer_id);
         }
 
         // Set title.
