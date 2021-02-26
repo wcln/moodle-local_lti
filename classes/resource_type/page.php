@@ -17,6 +17,7 @@
 namespace local_lti\resource_type;
 
 use context_module;
+use local_lti\provider\error;
 use local_lti\provider\resource;
 
 /**
@@ -72,11 +73,14 @@ class page extends resource
      * Get the ID of this page activity
      *
      * @return int
-     * @throws \coding_exception
      */
     public function get_activity_id()
     {
-        $cm = get_coursemodule_from_id('page', $this->content_id, 0, false, MUST_EXIST);
+        try {
+            $cm = get_coursemodule_from_id('page', $this->content_id, 0, false, MUST_EXIST);
+        } catch (\Exception $e) {
+            throw new error(error::ERROR_PAGE_ID, null, $this->consumer_id);
+        }
 
         return $cm->instance;
     }
