@@ -55,7 +55,7 @@ class overview_api extends external_api
     public static function get_top_resources_parameters(): \external_function_parameters
     {
         return new \external_function_parameters([
-            'limit' => new \external_value(PARAM_INT, 'Number of top consumers to fetch', VALUE_DEFAULT, 5),
+            'limit' => new \external_value(PARAM_INT, 'Number of top consumers to fetch', VALUE_DEFAULT, 15),
         ]);
     }
 
