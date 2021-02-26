@@ -64,11 +64,10 @@ try {
 
     // Render the resource.
     $resource->render();
+} catch (error $e) {
+    $e->render();
 } catch (Exception $e) {
-
-    // Log all exceptions in the database
-    error::log($e, $request);
-
-    // Render all exceptions using a custom template
-    error::render($e);
+    // Ensure we handle all generic exceptions as well
+    $e = new error(empty($e->getCode()) ? error::ERROR_UNKNOWN : $e->getCode(), $e->getMessage());
+    $e->render();
 }

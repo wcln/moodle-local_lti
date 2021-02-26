@@ -163,5 +163,20 @@ function xmldb_local_lti_upgrade($oldversion)
         upgrade_plugin_savepoint(true, 2021020504, 'local', 'lti');
     }
 
+    if ($oldversion < 2021022600) {
+
+        // Define field message to be added to local_lti_error_log.
+        $table = new xmldb_table('local_lti_error_log');
+        $field = new xmldb_field('message', XMLDB_TYPE_TEXT, null, null, null, null, null, 'code');
+
+        // Conditionally launch add field message.
+        if (!$dbman->field_exists($table, $field)) {
+            $dbman->add_field($table, $field);
+        }
+
+        // Lti savepoint reached.
+        upgrade_plugin_savepoint(true, 2021022600, 'local', 'lti');
+    }
+
     return true;
 }

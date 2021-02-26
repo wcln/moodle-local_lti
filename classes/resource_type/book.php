@@ -18,6 +18,7 @@ namespace local_lti\resource_type;
 
 use context_module;
 use Exception;
+use local_lti\provider\error;
 use local_lti\provider\resource;
 
 /**

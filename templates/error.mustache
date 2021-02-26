@@ -19,7 +19,7 @@
   LTI Error Message template.
 }}
 {{> local_lti/header }}
-<!-- Custom CSS to style this error. -->
+<!-- Custom CSS to style this error -->
 <link rel="stylesheet" href="style/error.css">
 </head>
 <body>
@@ -37,6 +37,12 @@
         </div>
         <p>{{message}}</p>
         <p>{{# str }}error_footer, local_lti {{/ str }}</p>
+        {{#code}}
+            <p><i>Error code</i> <b>{{code}}</b></p>
+        {{/code}}
+        {{^code}}
+            <p><i>Unknown error code</i></p>
+        {{/code}}
     </div>
 </div>
 </div>

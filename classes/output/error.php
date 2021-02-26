@@ -24,12 +24,16 @@ use templatable;
 class error implements renderable, templatable
 {
 
-    // The error message to render.
+    // The error message to render
     var $message = null;
 
-    public function __construct($message)
+    // The error code
+    var $code = null;
+
+    public function __construct($message, $code)
     {
         $this->message = $message;
+        $this->code    = $code;
     }
 
     /**
@@ -39,11 +43,10 @@ class error implements renderable, templatable
      */
     public function export_for_template(renderer_base $output)
     {
-        global $DB;
-
-        // Data class to be sent to template.
+        // Data class to be sent to template
         $data          = new stdClass();
         $data->message = $this->message;
+        $data->code    = $this->code;
 
         return $data;
     }

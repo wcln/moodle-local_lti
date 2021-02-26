@@ -40,6 +40,9 @@ class request extends oauth\request
     /** @var string The random session ID. */
     private $session_id;
 
+    /** @var int|null This is not the consumer key, it is the ID of the consumer in the database */
+    private $consumer_id;
+
     public function __construct()
     {
         // Construct oauth parent request.
@@ -48,14 +51,16 @@ class request extends oauth\request
         // Load resource depending on type.
         $resource_class = "\\local_lti\\resource_type\\".request::get_resource_type();
 
-        try {
+        $this->consumer_id = util::get_consumer_id(parent::get_parameter('oauth_consumer_key'));
+
+        if (class_exists($resource_class)) {
             $this->resource = new $resource_class(
                 util::get_type_id(request::get_resource_type()),
-                util::get_consumer_id(parent::get_parameter('oauth_consumer_key')),
+                $this->consumer_id,
                 $this
             );
-        } catch (Exception $e) {
-            throw new Exception(get_string('error_invalid_type', 'local_lti'));
+        } else {
+            throw new error(error::ERROR_INVALID_TYPE, null, $this->consumer_id);
         }
 
         // Load user.
@@ -75,13 +80,13 @@ class request extends oauth\request
                 if ($this->verify_required_parameters()) {
                     return true;
                 } else {
-                    throw new Exception(get_string('error_missing_required_params', 'local_lti'));
+                    throw new error(error::ERROR_MISSING_PARAMS, null, $this->consumer_id);
                 }
             } else {
-                throw new Exception(get_string('error_auth_failed', 'local_lti'));
+                throw new error(error::ERROR_AUTH_FAILED, null, $this->consumer_id);
             }
         } else {
-            throw new Exception(get_string('error_launch_request', 'local_lti'));
+            throw new error(error::ERROR_LAUNCH_REQUEST, null, $this->consumer_id);
         }
     }
 
@@ -142,8 +147,7 @@ class request extends oauth\request
                 $ok = false;
             }
         } else {
-            // Invalid consumer key.
-            throw new Exception("Invalid consumer key '".parent::get_parameter('oauth_consumer_key')."'!'");
+            throw new error(error::ERROR_CONSUMER_KEY, "Invalid consumer key '".parent::get_parameter('oauth_consumer_key') ."'", $this->consumer_id);
         }
 
         return $ok;
@@ -165,7 +169,7 @@ class request extends oauth\request
         // This is used for the back to course button.
         // This has been disabled because D2L/Brightspace does not send this!
         // TODO LTI-21 Make this optional, and hide 'return to course' button if not present
-        // $ok = $ok && ! empty(parent::get_parameter('launch_presentation_return_url'));
+//        $ok = $ok && ! empty(parent::get_parameter('launch_presentation_return_url'));
 
         // If other parameters become required they are to be added here...
 

@@ -47,7 +47,10 @@ class errors_api extends external_api
 
         foreach ($errors as $error) {
             $error->timecreated = userdate($error->timecreated, get_string('strftimedatetime'));
-            $error->message     = error::ERROR_CODES[$error->code];
+
+            if (empty($error->message)) {
+                $error->message = error::ERROR_MESSAGES[$error->code];
+            }
 
             // Get the consumer name attached to this error (rather than ID)
             if ($consumer = $DB->get_record(consumer::TABLE, ['id' => $error->consumer])) {
