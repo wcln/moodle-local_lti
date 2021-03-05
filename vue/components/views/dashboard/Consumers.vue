@@ -14,7 +14,7 @@
           <div class="field">
             <div class="control">
               <div class="select">
-                <select v-model="filters.sort" @change="search">
+                <select v-model="filters.sort" @change="search(true)">
                   <option v-for="option in sortOptions" :value="option.value">{{ option.name }}</option>
                 </select>
               </div>
@@ -30,7 +30,7 @@
         <div class="field-body">
           <div class="field is-grouped">
             <div class="control has-icons-left">
-              <input @keyup="search" v-model="filters.keywords" class="input" type="text" placeholder="Search for consumers...">
+              <input @keyup="search(true)" v-model="filters.keywords" class="input" type="text" placeholder="Search for consumers...">
               <span class="icon is-left">
                     <i class="fas fa-search" aria-hidden="true"></i>
                 </span>
@@ -143,7 +143,12 @@ export default {
     this.search();
   },
   methods: {
-    search() {
+    search(resetPage = false) {
+
+      if (resetPage) {
+        this.pagination.currentPage = 1;
+      }
+
       ajax('local_lti_get_consumers', {
         keywords: this.filters.keywords,
         sort: this.filters.sort,
