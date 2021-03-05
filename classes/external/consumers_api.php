@@ -87,7 +87,7 @@ class consumers_api extends external_api
         $consumers_formatted = [];
         foreach ($consumers as $consumer) {
             $consumer->last_access = ! empty($consumer->last_access) ? userdate($consumer->last_access,
-                get_string('strftimedatetime')) : '';
+                get_string('strftimedatetime')) : 'Never';
 
 
             $fields = [];
