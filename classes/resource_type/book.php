@@ -76,7 +76,7 @@ class book extends resource
     /**
      * Renders the book using a template.
      */
-    public function render()
+    public function render_old()
     {
         global $PAGE;
 

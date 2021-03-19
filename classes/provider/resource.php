@@ -44,12 +44,21 @@ abstract class resource
     /** @var int The ID of the resource content that is being requested.. */
     public $content_id;
 
+    /** @var int The resource ID of this resource in the resource linking table */
+    public $id;
+
     public function __construct($type = null, $consumer_id = null, $request = null, $content_id = null)
     {
         $this->type        = $type;
         $this->consumer_id = $consumer_id;
         $this->request     = $request;
         $this->content_id  = ! empty($request) ? $this->load_content_id() : $content_id;
+
+        $this->update_link();
+
+        if ($record = $this->get_record_from_database()) {
+            $this->id = $record->id;
+        }
     }
 
     /**
@@ -192,9 +201,20 @@ abstract class resource
     }
 
     /**
-     * To be overridden by resource type classes.
+     * Render this resource
+     *
+     * Resource link 'id' will be passed to Vue app,
+     * then Vue will make webservice calls using 'id' and a token
+     * to get content to display
+     *
      */
-    abstract public function render();
+    public function render() {
+        global $PAGE;
+
+        $renderer = $PAGE->get_renderer('local_lti');
+        $resource_view = new \local_lti\output\resource($this->id);
+        echo $renderer->render($resource_view);
+    }
 
     /**
      * Get the ID of the resource (activity)

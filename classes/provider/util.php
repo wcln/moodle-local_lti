@@ -16,6 +16,8 @@
 
 namespace local_lti\provider;
 
+use Dotenv\Dotenv;
+
 /**
  * Provider Utilities.
  *
@@ -134,5 +136,28 @@ class util
     public static function generate_random_session_id()
     {
         return bin2hex(random_bytes(10));
+    }
+
+    /**
+     * Get the secret used for verifying JWTs
+     *
+     * @return mixed
+     */
+    public static function get_secret() {
+        return $_ENV['SECRET'];
+    }
+
+    /**
+     * Load environment variables from .env file
+     *
+     * See: https://github.com/vlucas/phpdotenv
+     */
+    public static function load_environment() {
+        global $CFG;
+
+        require_once(__DIR__.'/../../vendor/autoload.php');
+
+        $dotenv = Dotenv::createImmutable("$CFG->dirroot/local/lti/");
+        $dotenv->load();
     }
 }

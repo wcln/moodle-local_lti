@@ -41,7 +41,7 @@ class page extends resource
     /**
      * Renders the page using a template.
      */
-    public function render()
+    public function render_old()
     {
         global $PAGE;
 
