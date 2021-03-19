@@ -19,13 +19,14 @@ export default {
     return {
       resource_content: null,
       loading: true,
-      pages: []
+      pages: [],
+      currentPage: 0
     }
   },
   methods: {
     loadContent() {
       console.log('Loading content...');
-      this.moodleAjax('local_lti_get_content', this.token, {}).then(response => {
+      this.moodleAjax('local_lti_get_content', this.token, {pagenum: this.currentPage}).then(response => {
 
         this.resource_content = response.raw_content;
         // TODO set this.pages

@@ -36,9 +36,6 @@ class book extends resource
 
     const TABLE = 'book';
 
-    /** @var int The page number of the resource to retrieve. */
-    private $pagenum = 1;
-
     /**
      * Retrieve the context module instance of this book.
      *
@@ -60,17 +57,15 @@ class book extends resource
     {
         global $DB;
 
-        if (is_null($pagenum)) {
-            $pagenum = $this->pagenum;
+        if (empty($pagenum)) {
+            $pagenum = 1;
         }
 
-        $chapter = $DB->get_record_sql('SELECT id, title, content, contentformat
+        return $DB->get_record_sql('SELECT id, title, content, contentformat
                                    FROM {book_chapters}
                                    WHERE bookid=?
                                    AND pagenum=?
                                    ORDER BY pagenum ASC', [$this->get_activity_id(), $pagenum]);
-
-        return $chapter;
     }
 
     /**
@@ -95,25 +90,23 @@ class book extends resource
         }
     }
 
-    /**
-     * Returns the current page number of this book.
-     *
-     * @return int Page number.
-     */
-    public function get_pagenum()
-    {
-        return $this->pagenum;
+    public function get_content($token, $pagenum = null) {
+
+        $chapter = $this->get_chapter($pagenum);
+
+        $chaptertext = file_rewrite_pluginfile_urls($chapter->content, "local/lti/file.php?token=$token",
+            $this->get_context()->id, 'mod_book', 'chapter', $chapter->id);
+
+        // Apply filters and format the chapter text.
+        return format_text($chaptertext, $chapter->contentformat, [
+            'noclean'     => true,
+            'overflowdiv' => true,
+            'context'     => $this->get_context(),
+        ]);
     }
 
-    /**
-     * Sets the current page number of the book.
-     * Only used for non-AJAX page navigation.
-     *
-     * @param  int  $pagenum  Page number.
-     */
-    public function set_pagenum($pagenum)
-    {
-        $this->pagenum = $pagenum;
+    public function get_page_data() {
+
     }
 
     /**

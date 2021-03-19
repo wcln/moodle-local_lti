@@ -1,6 +1,5 @@
 <template>
-  <div id="app">
-    <h1>Token: {{token}}</h1>
+  <div>
     <Resource v-if="! displayError" :token="token"></Resource>
     <Error v-else :code="errorCode" :message="errorMessage"></Error>
   </div>
