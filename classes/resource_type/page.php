@@ -35,30 +35,6 @@ class page extends resource
 
     const TABLE = 'page';
 
-    /** @var int The course module instance aka the page ID. */
-    var $page_id = null;
-
-    /**
-     * Renders the page using a template.
-     */
-    public function render_old()
-    {
-        global $PAGE;
-
-        // Ensure this resource exists in the local_lti_resource_link table, and update it.
-        parent::update_link();
-
-        // Get the plugin renderer.
-        $renderer = $PAGE->get_renderer('local_lti');
-
-        // Get the ID of this page
-        $this->page_id = self::get_activity_id($this->content_id);
-
-        // Render page.
-        $page = new \local_lti\output\page($this);
-        echo $renderer->render($page);
-    }
-
     /**
      * Get context object for this page.
      *
@@ -97,6 +73,29 @@ class page extends resource
         global $DB;
 
         return $DB->get_record(self::TABLE, ['id' => $this->get_activity_id()]);
+    }
+
+    public function get_content($token, $pagenum = null)
+    {
+        global $DB;
+
+        $page          = $DB->get_record('page', ['id' => $this->get_activity_id()],
+            'id, name, content, revision, contentformat', MUST_EXIST);
+
+        // Rewrite pluginfile URLs
+        // Required to render database images and files
+        $content = file_rewrite_pluginfile_urls($page->content,
+            "local/lti/file.php?token=$token", $this->get_context()->id,
+            'mod_page', 'content', $page->revision);
+
+        // Apply filters and format the chapter text
+        $content = format_text($content, $page->contentformat, [
+            'noclean'     => true,
+            'overflowdiv' => true,
+            'context'     => $this->get_context(),
+        ]);
+
+        return $content;
     }
 }
 

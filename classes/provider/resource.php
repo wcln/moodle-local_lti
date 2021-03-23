@@ -234,4 +234,17 @@ abstract class resource
      */
     abstract public function get_activity_record();
 
+    /**
+     * If this resource has multiple pages, return data here like:
+     *
+     * [['name' => 'Example page', 'pagenum' => 2]]
+     *
+     * @return array
+     */
+    public function get_page_data() {
+        return [];
+    }
+
+    abstract public function get_content($token, $pagenum = null);
+
 }

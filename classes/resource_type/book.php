@@ -68,28 +68,6 @@ class book extends resource
                                    ORDER BY pagenum ASC', [$this->get_activity_id(), $pagenum]);
     }
 
-    /**
-     * Renders the book using a template.
-     */
-    public function render_old()
-    {
-        global $PAGE;
-
-        // Ensure this resource exists in the local_lti_resource_link table, and update it.
-        parent::update_link();
-
-        // Get the plugin renderer.
-        $renderer = $PAGE->get_renderer('local_lti');
-
-        try {
-            // Render book.
-            $book = new \local_lti\output\book($this);
-            echo $renderer->render($book);
-        } catch (Exception $e) {
-            throw new error(error::ERROR_RENDERING_BOOK, null, $this->consumer_id);
-        }
-    }
-
     public function get_content($token, $pagenum = null) {
 
         $chapter = $this->get_chapter($pagenum);
