@@ -1,6 +1,10 @@
 <template>
   <div>
-    <h2>Resource view</h2>
+    <ul>
+      <li v-for="page in pages">
+        <a @click="changePage(page.pagenum)">{{ page.name }}</a>
+      </li>
+    </ul>
     <div v-if="resource_content && ! loading" v-html="resource_content"></div>
     <div v-if="loading">
       <p>Loading...</p>
@@ -25,13 +29,16 @@ export default {
   },
   methods: {
     loadContent() {
-      console.log('Loading content...');
       this.moodleAjax('local_lti_get_content', this.token, {pagenum: this.currentPage}).then(response => {
-
         this.resource_content = response.raw_content;
-        // TODO set this.pages
+        this.pages = response.pages;
         this.loading = false;
       });
+    },
+    changePage(pagenum) {
+      this.loading = true;
+      this.currentPage = pagenum;
+      this.loadContent();
     }
   },
   mounted() {

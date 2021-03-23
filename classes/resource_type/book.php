@@ -106,7 +106,23 @@ class book extends resource
     }
 
     public function get_page_data() {
+        global $DB;
 
+        $chapters = $DB->get_records_sql('SELECT id, pagenum, title
+                                       FROM {book_chapters}
+                                       WHERE bookid=?
+                                       ORDER BY pagenum ASC',
+            [$this->get_activity_id()]);
+
+        $pages = [];
+        foreach ($chapters as $chapter) {
+            $pages[] = [
+                'name'       => $chapter->title,
+                'pagenum'     => $chapter->pagenum,
+            ];
+        }
+
+        return $pages;
     }
 
     /**

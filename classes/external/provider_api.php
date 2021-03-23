@@ -71,7 +71,10 @@ class provider_api extends external_api
     {
         return new \external_single_structure([
             'raw_content' => new \external_value(PARAM_RAW),
-            // TODO add page information if this is a book
+            'pages'       => new \external_multiple_structure(new \external_single_structure([
+                'name'    => new \external_value(PARAM_TEXT),
+                'pagenum' => new \external_value(PARAM_INT),
+            ]), '', VALUE_OPTIONAL),
         ]);
     }
 
