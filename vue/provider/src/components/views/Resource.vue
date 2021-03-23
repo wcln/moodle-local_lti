@@ -1,9 +1,15 @@
 <template>
-  <div>
-    <h2>{{title}}</h2>
+  <div class="has-text-left">
+    <Navbar
+      :title="title"
+      :pages="pages"
+      :current-page="currentPage"
+      :return-url="returnUrl"
+      @pageChanged="changePage"
+    ></Navbar>
     <a :href="returnUrl">Return to course</a>
     <ul>
-      <li v-for="page in pages">
+      <li v-for="(page, index) in pages" :key="index">
         <a @click="changePage(page.pagenum)">{{ page.name }}</a>
       </li>
     </ul>
@@ -17,9 +23,11 @@
 <script>
 import moodleAjax from "@/mixins/moodleAjax";
 import Vue from "vue";
+import Navbar from "@/components/partials/Navbar";
 
 export default {
   name: "Resource",
+  components: {Navbar},
   props: ['token', 'returnUrl'],
   mixins: [moodleAjax],
   data() {
@@ -28,7 +36,7 @@ export default {
       title: "",
       loading: true,
       pages: [],
-      currentPage: 0
+      currentPage: 1
     }
   },
   methods: {
