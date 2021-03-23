@@ -29,7 +29,6 @@ export default {
     data() {
         return {
             webserviceUrl: WEBSERVICE_URL
-
         }
     },
     methods: {
