@@ -137,4 +137,11 @@ class book extends resource
 
         return $DB->get_record(self::TABLE, ['id' => $this->get_activity_id()]);
     }
+
+    public function get_title($pagenum = null)
+    {
+        $chapter = $this->get_chapter($pagenum);
+
+        return $chapter->title;
+    }
 }

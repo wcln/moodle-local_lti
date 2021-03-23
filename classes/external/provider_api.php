@@ -57,6 +57,7 @@ class provider_api extends external_api
 
             $content = $resource->get_content($token, $params['pagenum']);
             $pages   = $resource->get_page_data();
+            $title   = $resource->get_title($params['pagenum']);
         } else {
             throw new error(error::ERROR_INVALID_TYPE, null, $resource_link->consumer_id);
         }
@@ -64,6 +65,7 @@ class provider_api extends external_api
         return [
             'raw_content' => $content,
             'pages'       => $pages,
+            'title'       => $title,
         ];
     }
 
@@ -71,6 +73,7 @@ class provider_api extends external_api
     {
         return new \external_single_structure([
             'raw_content' => new \external_value(PARAM_RAW),
+            'title'       => new \external_value(PARAM_TEXT),
             'pages'       => new \external_multiple_structure(new \external_single_structure([
                 'name'    => new \external_value(PARAM_TEXT),
                 'pagenum' => new \external_value(PARAM_INT),

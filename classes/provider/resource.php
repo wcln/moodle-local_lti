@@ -247,4 +247,6 @@ abstract class resource
 
     abstract public function get_content($token, $pagenum = null);
 
+    abstract public function get_title($pagenum = null);
+
 }

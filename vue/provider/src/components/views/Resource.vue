@@ -1,5 +1,6 @@
 <template>
   <div>
+    <h2>{{title}}</h2>
     <ul>
       <li v-for="page in pages">
         <a @click="changePage(page.pagenum)">{{ page.name }}</a>
@@ -22,6 +23,7 @@ export default {
   data() {
     return {
       resource_content: null,
+      title: "",
       loading: true,
       pages: [],
       currentPage: 0
@@ -31,6 +33,7 @@ export default {
     loadContent() {
       this.moodleAjax('local_lti_get_content', this.token, {pagenum: this.currentPage}).then(response => {
         this.resource_content = response.raw_content;
+        this.title = response.title;
         this.pages = response.pages;
         this.loading = false;
       });

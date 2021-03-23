@@ -97,5 +97,12 @@ class page extends resource
 
         return $content;
     }
+
+    public function get_title($pagenum = null)
+    {
+        $page = $this->get_activity_record();
+
+        return $page->name;
+    }
 }
 
