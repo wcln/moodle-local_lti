@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Resource v-if="! displayError" :token="token"></Resource>
+    <Resource v-if="! displayError" :token="token" :return-url="returnUrl"></Resource>
     <Error v-else :code="errorCode" :message="errorMessage"></Error>
   </div>
 </template>
@@ -12,7 +12,7 @@ import Error from "@/components/views/Error";
 export default {
   name: 'App',
   components: {Error, Resource},
-  props: ['token', 'errorCode', 'errorMessage'],
+  props: ['token', 'returnUrl', 'errorCode', 'errorMessage'],
   computed: {
     displayError() {
       return this.errorCode !== "" || this.errorMessage !== "";

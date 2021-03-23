@@ -27,10 +27,12 @@ class resource implements renderable, templatable
 {
 
     var $resource_id = null;
+    var $return_url = null;
 
-    public function __construct($resource_id)
+    public function __construct($resource_id, $return_url)
     {
         $this->resource_id = $resource_id;
+        $this->return_url  = $return_url;
     }
 
     /**
@@ -43,7 +45,10 @@ class resource implements renderable, templatable
         $data = new stdClass();
 
         // Generate a JWT so the Vue app can make subsequent requests for information
-        $data->token = JWT::encode(['resource_id' => $this->resource_id], util::get_secret());
+        $data->token = JWT::encode(['resource_id' => $this->resource_id],
+            util::get_secret());
+
+        $data->return_url = $this->return_url;
 
         return $data;
     }

@@ -94,7 +94,7 @@ abstract class resource
         global $DB;
 
         $resource_record              = $this->get_record_from_database();
-        $consumer_record              = $DB->get_record('local_lti_consumer', array('id' => $resource_record->consumer),
+        $consumer_record              = $DB->get_record('local_lti_consumer', ['id' => $resource_record->consumer],
             'id');
         $consumer_record->last_access = time();
         $DB->update_record('local_lti_consumer', $consumer_record);
@@ -208,11 +208,13 @@ abstract class resource
      * to get content to display
      *
      */
-    public function render() {
+    public function render()
+    {
         global $PAGE;
 
-        $renderer = $PAGE->get_renderer('local_lti');
-        $resource_view = new \local_lti\output\resource($this->id);
+        $renderer      = $PAGE->get_renderer('local_lti');
+        $resource_view = new \local_lti\output\resource($this->id,
+            $this->request->get_parameter('launch_presentation_return_url'));
         echo $renderer->render($resource_view);
     }
 
@@ -241,7 +243,8 @@ abstract class resource
      *
      * @return array
      */
-    public function get_page_data() {
+    public function get_page_data()
+    {
         return [];
     }
 

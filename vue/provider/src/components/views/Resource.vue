@@ -1,6 +1,7 @@
 <template>
   <div>
     <h2>{{title}}</h2>
+    <a :href="returnUrl">Return to course</a>
     <ul>
       <li v-for="page in pages">
         <a @click="changePage(page.pagenum)">{{ page.name }}</a>
@@ -18,7 +19,7 @@ import moodleAjax from "@/mixins/moodleAjax";
 
 export default {
   name: "Resource",
-  props: ['token'],
+  props: ['token', 'returnUrl'],
   mixins: [moodleAjax],
   data() {
     return {
