@@ -16,7 +16,6 @@ export const moodleAjax = (wsfunction, token, args) => {
             }
         }).then(response => {
 
-            console.log(response);
             if (response.data.error || response.data[0].error) {
                 throw new Error('Error querying Moodle webservice, see details below:\n\n' + JSON.stringify(response.data));
             }
