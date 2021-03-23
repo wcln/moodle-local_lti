@@ -16,6 +16,7 @@
 
 <script>
 import moodleAjax from "@/mixins/moodleAjax";
+import Vue from "vue";
 
 export default {
   name: "Resource",
@@ -37,6 +38,10 @@ export default {
         this.title = response.title;
         this.pages = response.pages;
         this.loading = false;
+
+        Vue.nextTick(() => {
+          this.$emit('updated');
+        });
       });
     },
     changePage(pagenum) {
