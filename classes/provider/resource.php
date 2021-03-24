@@ -54,8 +54,6 @@ abstract class resource
         $this->request     = $request;
         $this->content_id  = ! empty($request) ? $this->load_content_id() : $content_id;
 
-        $this->update_link();
-
         if ($record = $this->get_record_from_database()) {
             $this->id = $record->id;
         }
@@ -65,7 +63,7 @@ abstract class resource
      * Checks if a record exists in the resource linking database table for this resource.
      * If it does, update it. If it does not, create it.
      */
-    protected function update_link()
+    public function update_link()
     {
         // Check if record exists in local_lti_resource_link table.
         if ($this->is_linked()) {
@@ -139,7 +137,7 @@ abstract class resource
     /*
      * Inserts this resource into local_lti_resource_link table.
      */
-    public function create_link()
+    private function create_link()
     {
         global $DB;
 
