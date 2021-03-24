@@ -7,15 +7,13 @@
       :return-url="returnUrl"
       @pageChanged="changePage"
     ></Navbar>
-    <a :href="returnUrl">Return to course</a>
-    <ul>
-      <li v-for="(page, index) in pages" :key="index">
-        <a @click="changePage(page.pagenum)">{{ page.name }}</a>
-      </li>
-    </ul>
-    <div v-if="resource_content && ! loading" v-html="resource_content"></div>
-    <div v-if="loading">
-      <p>Loading...</p>
+    <div class="resource-content mt-5">
+      <transition name="fade">
+        <div v-if="resource_content && ! loading" v-html="resource_content"></div>
+      </transition>
+      <transition name="fade">
+        <Loading v-if="loading"></Loading>
+      </transition>
     </div>
   </div>
 </template>
@@ -24,10 +22,11 @@
 import moodleAjax from "@/mixins/moodleAjax";
 import Vue from "vue";
 import Navbar from "@/components/partials/Navbar";
+import Loading from "@/components/partials/Loading";
 
 export default {
   name: "Resource",
-  components: {Navbar},
+  components: {Loading, Navbar},
   props: ['token', 'returnUrl'],
   mixins: [moodleAjax],
   data() {
@@ -64,6 +63,11 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="scss">
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .5s;
+}
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
 </style>

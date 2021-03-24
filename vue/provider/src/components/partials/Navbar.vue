@@ -20,31 +20,31 @@
 
       <div class="navbar-end">
 
-        <div class="navbar-item">
+        <div class="navbar-item" v-if="hasPages">
           <a @click="$emit('pageChanged', currentPage - 1)" class="has-text-light">
             <i class="fa fa-angle-left fa-2x"></i>
           </a>
         </div>
 
-        <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
-            <a class="navbar-link">
-              Table of Contents
-            </a>
+        <div class="navbar-item has-dropdown is-hoverable" v-if="hasPages">
+          <a class="navbar-link">
+            Table of Contents
+          </a>
 
-            <div class="navbar-dropdown is-right">
-              <a @click="$emit('pageChanged', page.pagenum)" :class="{'navbar-item': true, 'is-active': index === currentPage - 1}" v-for="(page, index) in pages" :key="index">
-                {{page.name}}
-              </a>
-              <hr class="navbar-divider">
-              <a :href="returnUrl" class="navbar-item">
-                Return to course
-              </a>
-            </div>
+          <div class="navbar-dropdown is-right">
+            <a @click="$emit('pageChanged', page.pagenum)"
+               :class="{'navbar-item': true, 'is-active': index === currentPage - 1}" v-for="(page, index) in pages"
+               :key="index">
+              {{ page.name }}
+            </a>
+            <hr class="navbar-divider">
+            <a :href="returnUrl" class="navbar-item">
+              Return to course
+            </a>
           </div>
         </div>
 
-        <div class="navbar-item">
+        <div class="navbar-item" v-if="hasPages">
           <a @click="$emit('pageChanged', currentPage + 1)" class="has-text-light">
             <i class="fa fa-angle-right fa-2x"></i>
           </a>
@@ -53,6 +53,7 @@
       </div>
 
     </div>
+
   </nav>
 </template>
 
@@ -62,10 +63,13 @@ export default {
   props: ['title', 'pages', 'currentPage', 'returnUrl'],
   computed: {
     isLastPage() {
-      return currentPage === pages.length;
+      return this.currentPage === this.pages.length;
     },
     isFirstPage() {
-      return currentPage === 1;
+      return this.currentPage === 1;
+    },
+    hasPages() {
+      return this.pages !== null && this.pages.length > 0;
     }
   }
 }
