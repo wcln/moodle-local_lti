@@ -18,6 +18,8 @@ class consumers_api extends external_api
     const SORT_NAME_ASC = 'name_asc';
     const SORT_NAME_DESC = 'name_desc';
     const SORT_LAST_ACCESS = 'last_access';
+    const SORT_CONSUMER_KEY_ASC = 'consumer_key_asc';
+    const SORT_CONSUMER_KEY_DESC = 'consumer_key_desc';
 
     /*
     |--------------------------------------------------------------------------
@@ -68,6 +70,12 @@ class consumers_api extends external_api
                 break;
             case self::SORT_LAST_ACCESS:
                 $sort = 'last_access DESC';
+                break;
+            case self::SORT_CONSUMER_KEY_ASC:
+                $sort = 'consumer_key ASC';
+                break;
+            case self::SORT_CONSUMER_KEY_DESC:
+                $sort = 'consumer_key DESC';
                 break;
             default:
                 $sort = '';
@@ -189,6 +197,8 @@ class consumers_api extends external_api
             ['value' => self::SORT_DATE_ASC, 'name' => 'Date added (oldest first)'],
             ['value' => self::SORT_NAME_ASC, 'name' => 'Name (A - Z)'],
             ['value' => self::SORT_NAME_DESC, 'name' => 'Name reverse (Z - A)'],
+            ['value' => self::SORT_CONSUMER_KEY_ASC, 'name' => 'Consumer key (A - Z)'],
+            ['value' => self::SORT_CONSUMER_KEY_DESC, 'name' => 'Consumer key reverse (Z - A)'],
             ['value' => self::SORT_LAST_ACCESS, 'name' => 'Last access'],
         ];
     }
