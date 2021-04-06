@@ -9,7 +9,7 @@
         @pageChanged="changePage"
         @print="print"
     ></Navbar>
-    <div class="card-content">
+    <div class="card-content" id="rendered-resource">
       <transition name="fade">
         <div v-if="resource_content && ! loading" v-html="resource_content"></div>
       </transition>
@@ -30,6 +30,7 @@ import moodleAjax from "@/mixins/moodleAjax";
 import Navbar from "@/components/partials/Navbar";
 import Loading from "@/components/partials/Loading";
 import Footer from "@/components/partials/Footer";
+import Vue from "vue";
 
 export default {
   name: "Resource",
@@ -55,6 +56,11 @@ export default {
         this.currentPage = pagenum;
         this.navBarKey += 1;
         this.loading = false;
+
+        // Emit 'updated' event so that iFrame is resized
+        Vue.nextTick(() => {
+          this.$emit('updated');
+        });
       });
     },
     changePage(pagenum) {

@@ -1,7 +1,7 @@
 export const iframeMessageSender = {
   methods: {
       resizeIframe() {
-          const height = document.querySelector('.rendered-resource').offsetHeight;
+          const height = document.querySelector('#rendered-resource').offsetHeight;
           window.parent.postMessage(JSON.stringify({subject: 'lti.frameResize', height: height + 100}), '*');
           this.scrollToTop();
       },
