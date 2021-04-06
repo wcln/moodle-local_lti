@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-info card-header" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <span class="navbar-item" href="https://bulma.io">
         <img src="../../assets/logo.png" height="28" alt="WCLN logo">
@@ -9,18 +9,17 @@
         {{ title }}
       </h1>
 
-      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="resourceNavbar">
+      <a role="button" :class="{'navbar-burger': true, 'is-active': showMenu}" aria-label="menu" aria-expanded="false" data-target="resourceNavbar" @click="showMenu = ! showMenu">
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
       </a>
     </div>
 
-    <div id="resourceNavbar" class="navbar-menu">
-
+    <div id="resourceNavbar" :class="{'navbar-menu': true, 'is-active': showMenu}">
       <div class="navbar-end">
 
-        <div class="navbar-item" v-if="hasPages && ! isFirstPage">
+        <div class="navbar-item" v-if="hasPages && ! isFirstPage && ! showMenu">
           <a @click="$emit('pageChanged', currentPage - 1)" class="has-text-light">
             <i class="fa fa-angle-left fa-2x"></i>
           </a>
@@ -57,7 +56,7 @@
           </div>
         </div>
 
-        <div class="navbar-item" v-if="hasPages && ! isLastPage">
+        <div class="navbar-item" v-if="hasPages && ! isLastPage && ! showMenu">
           <a @click="$emit('pageChanged', currentPage + 1)" class="has-text-light">
             <i class="fa fa-angle-right fa-2x"></i>
           </a>
@@ -86,6 +85,11 @@
 export default {
   name: "Navbar",
   props: ['title', 'pages', 'currentPage', 'returnUrl'],
+  data() {
+    return {
+      showMenu: false
+    }
+  },
   computed: {
     isLastPage() {
       return this.currentPage === this.pages.length;
@@ -100,6 +104,22 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '~bulma/sass/utilities/all';
+
+.navbar {
+  @include desktop {
+    border-top-right-radius: .25rem;
+    border-top-left-radius: .25rem;
+  }
+}
+
+.navbar-brand h1 {
+  max-width: 230px;
+
+  @include desktop {
+    max-width: 800px;;
+  }
+}
 
 </style>

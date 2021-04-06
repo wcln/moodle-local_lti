@@ -90,5 +90,6 @@ export default {
 
 .card-content {
   min-height: 20rem;
+  overflow: auto;
 }
 </style>

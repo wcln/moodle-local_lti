@@ -44,7 +44,7 @@ class provider_api extends external_api
 
         $type = util::get_type_name($resource_link->type);
 
-        // Load resource depending on type.
+        // Load resource depending on type
         $resource_class = "\\local_lti\\resource_type\\$type";
 
         if (class_exists($resource_class)) {
@@ -54,6 +54,8 @@ class provider_api extends external_api
                 null,
                 $resource_link->content_id
             );
+
+            $resource->update_link();
 
             $content = $resource->get_content($token, $params['pagenum']);
             $pages   = $resource->get_page_data();

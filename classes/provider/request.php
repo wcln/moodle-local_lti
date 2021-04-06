@@ -59,8 +59,6 @@ class request extends oauth\request
                 $this->consumer_id,
                 $this
             );
-
-            $this->resource->update_link();
         } else {
             throw new error(error::ERROR_INVALID_TYPE, null, $this->consumer_id);
         }

@@ -10,6 +10,7 @@
 import Resource from "@/components/views/Resource";
 import Error from "@/components/views/Error";
 import {iframeMessageSender} from "@/mixins/iframeMessageSender";
+
 export default {
   name: 'App',
   components: {Error, Resource},
@@ -27,7 +28,11 @@ export default {
 </script>
 
 <style lang="scss">
-  #rendered-resource {
+@import '~bulma/sass/utilities/all';
+
+#rendered-resource {
+  @include desktop {
     margin: .5rem;
   }
+}
 </style>
