@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-primary" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <span class="navbar-item" href="https://bulma.io">
         <img src="../../assets/logo.png" height="28" alt="WCLN logo">
@@ -20,7 +20,7 @@
 
       <div class="navbar-end">
 
-        <div class="navbar-item" v-if="hasPages">
+        <div class="navbar-item" v-if="hasPages && ! isFirstPage">
           <a @click="$emit('pageChanged', currentPage - 1)" class="has-text-light">
             <i class="fa fa-angle-left fa-2x"></i>
           </a>
@@ -38,15 +38,34 @@
               {{ page.name }}
             </a>
             <hr class="navbar-divider">
+            <a @click="$emit('print')" class="navbar-item">
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fas fa-print"></i>
+                </span>
+                <span>Print</span>
+              </span>
+            </a>
             <a :href="returnUrl" class="navbar-item">
-              Return to course
+              <span class="icon-text">
+                <span class="icon">
+                  <i class="fas fa-sign-out-alt"></i>
+                </span>
+                <span>Return to course</span>
+              </span>
             </a>
           </div>
         </div>
 
-        <div class="navbar-item" v-if="hasPages">
+        <div class="navbar-item" v-if="hasPages && ! isLastPage">
           <a @click="$emit('pageChanged', currentPage + 1)" class="has-text-light">
             <i class="fa fa-angle-right fa-2x"></i>
+          </a>
+        </div>
+
+        <div class="navbar-item" v-if="hasPages && isLastPage">
+          <a :href="returnUrl" class="has-text-light">
+            <i class="fa fa-sign-out-alt"></i>
           </a>
         </div>
 

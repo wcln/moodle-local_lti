@@ -5,9 +5,11 @@
       :pages="pages"
       :current-page="currentPage"
       :return-url="returnUrl"
+      :key="navBarKey"
       @pageChanged="changePage"
+      @print="print"
     ></Navbar>
-    <div class="resource-content mt-5">
+    <div class="resource-content">
       <transition name="fade">
         <div v-if="resource_content && ! loading" v-html="resource_content"></div>
       </transition>
@@ -35,30 +37,31 @@ export default {
       title: "",
       loading: true,
       pages: [],
-      currentPage: 1
+      currentPage: 1,
+      navBarKey: 0,
     }
   },
   methods: {
-    loadContent() {
-      this.moodleAjax('local_lti_get_content', this.token, {pagenum: this.currentPage}).then(response => {
+    loadContent(pagenum) {
+      this.moodleAjax('local_lti_get_content', this.token, {pagenum: pagenum}).then(response => {
         this.resource_content = response.raw_content;
         this.title = response.title;
         this.pages = response.pages;
+        this.currentPage = pagenum;
+        this.navBarKey += 1;
         this.loading = false;
-
-        Vue.nextTick(() => {
-          this.$emit('updated');
-        });
       });
     },
     changePage(pagenum) {
       this.loading = true;
-      this.currentPage = pagenum;
-      this.loadContent();
+      this.loadContent(pagenum);
+    },
+    print() {
+      window.print();
     }
   },
   mounted() {
-    this.loadContent();
+    this.loadContent(this.currentPage);
   }
 }
 </script>
@@ -69,5 +72,9 @@ export default {
 }
 .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
   opacity: 0;
+}
+
+.resource-content {
+  margin: 1rem;
 }
 </style>
