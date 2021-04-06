@@ -1,5 +1,5 @@
 <template>
-  <div class="rendered-resource">
+  <div class="card" id="rendered-resource">
     <Resource @updated="resizeIframe" v-if="! displayError" :token="token" :return-url="returnUrl"></Resource>
     <Error v-else :code="errorCode" :message="errorMessage"></Error>
   </div>
@@ -27,5 +27,7 @@ export default {
 </script>
 
 <style lang="scss">
-
+  #rendered-resource {
+    margin: .5rem;
+  }
 </style>

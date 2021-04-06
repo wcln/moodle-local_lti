@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar is-info" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-info card-header" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <span class="navbar-item" href="https://bulma.io">
         <img src="../../assets/logo.png" height="28" alt="WCLN logo">
@@ -63,7 +63,13 @@
           </a>
         </div>
 
-        <div class="navbar-item" v-if="hasPages && isLastPage">
+        <div class="navbar-item" v-if="! hasPages">
+          <a @click="$emit('print')" class="has-text-light">
+            <i class="fa fa-print"></i>
+          </a>
+        </div>
+
+        <div class="navbar-item" v-if="(hasPages && isLastPage) || ! hasPages">
           <a :href="returnUrl" class="has-text-light">
             <i class="fa fa-sign-out-alt"></i>
           </a>

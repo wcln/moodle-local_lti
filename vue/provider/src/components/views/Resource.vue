@@ -1,15 +1,15 @@
 <template>
   <div class="has-text-left">
     <Navbar
-      :title="title"
-      :pages="pages"
-      :current-page="currentPage"
-      :return-url="returnUrl"
-      :key="navBarKey"
-      @pageChanged="changePage"
-      @print="print"
+        :title="title"
+        :pages="pages"
+        :current-page="currentPage"
+        :return-url="returnUrl"
+        :key="navBarKey"
+        @pageChanged="changePage"
+        @print="print"
     ></Navbar>
-    <div class="resource-content">
+    <div class="card-content">
       <transition name="fade">
         <div v-if="resource_content && ! loading" v-html="resource_content"></div>
       </transition>
@@ -17,6 +17,11 @@
         <Loading v-if="loading"></Loading>
       </transition>
     </div>
+    <Footer
+        v-if="pages !== undefined && pages.length > 0"
+        :pages="pages"
+        :current-page="currentPage"
+    ></Footer>
   </div>
 </template>
 
@@ -24,10 +29,11 @@
 import moodleAjax from "@/mixins/moodleAjax";
 import Navbar from "@/components/partials/Navbar";
 import Loading from "@/components/partials/Loading";
+import Footer from "@/components/partials/Footer";
 
 export default {
   name: "Resource",
-  components: {Loading, Navbar},
+  components: {Footer, Loading, Navbar},
   props: ['token', 'returnUrl'],
   mixins: [moodleAjax],
   data() {
@@ -61,6 +67,13 @@ export default {
   },
   mounted() {
     this.loadContent(this.currentPage);
+  },
+  watch: {
+    $route() {
+      if (this.$route.query.page !== undefined) {
+        this.changePage(this.$route.query.page);
+      }
+    }
   }
 }
 </script>
@@ -69,11 +82,13 @@ export default {
 .fade-enter-active, .fade-leave-active {
   transition: opacity .5s;
 }
-.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+
+.fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */
+{
   opacity: 0;
 }
 
-.resource-content {
-  margin: 1rem;
+.card-content {
+  min-height: 20rem;
 }
 </style>
