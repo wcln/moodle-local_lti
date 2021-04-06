@@ -22,7 +22,6 @@
 
 <script>
 import moodleAjax from "@/mixins/moodleAjax";
-import Vue from "vue";
 import Navbar from "@/components/partials/Navbar";
 import Loading from "@/components/partials/Loading";
 
