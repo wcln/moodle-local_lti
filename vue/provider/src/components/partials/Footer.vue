@@ -1,7 +1,6 @@
 <template>
-  <footer class="card-footer">
+  <footer>
     <Pagination
-        class="lti-pagination"
         :itemsTotal="pages.length"
         :itemsPerPage="1"
         :currentPage="currentPage"
@@ -22,13 +21,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
-  .card-footer {
-    border: none;
+  footer {
     padding: 1rem;
-    justify-content: flex-end;
-
-    .lti-pagination {
-      float: right;
-    }
   }
 </style>
