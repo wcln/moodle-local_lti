@@ -11,7 +11,7 @@
     ></Navbar>
     <div class="card-content" id="rendered-resource">
       <transition name="fade">
-        <div v-if="resource_content && ! loading" v-html="resource_content"></div>
+        <div v-if="resource_content && ! loading" v-html="resource_content" class="content"></div>
       </transition>
       <transition name="fade">
         <Loading v-if="loading"></Loading>
