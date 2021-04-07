@@ -62,7 +62,7 @@
           </a>
         </div>
 
-        <div class="navbar-item" v-if="! hasPages">
+        <div class="navbar-item" v-if="! hasPages && ! error">
           <a @click="$emit('print')" class="has-text-light">
             <i class="fa fa-print"></i>
           </a>
@@ -84,7 +84,7 @@
 <script>
 export default {
   name: "Navbar",
-  props: ['title', 'pages', 'currentPage', 'returnUrl'],
+  props: ['title', 'pages', 'currentPage', 'returnUrl', 'error'],
   data() {
     return {
       showMenu: false

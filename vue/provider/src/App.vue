@@ -1,7 +1,7 @@
 <template>
   <div class="card" id="rendered-resource">
     <Resource @updated="resizeIframe" v-if="! displayError" :token="token" :return-url="returnUrl"></Resource>
-    <Error v-else :code="errorCode" :message="errorMessage"></Error>
+    <Error v-else :code="errorCode" :message="errorMessage" :return-url="returnUrl"></Error>
   </div>
 </template>
 
