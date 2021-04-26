@@ -68,7 +68,7 @@
           </a>
         </div>
 
-        <div class="navbar-item" v-if="(hasPages && isLastPage) || ! hasPages">
+        <div class="navbar-item" v-if="(hasPages && isLastPage) || ! hasPages && returnUrl">
           <a :href="returnUrl" class="has-text-light">
             <i class="fa fa-sign-out-alt"></i>
           </a>
