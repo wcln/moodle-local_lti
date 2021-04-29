@@ -11,7 +11,7 @@
     ></Navbar>
     <div class="card-content" id="rendered-resource">
       <transition name="fade">
-        <div v-if="resource_content && ! loading" v-html="resource_content" class="content"></div>
+        <div v-if="resource_content && ! loading" class="content" id="lti-content">test</div>
       </transition>
       <transition name="fade">
         <Loading v-if="loading"></Loading>
@@ -31,6 +31,7 @@ import Navbar from "@/components/partials/Navbar";
 import Loading from "@/components/partials/Loading";
 import Footer from "@/components/partials/Footer";
 import Vue from "vue";
+import $ from 'jquery';
 
 export default {
   name: "Resource",
@@ -50,17 +51,28 @@ export default {
   methods: {
     loadContent(pagenum) {
       this.moodleAjax('local_lti_get_content', this.token, {pagenum: pagenum}).then(response => {
+
         this.resource_content = response.raw_content;
+
         this.title = response.title;
         this.pages = response.pages;
         this.currentPage = pagenum;
         this.navBarKey += 1;
         this.loading = false;
 
-        // Emit 'updated' event so that iFrame is resized
+        // Wait for the content to be ready, so we can resize the iframe and interact with the DOM
         Vue.nextTick(() => {
+
+          // Set the resource content
+          // Unfortunately, we have to use jquery's .html() here, as Vue will just set the innerHtml
+          // of the element, which will not load inline <script> tags
+          $('#lti-content').html(this.resource_content);
+
+          // Emit 'updated' event so that iFrame is resized
+          // This must occur after we set the content above
           this.$emit('updated');
         });
+
       }).catch(err => {
         window.console.error(err);
         this.$emit('error', err);
