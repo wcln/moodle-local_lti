@@ -73,9 +73,8 @@ try {
 } catch (error $e) {
     $e->render();
 }
-
-//catch (Exception $e) {
-//    // Ensure we handle all generic exceptions as well
-//    $e = new error(empty($e->getCode()) ? error::ERROR_UNKNOWN : $e->getCode(), $e->getMessage());
-//    $e->render();
-//}
+catch (Exception $e) {
+    // Ensure we handle all generic exceptions as well
+    $e = new error(empty($e->getCode()) ? error::ERROR_UNKNOWN : $e->getCode(), $e->getMessage());
+    $e->render();
+}

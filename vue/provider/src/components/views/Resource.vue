@@ -61,6 +61,9 @@ export default {
         Vue.nextTick(() => {
           this.$emit('updated');
         });
+      }).catch(err => {
+        window.console.error(err);
+        this.$emit('error', err);
       });
     },
     changePage(pagenum) {

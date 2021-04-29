@@ -1,7 +1,7 @@
 <template>
   <div class="card" id="rendered-resource">
-    <Resource @updated="resizeIframe" v-if="! displayError" :token="token" :return-url="returnUrl"></Resource>
-    <Error v-else :code="errorCode" :message="errorMessage" :return-url="returnUrl"></Error>
+    <Resource @error="handleError" @updated="resizeIframe" v-if="! displayError" :token="token" :return-url="returnUrl"></Resource>
+    <Error v-else :code="error.code" :message="error.message" :return-url="returnUrl"></Error>
   </div>
 </template>
 
@@ -18,10 +18,25 @@ export default {
   props: ['token', 'returnUrl', 'errorCode', 'errorMessage'],
   computed: {
     displayError() {
-      return this.errorCode !== "" || this.errorMessage !== "";
+      return this.error.code !== "" || this.error.message !== "";
+    }
+  },
+  data() {
+    return {
+      error: {
+        code: null,
+        message: null
+      }
+    }
+  },
+  methods: {
+    handleError(error) {
+      this.error = error;
     }
   },
   mounted() {
+    this.error.code = this.errorCode;
+    this.error.message = this.errorMessage;
     this.removeIframeBorder();
   }
 }

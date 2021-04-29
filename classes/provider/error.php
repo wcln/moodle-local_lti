@@ -135,4 +135,8 @@ class error extends \Exception
         $error = new \local_lti\output\error($this->getMessage(), $this->custom_code);
         echo $renderer->render($error);
     }
+
+    public function getCustomCode() {
+        return $this->custom_code;
+    }
 }
