@@ -49,5 +49,9 @@ export default {
   @include desktop {
     margin: .5rem;
   }
+
+  @include mobile {
+    box-shadow: none;
+  }
 }
 </style>

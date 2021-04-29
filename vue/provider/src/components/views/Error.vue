@@ -38,6 +38,16 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+@import '~bulma/sass/utilities/all';
 
+.message {
+
+  margin-left: 1rem;
+  margin-right: 1rem;
+
+  @include desktop {
+    margin: 0;
+  }
+}
 </style>
