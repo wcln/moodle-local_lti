@@ -16,24 +16,23 @@
 
 namespace local_lti\output;
 
+use Firebase\JWT\JWT;
+use local_lti\provider\util;
 use renderable;
 use renderer_base;
 use stdClass;
 use templatable;
 
-class error implements renderable, templatable
+class resource implements renderable, templatable
 {
 
-    // The error message to render
-    var $message = null;
+    var $resource_id = null;
+    var $return_url = null;
 
-    // The error code
-    var $code = null;
-
-    public function __construct($message, $code)
+    public function __construct($resource_id, $return_url)
     {
-        $this->message = $message;
-        $this->code    = $code;
+        $this->resource_id = $resource_id;
+        $this->return_url  = $return_url;
     }
 
     /**
@@ -43,10 +42,13 @@ class error implements renderable, templatable
      */
     public function export_for_template(renderer_base $output)
     {
-        // Data class to be sent to template
-        $data                = new stdClass();
-        $data->error_message = $this->message;
-        $data->error_code    = $this->code;
+        $data = new stdClass();
+
+        // Generate a JWT so the Vue app can make subsequent requests for information
+        $data->token = JWT::encode(['resource_id' => $this->resource_id],
+            util::get_secret());
+
+        $data->return_url = $this->return_url;
 
         return $data;
     }

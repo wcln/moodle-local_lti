@@ -147,10 +147,19 @@ $functions = [
         'loginrequired' => true,
         'capabilities'  => 'moodle/site:config',
     ],
+    'local_lti_get_content'               => [
+        'classname'     => 'local_lti\external\provider_api',
+        'methodname'    => 'get_content',
+        'classpath'     => 'local/lti/classes/external/provider_api.php',
+        'description'   => 'Get resource content',
+        'type'          => 'read',
+        'ajax'          => true,
+        'loginrequired' => false,
+    ],
 ];
 
 $services = [
-    'WCLN LTI Web Service' => [
+    'WCLN LTI Dashboard Service' => [
         'functions'          => [
             'local_lti_get_top_consumers',
             'local_lti_get_top_resources',
@@ -171,6 +180,16 @@ $services = [
         'restrictedusers'    => false,
         'enabled'            => true,
         'downloadfiles'      => false,
+        'uploadfiles'        => false,
+    ],
+    'WCLN LTI Provider Service'  => [
+        'functions'          => [
+            'local_lti_get_content',
+        ],
+        'requiredcapability' => '',
+        'restrictedusers'    => false,
+        'enabled'            => true,
+        'downloadfiles'      => true,
         'uploadfiles'        => false,
     ],
 ];

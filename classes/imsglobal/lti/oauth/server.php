@@ -26,7 +26,7 @@ namespace local_lti\imsglobal\lti\oauth;
 class server
 {
 
-    protected $timestamp_threshold = 300; // in seconds, five minutes
+    protected $timestamp_threshold = 600; // in seconds, five minutes
     protected $version = '1.0';
     protected $signature_methods = array();
 

@@ -36,11 +36,11 @@ try {
 
     header('Set-Cookie: '.session_name().'='.session_id().'; SameSite=None; Secure;');
 
+    // Load environment variables from .env file
+    util::load_environment();
+
     // Set page context.
     $PAGE->set_context(context_system::instance());
-
-    // Get the page renderer.
-    $renderer = $PAGE->get_renderer('local_lti');
 
     // Initialize the request.
     $request = new request();
@@ -62,6 +62,9 @@ try {
     // Get the requested resource.
     $resource = $request->get_resource();
 
+    // Load the Vue app
+    $PAGE->requires->js_call_amd('local_lti/provider-lazy', 'init');
+
     // Render the resource.
     $resource->render();
 
@@ -69,7 +72,8 @@ try {
     \local_lti\helper\request_log::log();
 } catch (error $e) {
     $e->render();
-} catch (Exception $e) {
+}
+catch (Exception $e) {
     // Ensure we handle all generic exceptions as well
     $e = new error(empty($e->getCode()) ? error::ERROR_UNKNOWN : $e->getCode(), $e->getMessage());
     $e->render();

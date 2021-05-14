@@ -44,19 +44,26 @@ abstract class resource
     /** @var int The ID of the resource content that is being requested.. */
     public $content_id;
 
+    /** @var int The resource ID of this resource in the resource linking table */
+    public $id;
+
     public function __construct($type = null, $consumer_id = null, $request = null, $content_id = null)
     {
         $this->type        = $type;
         $this->consumer_id = $consumer_id;
         $this->request     = $request;
         $this->content_id  = ! empty($request) ? $this->load_content_id() : $content_id;
+
+        if ($record = $this->get_record_from_database()) {
+            $this->id = $record->id;
+        }
     }
 
     /**
      * Checks if a record exists in the resource linking database table for this resource.
      * If it does, update it. If it does not, create it.
      */
-    protected function update_link()
+    public function update_link()
     {
         // Check if record exists in local_lti_resource_link table.
         if ($this->is_linked()) {
@@ -85,7 +92,7 @@ abstract class resource
         global $DB;
 
         $resource_record              = $this->get_record_from_database();
-        $consumer_record              = $DB->get_record('local_lti_consumer', array('id' => $resource_record->consumer),
+        $consumer_record              = $DB->get_record('local_lti_consumer', ['id' => $resource_record->consumer],
             'id');
         $consumer_record->last_access = time();
         $DB->update_record('local_lti_consumer', $consumer_record);
@@ -130,7 +137,7 @@ abstract class resource
     /*
      * Inserts this resource into local_lti_resource_link table.
      */
-    public function create_link()
+    private function create_link()
     {
         global $DB;
 
@@ -192,9 +199,22 @@ abstract class resource
     }
 
     /**
-     * To be overridden by resource type classes.
+     * Render this resource
+     *
+     * Resource link 'id' will be passed to Vue app,
+     * then Vue will make webservice calls using 'id' and a token
+     * to get content to display
+     *
      */
-    abstract public function render();
+    public function render()
+    {
+        global $PAGE;
+
+        $renderer      = $PAGE->get_renderer('local_lti');
+        $resource_view = new \local_lti\output\resource($this->id,
+            $this->request->get_parameter('launch_presentation_return_url'));
+        echo $renderer->render($resource_view);
+    }
 
     /**
      * Get the ID of the resource (activity)
@@ -213,5 +233,21 @@ abstract class resource
      * @return mixed
      */
     abstract public function get_activity_record();
+
+    /**
+     * If this resource has multiple pages, return data here like:
+     *
+     * [['name' => 'Example page', 'pagenum' => 2]]
+     *
+     * @return array
+     */
+    public function get_page_data()
+    {
+        return [];
+    }
+
+    abstract public function get_content($token, $pagenum = null);
+
+    abstract public function get_title($pagenum = null);
 
 }

@@ -72,22 +72,25 @@ class request extends oauth\request
      *   1. This is an LTI launch request.
      *   2. This is a VALID LTI launch request (authenticated).
      *   3. All required parameters have been provided.
+     *
+     * @return bool
+     * @throws error
      */
     public function verify()
     {
-        if ($this->verify_launch_request()) {
-            if ($this->verify_valid_launch_request()) {
-                if ($this->verify_required_parameters()) {
-                    return true;
-                } else {
-                    throw new error(error::ERROR_MISSING_PARAMS, null, $this->consumer_id);
-                }
-            } else {
-                throw new error(error::ERROR_AUTH_FAILED, null, $this->consumer_id);
-            }
-        } else {
+        if (! $this->verify_launch_request()) {
             throw new error(error::ERROR_LAUNCH_REQUEST, null, $this->consumer_id);
         }
+
+        if (! $this->verify_valid_launch_request()) {
+            throw new error(error::ERROR_AUTH_FAILED, null, $this->consumer_id);
+        }
+
+        if (! $this->verify_required_parameters()) {
+            throw new error(error::ERROR_MISSING_PARAMS, null, $this->consumer_id);
+        }
+
+        return true;
     }
 
     /**
@@ -142,7 +145,7 @@ class request extends oauth\request
                 $server = new oauth\server($store);
                 $method = new oauth\signature_method_HMAC_SHA1();
                 $server->add_signature_method($method);
-                $server->verify_request($this); // Verify this request.
+                $server->verify_request($this);
             } catch (Exception $e) {
                 $ok = false;
             }
@@ -168,7 +171,6 @@ class request extends oauth\request
         // Check that the return URL parameter is set.
         // This is used for the back to course button.
         // This has been disabled because D2L/Brightspace does not send this!
-        // TODO LTI-21 Make this optional, and hide 'return to course' button if not present
 //        $ok = $ok && ! empty(parent::get_parameter('launch_presentation_return_url'));
 
         // If other parameters become required they are to be added here...

@@ -21,7 +21,7 @@ $event = \local_lti\event\dashboard_viewed::create();
 $event->trigger();
 
 // Load the Vue app
-$PAGE->requires->js_call_amd('local_lti/app-lazy', 'init');
+$PAGE->requires->js_call_amd('local_lti/dashboard-lazy', 'init');
 
 // Output HTML, inside of which the Vue app will be loaded
 echo <<<HTML
