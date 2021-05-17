@@ -75,6 +75,6 @@ try {
 }
 catch (Exception $e) {
     // Ensure we handle all generic exceptions as well
-    $e = new error(empty($e->getCode()) ? error::ERROR_UNKNOWN : $e->getCode(), $e->getMessage());
+    $e = new error(empty($e->getCode()) ? error::ERROR_UNKNOWN : $e->getCode(), $e->getMessage() ."\n" . $e->getTraceAsString());
     $e->render();
 }
