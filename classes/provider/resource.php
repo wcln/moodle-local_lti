@@ -75,8 +75,8 @@ abstract class resource
             $DB->update_record('local_lti_resource_link', $record);
             $this->update_consumer();
         } else {
-            // Create new record in local_lti_resource_link.
-            $this->create_link();
+            // Create new record in local_lti_resource_link
+            $this->id = $this->create_link();
         }
     }
 
@@ -143,7 +143,7 @@ abstract class resource
 
         $now = time();
 
-        // Insert a new record.
+        // Insert a new record
         $record               = new stdClass();
         $record->type         = $this->type;
         $record->consumer     = $this->consumer_id;
@@ -151,7 +151,8 @@ abstract class resource
         $record->access_count = 1;
         $record->timecreated  = $now;
         $record->last_access  = $now;
-        $DB->insert_record('local_lti_resource_link', $record);
+
+        return $DB->insert_record('local_lti_resource_link', $record);
     }
 
     /**
