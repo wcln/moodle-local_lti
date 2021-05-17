@@ -60,7 +60,9 @@ class request extends oauth\request
                 $this
             );
 
-            $this->resource->update_link();
+            if ($this->consumer_id !== null) {
+                $this->resource->update_link();
+            }
         } else {
             throw new error(error::ERROR_INVALID_TYPE, null, $this->consumer_id);
         }
