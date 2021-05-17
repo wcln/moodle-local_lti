@@ -28,4 +28,4 @@ $plugin->version   = 2021031900; // The current plugin version (Date: YYYYMMDDXX
 $plugin->requires  = 2016112900; // Requires this Moodle version.
 $plugin->component = 'local_lti'; // Full name of the plugin (used for diagnostics).
 $plugin->maturity  = MATURITY_STABLE;
-$plugin->release   = 'v2.0';
+$plugin->release   = 'v2.1';
