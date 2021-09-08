@@ -10,6 +10,15 @@ $PAGE->set_heading(get_string('dashboard_heading', 'local_lti'));
 $PAGE->set_title(get_string('dashboard_title', 'local_lti'));
 $PAGE->set_url(new moodle_url('/local/lti/dashboard.php'));
 
+// The LTI provider cookie can interfere with accessing this page
+// This occurs when there are two cookies:
+// - The cookie with path '/' that we want
+// - The cookie with path '/local/lti' that is present because the user was viewing an LTI resource on a consumer site
+// Delete the cookie with path '/local/lti' to ensure we use the correct cookie when viewing this page
+if (! isloggedin()) {
+  setcookie('MoodleSession', null, -1, '/local/lti'); 
+}
+
 require_login();
 require_capability('moodle/site:config', context_system::instance());
 
