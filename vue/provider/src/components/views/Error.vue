@@ -2,7 +2,6 @@
   <div>
     <Navbar
       title="Error"
-      :return-url="returnUrl"
       :pages="[]"
       :error="true"
     ></Navbar>
@@ -34,7 +33,7 @@ import Navbar from "@/components/partials/Navbar";
 export default {
   name: "Error",
   components: {Navbar},
-  props: ['code', 'message', 'returnUrl']
+  props: ['code', 'message']
 }
 </script>
 
