@@ -45,14 +45,6 @@
                 <span>Print</span>
               </span>
             </a>
-            <a :href="returnUrl" class="navbar-item">
-              <span class="icon-text">
-                <span class="icon">
-                  <i class="fas fa-sign-out-alt"></i>
-                </span>
-                <span>Return to course</span>
-              </span>
-            </a>
           </div>
         </div>
 
@@ -68,12 +60,6 @@
           </a>
         </div>
 
-        <div class="navbar-item" v-if="(hasPages && isLastPage) || ! hasPages && returnUrl">
-          <a :href="returnUrl" class="has-text-light">
-            <i class="fa fa-sign-out-alt"></i>
-          </a>
-        </div>
-
       </div>
 
     </div>
@@ -84,7 +70,7 @@
 <script>
 export default {
   name: "Navbar",
-  props: ['title', 'pages', 'currentPage', 'returnUrl', 'error'],
+  props: ['title', 'pages', 'currentPage', 'error'],
   data() {
     return {
       showMenu: false
