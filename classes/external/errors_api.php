@@ -94,7 +94,7 @@ class errors_api extends external_api
 
     public static function get_consumer_options_parameters()
     {
-        return new \external_function_parameters([]);
+        return new \core_external\external_function_parameters([]);
     }
 
     public static function get_consumer_options()
@@ -106,9 +106,9 @@ class errors_api extends external_api
 
     public static function get_consumer_options_returns()
     {
-        return new \external_multiple_structure(new \external_single_structure([
-            'id' => new \external_value(PARAM_INT),
-            'name' => new \external_value(PARAM_TEXT),
+        return new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+            'id' => new \core_external\external_value(PARAM_INT),
+            'name' => new \core_external\external_value(PARAM_TEXT),
         ]));
     }
 
