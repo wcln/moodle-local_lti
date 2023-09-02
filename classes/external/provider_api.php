@@ -4,10 +4,11 @@ namespace local_lti\external;
 
 use core_external\external_api;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 use local_lti\provider\error;
 use local_lti\provider\util;
 
-require_once($CFG->libdir.'/filelib.php');
+require_once($CFG->libdir . '/filelib.php');
 
 class provider_api extends external_api
 {
@@ -24,7 +25,7 @@ class provider_api extends external_api
     public static function get_content_parameters()
     {
         return new \core_external\external_function_parameters([
-            'token'   => new \core_external\external_value(PARAM_RAW, 'JWT containing resource link ID'),
+            'token' => new \core_external\external_value(PARAM_RAW, 'JWT containing resource link ID'),
             'pagenum' => new \core_external\external_value(PARAM_INT, 'Book chapter pagenum', VALUE_OPTIONAL),
         ]);
     }
@@ -38,8 +39,8 @@ class provider_api extends external_api
 
             util::load_environment();
 
-            // This will throw an exception if the secret does not match
-            $payload = JWT::decode($token, $_ENV['SECRET'], ['HS256']);
+            $key = new Key($_ENV['SECRET'], 'HS256');
+            $payload = JWT::decode($token, $key); // This will throw an exception if the secret does not match
 
             $resource_link = $DB->get_record('local_lti_resource_link', ['id' => $payload->resource_id]);
 
@@ -59,16 +60,16 @@ class provider_api extends external_api
                 $resource->update_link();
 
                 $content = $resource->get_content($token, $params['pagenum']);
-                $pages   = $resource->get_page_data();
-                $title   = $resource->get_title($params['pagenum']);
+                $pages = $resource->get_page_data();
+                $title = $resource->get_title($params['pagenum']);
             } else {
                 throw new error(error::ERROR_INVALID_TYPE, null, $resource_link->consumer_id);
             }
 
             return [
                 'raw_content' => $content,
-                'pages'       => $pages,
-                'title'       => $title,
+                'pages' => $pages,
+                'title' => $title,
             ];
 
         } catch (error $e) {
@@ -82,7 +83,7 @@ class provider_api extends external_api
 
         return [
             'error' => [
-                'code'    => $error->getCustomCode(),
+                'code' => $error->getCustomCode(),
                 'message' => $error->getMessage(),
             ],
         ];
@@ -92,9 +93,9 @@ class provider_api extends external_api
     {
         return new \core_external\external_single_structure([
             'raw_content' => new \core_external\external_value(PARAM_RAW, '', VALUE_OPTIONAL),
-            'title'       => new \core_external\external_value(PARAM_TEXT, '', VALUE_OPTIONAL),
-            'pages'       => new \core_external\external_multiple_structure(new \core_external\external_single_structure([
-                'name'    => new \core_external\external_value(PARAM_TEXT),
+            'title' => new \core_external\external_value(PARAM_TEXT, '', VALUE_OPTIONAL),
+            'pages' => new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+                'name' => new \core_external\external_value(PARAM_TEXT),
                 'pagenum' => new \core_external\external_value(PARAM_INT),
             ]), '', VALUE_OPTIONAL),
             'error' => new \core_external\external_single_structure([
