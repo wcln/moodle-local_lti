@@ -22,9 +22,9 @@ class errors_api extends external_api
 
     public static function get_errors_parameters()
     {
-        return new \external_function_parameters([
-            'consumer' => new \external_value(PARAM_INT, 'Filter by consumer ID'),
-            'page'     => new \external_value(PARAM_INT, 'What page of results are we on (start at 0)'),
+        return new \core_external\external_function_parameters([
+            'consumer' => new \core_external\external_value(PARAM_INT, 'Filter by consumer ID'),
+            'page' => new \core_external\external_value(PARAM_INT, 'What page of results are we on (start at 0)'),
         ]);
     }
 
@@ -35,13 +35,18 @@ class errors_api extends external_api
         $params = self::validate_parameters(self::get_errors_parameters(), compact('consumer', 'page'));
 
         $conditions = [];
-        if ( ! empty($params['consumer'])) {
+        if (!empty($params['consumer'])) {
             $conditions['consumer'] = $params['consumer'];
         }
 
-        $errors = $DB->get_records(error::TABLE, $conditions, 'timecreated DESC', '*',
+        $errors = $DB->get_records(
+            error::TABLE,
+            $conditions,
+            'timecreated DESC',
+            '*',
             $params['page'] * self::PAGE_SIZE,
-            self::PAGE_SIZE);
+            self::PAGE_SIZE
+        );
 
         $page_count = $DB->count_records(error::TABLE, $conditions);
 
@@ -59,22 +64,22 @@ class errors_api extends external_api
         }
 
         return [
-            'errors'     => $errors,
+            'errors' => $errors,
             'page_count' => $page_count,
         ];
     }
 
     public static function get_errors_returns()
     {
-        return new \external_single_structure([
-            'errors'     => new \external_multiple_structure(new \external_single_structure([
-                'id'          => new \external_value(PARAM_INT),
-                'consumer'    => new \external_value(PARAM_TEXT, 'Consumer name'),
-                'code'        => new \external_value(PARAM_TEXT, 'Error code'),
-                'message'     => new \external_value(PARAM_TEXT, 'Error message'),
-                'timecreated' => new \external_value(PARAM_TEXT, 'Formatted error time'),
+        return new \core_external\external_single_structure([
+            'errors' => new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+                'id' => new \core_external\external_value(PARAM_INT),
+                'consumer' => new \core_external\external_value(PARAM_TEXT, 'Consumer name'),
+                'code' => new \core_external\external_value(PARAM_TEXT, 'Error code'),
+                'message' => new \core_external\external_value(PARAM_TEXT, 'Error message'),
+                'timecreated' => new \core_external\external_value(PARAM_TEXT, 'Formatted error time'),
             ])),
-            'page_count' => new \external_value(PARAM_INT),
+            'page_count' => new \core_external\external_value(PARAM_INT),
         ]);
     }
 
@@ -102,7 +107,7 @@ class errors_api extends external_api
     public static function get_consumer_options_returns()
     {
         return new \external_multiple_structure(new \external_single_structure([
-            'id'   => new \external_value(PARAM_INT),
+            'id' => new \external_value(PARAM_INT),
             'name' => new \external_value(PARAM_TEXT),
         ]));
     }

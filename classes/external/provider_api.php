@@ -23,9 +23,9 @@ class provider_api extends external_api
 
     public static function get_content_parameters()
     {
-        return new \external_function_parameters([
-            'token'   => new \external_value(PARAM_RAW, 'JWT containing resource link ID'),
-            'pagenum' => new \external_value(PARAM_INT, 'Book chapter pagenum', VALUE_OPTIONAL),
+        return new \core_external\external_function_parameters([
+            'token'   => new \core_external\external_value(PARAM_RAW, 'JWT containing resource link ID'),
+            'pagenum' => new \core_external\external_value(PARAM_INT, 'Book chapter pagenum', VALUE_OPTIONAL),
         ]);
     }
 
@@ -90,16 +90,16 @@ class provider_api extends external_api
 
     public static function get_content_returns()
     {
-        return new \external_single_structure([
-            'raw_content' => new \external_value(PARAM_RAW, '', VALUE_OPTIONAL),
-            'title'       => new \external_value(PARAM_TEXT, '', VALUE_OPTIONAL),
-            'pages'       => new \external_multiple_structure(new \external_single_structure([
-                'name'    => new \external_value(PARAM_TEXT),
-                'pagenum' => new \external_value(PARAM_INT),
+        return new \core_external\external_single_structure([
+            'raw_content' => new \core_external\external_value(PARAM_RAW, '', VALUE_OPTIONAL),
+            'title'       => new \core_external\external_value(PARAM_TEXT, '', VALUE_OPTIONAL),
+            'pages'       => new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+                'name'    => new \core_external\external_value(PARAM_TEXT),
+                'pagenum' => new \core_external\external_value(PARAM_INT),
             ]), '', VALUE_OPTIONAL),
-            'error' => new \external_single_structure([
-                'code' => new \external_value(PARAM_TEXT),
-                'message' => new \external_value(PARAM_TEXT),
+            'error' => new \core_external\external_single_structure([
+                'code' => new \core_external\external_value(PARAM_TEXT),
+                'message' => new \core_external\external_value(PARAM_TEXT),
             ], '', VALUE_OPTIONAL)
         ]);
     }

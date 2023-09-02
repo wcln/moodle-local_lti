@@ -32,11 +32,15 @@ class consumers_api extends external_api
 
     public static function get_consumers_parameters()
     {
-        return new \external_function_parameters([
-            'keywords' => new \external_value(PARAM_TEXT, 'Filter by keywords', VALUE_DEFAULT, ''),
-            'sort'     => new \external_value(PARAM_TEXT, 'Sort the results', VALUE_DEFAULT, self::SORT_DATE_DESC),
-            'page'     => new \external_value(PARAM_INT, 'What page of results are we on (start at 0)',
-                VALUE_DEFAULT, 0),
+        return new \core_external\external_function_parameters([
+            'keywords' => new \core_external\external_value(PARAM_TEXT, 'Filter by keywords', VALUE_DEFAULT, ''),
+            'sort' => new \core_external\external_value(PARAM_TEXT, 'Sort the results', VALUE_DEFAULT, self::SORT_DATE_DESC),
+            'page' => new \core_external\external_value(
+                PARAM_INT,
+                'What page of results are we on (start at 0)',
+                VALUE_DEFAULT,
+                0
+            ),
         ]);
     }
 
@@ -47,10 +51,10 @@ class consumers_api extends external_api
         $params = self::validate_parameters(self::get_consumers_parameters(), compact('keywords', 'sort', 'page'));
 
         // Keywords search
-        $select     = "";
+        $select = "";
         $sql_params = [];
-        if ( ! empty($keywords)) {
-            $select                 = "name LIKE CONCAT('%', :keywords, '%')";
+        if (!empty($keywords)) {
+            $select = "name LIKE CONCAT('%', :keywords, '%')";
             $sql_params['keywords'] = $params['keywords'];
         }
 
@@ -82,56 +86,63 @@ class consumers_api extends external_api
         }
 
         // What fields do we need to fetch?
-        $query_fields = "id,".implode(',', array_column(consumer::CONSUMER_FIELDS, 'field'));
+        $query_fields = "id," . implode(',', array_column(consumer::CONSUMER_FIELDS, 'field'));
 
         // Search for consumers in database
-        $consumers = $DB->get_records_select(consumer::TABLE, $select, $sql_params, $sort,
+        $consumers = $DB->get_records_select(
+            consumer::TABLE,
+            $select,
+            $sql_params,
+            $sort,
             $query_fields,
-            $params['page'] * self::PAGE_SIZE, self::PAGE_SIZE);
+            $params['page'] * self::PAGE_SIZE, self::PAGE_SIZE
+        );
 
         $page_count = $DB->count_records_select(consumer::TABLE, $select, $sql_params);
 
         // Build the array that will be returned
         $consumers_formatted = [];
         foreach ($consumers as $consumer) {
-            $consumer->last_access = ! empty($consumer->last_access) ? userdate($consumer->last_access,
-                get_string('strftimedatetime')) : 'Never';
+            $consumer->last_access = !empty($consumer->last_access) ? userdate(
+                $consumer->last_access,
+                get_string('strftimedatetime')
+            ) : 'Never';
 
 
             $fields = [];
             foreach (consumer::CONSUMER_FIELDS as $field) {
                 $fields[] = [
-                    'field'    => $field['field'],
-                    'value'    => $consumer->{$field['field']},
-                    'type'     => isset($field['type']) ? $field['type'] : consumer::FIELD_TYPE_TEXT,
+                    'field' => $field['field'],
+                    'value' => $consumer->{$field['field']},
+                    'type' => isset($field['type']) ? $field['type'] : consumer::FIELD_TYPE_TEXT,
                     'editable' => isset($field['editable']) ? $field['editable'] : true,
                 ];
             }
 
             $consumers_formatted[] = [
                 'fields' => $fields,
-                'id'     => $consumer->id,
+                'id' => $consumer->id,
             ];
         }
 
         return [
             'page_count' => $page_count,
-            'consumers'  => $consumers_formatted,
+            'consumers' => $consumers_formatted,
         ];
     }
 
     public static function get_consumers_returns()
     {
-        return new \external_single_structure([
-            'page_count' => new \external_value(PARAM_INT),
-            'consumers'  => new \external_multiple_structure(new \external_single_structure([
-                'fields' => new \external_multiple_structure(new \external_single_structure([
-                    'field'    => new \external_value(PARAM_TEXT, 'The database field name in the consumers table'),
-                    'value'    => new \external_value(PARAM_RAW, 'What is the value of this field'),
-                    'type'     => new \external_value(PARAM_TEXT, 'checkbox or text', VALUE_DEFAULT, 'text'),
-                    'editable' => new \external_value(PARAM_BOOL, 'Is this field editable', VALUE_DEFAULT, true),
+        return new \core_external\external_single_structure([
+            'page_count' => new \core_external\external_value(PARAM_INT),
+            'consumers' => new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+                'fields' => new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+                    'field' => new \core_external\external_value(PARAM_TEXT, 'The database field name in the consumers table'),
+                    'value' => new \core_external\external_value(PARAM_RAW, 'What is the value of this field'),
+                    'type' => new \core_external\external_value(PARAM_TEXT, 'checkbox or text', VALUE_DEFAULT, 'text'),
+                    'editable' => new \core_external\external_value(PARAM_BOOL, 'Is this field editable', VALUE_DEFAULT, true),
                 ])),
-                'id'     => new \external_value(PARAM_INT, 'Consumer ID'),
+                'id' => new \core_external\external_value(PARAM_INT, 'Consumer ID'),
             ])),
         ]);
     }
@@ -147,10 +158,10 @@ class consumers_api extends external_api
 
     public static function update_consumer_parameters()
     {
-        return new \external_function_parameters([
-            'id'    => new \external_value(PARAM_INT, 'Consumer ID'),
-            'key'   => new \external_value(PARAM_TEXT),
-            'value' => new \external_value(PARAM_RAW),
+        return new \core_external\external_function_parameters([
+            'id' => new \core_external\external_value(PARAM_INT, 'Consumer ID'),
+            'key' => new \core_external\external_value(PARAM_TEXT),
+            'value' => new \core_external\external_value(PARAM_RAW),
         ]);
     }
 
@@ -161,11 +172,11 @@ class consumers_api extends external_api
         $params = self::validate_parameters(self::update_consumer_parameters(), compact('id', 'key', 'value'));
 
         $consumer = [
-            'id'           => $params['id'],
+            'id' => $params['id'],
             $params['key'] => $params['value'],
         ];
 
-        if ($DB->update_record(consumer::TABLE, (object)$consumer)) {
+        if ($DB->update_record(consumer::TABLE, (object) $consumer)) {
             $event = consumer_updated::create(['objectid' => $params['id']]);
             $event->trigger();
         }
@@ -187,7 +198,7 @@ class consumers_api extends external_api
 
     public static function get_sort_options_parameters()
     {
-        return new \external_function_parameters([]);
+        return new \core_external\external_function_parameters([]);
     }
 
     public static function get_sort_options()
@@ -205,9 +216,9 @@ class consumers_api extends external_api
 
     public static function get_sort_options_returns()
     {
-        return new \external_multiple_structure(new \external_single_structure([
-            'value' => new \external_value(PARAM_TEXT),
-            'name'  => new \external_value(PARAM_TEXT),
+        return new \core_external\external_multiple_structure(new \core_external\external_single_structure([
+            'value' => new \core_external\external_value(PARAM_TEXT),
+            'name' => new \core_external\external_value(PARAM_TEXT),
         ]));
     }
 
@@ -222,7 +233,7 @@ class consumers_api extends external_api
 
     public static function create_consumer_parameters()
     {
-        return new \external_function_parameters([]);
+        return new \core_external\external_function_parameters([]);
     }
 
     public static function create_consumer()
@@ -231,13 +242,13 @@ class consumers_api extends external_api
 
         $now = time();
 
-        $consumer_id = $DB->insert_record(consumer::TABLE, (object)[
-            'name'         => 'New consumer',
-            'consumer_key' => 'Consumer'.rand(1000, 9999),
-            'secret'       => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 6),
-            'enabled'      => true,
-            'timecreated'  => $now,
-            'timeupdated'  => $now,
+        $consumer_id = $DB->insert_record(consumer::TABLE, (object) [
+            'name' => 'New consumer',
+            'consumer_key' => 'Consumer' . rand(1000, 9999),
+            'secret' => substr(str_shuffle('0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 1, 6),
+            'enabled' => true,
+            'timecreated' => $now,
+            'timeupdated' => $now,
         ]);
 
         $event = consumer_created::create(['objectid' => $consumer_id]);
@@ -260,8 +271,8 @@ class consumers_api extends external_api
 
     public static function delete_consumer_parameters()
     {
-        return new \external_function_parameters([
-            'id' => new \external_value(PARAM_INT, 'The consumer ID'),
+        return new \core_external\external_function_parameters([
+            'id' => new \core_external\external_value(PARAM_INT, 'The consumer ID'),
         ]);
     }
 
