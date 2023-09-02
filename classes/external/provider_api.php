@@ -2,7 +2,7 @@
 
 namespace local_lti\external;
 
-use external_api;
+use core_external\external_api;
 use Firebase\JWT\JWT;
 use local_lti\provider\error;
 use local_lti\provider\util;

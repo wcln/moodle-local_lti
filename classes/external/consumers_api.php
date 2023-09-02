@@ -2,7 +2,7 @@
 
 namespace local_lti\external;
 
-use external_api;
+use core_external\external_api;
 use local_lti\event\consumer_created;
 use local_lti\event\consumer_deleted;
 use local_lti\event\consumer_updated;

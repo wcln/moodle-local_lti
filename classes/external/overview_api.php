@@ -2,7 +2,7 @@
 
 namespace local_lti\external;
 
-use external_api;
+use core_external\external_api;
 use local_lti\helper\consumer;
 use local_lti\helper\request_log;
 use local_lti\helper\resource_link;
